@@ -1,1 +1,20 @@
-{{ flightData && flightData.airline.name }}
+<div>
+    <h2>Airline Name</h2>
+    <h2>Airline Code</h2>
+    <h2>Flight Date To</h2>
+    <h2>Flight Date From</h2>
+    <h2>From</h2>
+    <h2>Destination</h2>
+    <h2>Price</h2>
+</div>
+
+<div *ngFor="let i of flightData">
+    <h4>{{ i.id }}</h4>
+    <h4>{{ i.airline.name }}</h4>
+    <h4>{{ i.airline.code }}</h4>
+    <h4>{{ i.flight_date_to }}</h4>
+    <h4>{{ i.flight_date_from }}</h4>
+    <h4>{{ i.from }}</h4>
+    <h4>{{ i.destination }}</h4>
+    <h4>{{ i.price }}</h4>
+</div>

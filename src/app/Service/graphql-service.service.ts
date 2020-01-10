@@ -42,9 +42,15 @@ export class GraphqlServiceService {
         query {
           getAllFlight {
             id,
+            flight_date_from,
+            flight_date_to,
+            destination,
+            from,
+            price,
             airline {
               id,
               name,
+              code,
             }
           }
         }

@@ -30,6 +30,7 @@ import { FormsModule } from '@angular/forms';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { QuickCardHotelComponent } from './Components/Customer/main-page/components/quick-card-content/quick-card-list/quick-card-hotel/quick-card-hotel.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { QuickCardHotelComponent } from './Components/Customer/main-page/compone
     MatFormFieldModule,
     MatInputModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

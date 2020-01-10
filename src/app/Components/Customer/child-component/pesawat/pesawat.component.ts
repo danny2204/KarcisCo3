@@ -9,7 +9,7 @@ import { SharedServiceService } from 'src/app/Service/shared-service.service';
 })
 export class PesawatComponent implements OnInit {
 
-  flightData: Object
+  flightData: Object[]
   test: Object
 
   constructor(
@@ -20,14 +20,9 @@ export class PesawatComponent implements OnInit {
   ngOnInit() {
     if(this.eventEmitterService.subsVar2 == undefined) {
       this.eventEmitterService.subsVar2 = this.eventEmitterService.invokeAssignFunction.subscribe( async () => {
-        this.assignVariable()
+        this.flightData = this.sharedService.flightData
       })
     }
-  }
-
-  assignVariable() {
-    this.flightData = this.sharedService.flightData[0]
-    console.log(this.flightData)
   }
 
 }
