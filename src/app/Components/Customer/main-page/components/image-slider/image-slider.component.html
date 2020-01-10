@@ -1,0 +1,21 @@
+<div id="parent">
+    <div>
+        <div id="img-container">
+            <div (click)="leftClick()">
+                <img src="../../../../../../assets/left.png" alt="" id="leftButton">
+            </div>
+            <div [@slideInOut]=doSlide id="img-slider">
+                <img src="../../../../../../assets/slider-image/slider-image({{currentIndex}}).jpg" alt="">
+            </div>
+            <div (click)="rightClick()">
+                <img src="../../../../../../assets/right.png" alt="" id="rightButton">
+            </div>
+        </div>
+    </div>
+    <div id="dots-container">
+        <div *ngFor="let value of imageValue">
+            <button *ngIf="value != currentIndex" [value]="value" (click)="dotsClick(value)" id="notSelected"></button>
+            <button *ngIf="value == currentIndex" [value]="value" (click)="dotsClick(value)" id="selected"></button>            
+        </div>
+    </div>
+</div>

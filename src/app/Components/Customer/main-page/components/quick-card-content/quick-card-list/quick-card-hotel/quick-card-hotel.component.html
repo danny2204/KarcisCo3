@@ -1,0 +1,31 @@
+<div>
+    <img src="" alt="">
+    <h2>Booking Hotel Murah Online dengan Harga Promo</h2>
+</div>
+<div>
+    <div>
+        <p>Tujuan</p>
+        <input type="text" id="tujuan-input" #tujuan>
+    </div>
+    <div>
+        <p>Check-in</p>
+        <input matInput [matDatepicker]="checkIn" placeholder="Choose a date" (click)="checkIn.open()">
+        <mat-datepicker-toggle matSuffix [for]="checkIn">
+        </mat-datepicker-toggle>
+        <mat-datepicker #checkIn></mat-datepicker>
+    </div>
+    <div>
+        <p>Check-out</p>
+        <input matInput [matDatepicker]="checkOut" placeholder="Choose a date" (click)="checkOut.open()">
+        <mat-datepicker-toggle matSuffix [for]="checkOut">
+        </mat-datepicker-toggle>
+        <mat-datepicker #checkIn></mat-datepicker>
+    </div>
+    <div>
+        <p>Tamu & Kamar</p>
+        
+    </div>
+</div>
+<div>
+    <button id="search-btn">CARI HOTEL</button>
+</div>

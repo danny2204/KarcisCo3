@@ -1,0 +1,63 @@
+<div class="quick-card" #quickCard (click)="scrollToTop(quickCard, overlay)">
+    <div class="quick-card-navigation">
+        <div>
+            <h3>Hey, kamu</h3>
+            <h1>Mau ke mana ?</h1>
+        </div>
+
+        <mat-tab-group dynamicHeight>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="quick-card-button" (click)="inject('pesawat')">
+                        <img src="https://static.tiket.photos/image/upload/v1557286163/home/2019/05/08/26bd8ca1-ade5-4e88-81b2-155a1adc9c28ef1e6febe0de3a16473c2eade2dcd594.png" alt="Pesawat">
+                        Pesawat
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="quick-card-button" (click)="inject('hotel')">
+                        <img src="https://static.tiket.photos/image/upload/v1557286168/home/2019/05/08/eb09df0d-cd12-40a7-87db-cbfd00763102932d166eeacc1b9424a1316c3c534caf.png" alt="Hotel">
+                        Hotel
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="quick-card-button">
+                        <img src="https://static.tiket.photos/image/upload/v1557286173/home/2019/05/08/45c710d9-09d6-415c-adbb-d6f8b2b25af8f81ecaf6efad743ffc5fef90f7fb4b3b.png" alt="Kereta Api">
+                        Kereta Api
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="quick-card-button">
+                        <img src="https://static.tiket.photos/image/upload/v1557286179/home/2019/05/08/a6c4f246-dfca-46a9-854f-1de3b335154c6ddcc7deff47236b8a7de644d285242d.png" alt="Sewa Mobil">
+                        Sewa Mobil
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="quick-card-button">
+                        <img src="https://static.tiket.photos/image/upload/v1557286184/home/2019/05/08/b991ef35-fc71-4ba8-8106-7b0fa6feb833972827d56e08c88565dadd62aa91e438.png" alt="Entertainment">
+                        Entertainment
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+        </mat-tab-group>
+    </div>
+    <app-quick-card-list [type]='type'></app-quick-card-list>
+</div>
+
+<div #overlay (click)="backToNormal(overlay)" class="overlay-bg"></div>
+
+<div>
+    {{ flightData }}
+</div>

@@ -1,0 +1,29 @@
+.modal
+    display: flex
+    flex-direction: column
+    h2, p
+        color: black
+
+input, select
+    border: 1px solid black
+    border-radius: 10px
+    padding: 5px 10px
+    transition: all .1s teal
+    font-size: 24px
+
+.column
+    position: relative
+    margin: 10px 0px
+
+.label
+    position: absolute
+    z-index: 1
+    top: 5px
+    left: 5px
+    transition: all 0.1s linear
+    color: black
+
+.label:hover, input:hover+.label, input:focus+.label
+    transform: translateY(-75%) scale(.80)
+    color: teal
+    background-color: white

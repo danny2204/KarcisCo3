@@ -1,0 +1,23 @@
+<div class="modal">
+    <h2>Log In / Daftar</h2>
+    <p>Perjalanan serumu dimulai di sini.</p>
+    <div class="first-container">
+        <input type="text" placeholder="" name="emailInput" #emailInput id="emailInput">
+        <br>
+        <input type="password" name="passwordInput" #passwordInput id="passwordInput" [style.display]="showPassField()">
+        <br *ngIf="showPass">
+        <button *ngIf="text == 'LANJUTKAN'" id="next-btn" (click)='doLogin(emailInput.value)'>LANJUTKAN</button>
+        <button *ngIf="text == 'LOGIN'" id="next-btn" (click)='checkPass(passwordInput.value)'>LOGIN</button>
+        <br>
+        <span>atau dengan</span>
+    </div>
+    <br>
+    <div class="loginOption-container">
+        <app-google-button></app-google-button>
+        <hr id="separator">
+        <app-facebook-button></app-facebook-button>
+    </div>
+    <div>
+        <p style="text-align: center;">Dengan mendaftar kamu menyetujui <a href="">Kebijakan Privasi</a> dan <a href="">Syarat & Ketentuan</a> kami</p>
+    </div>
+</div>

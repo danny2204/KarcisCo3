@@ -1,0 +1,34 @@
+<div class="modal">
+    <h2>Daftar</h2>
+    <form action="">
+        <div class="column">
+            <input type="text" placeholder=" " id="email-input" #emailInput>
+            <div class="label">Email</div>
+        </div>
+        <div class="column">
+            <input type="text" placeholder=" " id="first-name" #firstName>
+            <div class="label">Nama Depan</div>
+        </div>
+        <div class="column">
+            <input type="text" placeholder=" " id="second-name" #secondName>
+            <div class="label">Nama Belakang</div>
+        </div>
+        <div>
+            <div class="column">
+                <select name="" id="">
+                    <option value="Indonesia">+62</option>
+                </select>
+                <div class="label">Kode Negara</div>
+            </div>
+            <div class="column">
+                <input type="text" placeholder=" " id="phone-number" #phoneNumber>
+                <div class="label">Nomor ponsel</div>
+            </div>
+        </div>
+        <div class="column">
+            <input type="password" placeholder=" " id="password-input" #passwordInput>
+            <div class="label">Kata Sandi</div>
+        </div>
+        <button (click)='doRegister(emailInput.value, firstName.value, secondName.value, passwordInput.value, phoneNumber.value)'>Register</button>
+    </form>
+</div>
