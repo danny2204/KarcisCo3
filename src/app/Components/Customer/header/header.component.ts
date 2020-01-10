@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { RegisterDialogComponent } from '../register-dialog/register-dialog.component';
+import { Subscription } from 'rxjs';
+import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
+import { SharedServiceService } from 'src/app/Service/shared-service.service';
+import { EventEmitterService } from 'src/app/Service/event-emitter.service';
 
 @Component({
   selector: 'app-header',
@@ -11,9 +15,14 @@ import { RegisterDialogComponent } from '../register-dialog/register-dialog.comp
 export class HeaderComponent implements OnInit {
 
   config: MatDialogConfig = new MatDialogConfig();
+  supkrep: Subscription
+  flight: Object[]
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private service: GraphqlServiceService,
+    private sharedService: SharedServiceService,
+    private emitterService: EventEmitterService
   ) { }
 
   ngOnInit() {
@@ -27,6 +36,18 @@ export class HeaderComponent implements OnInit {
 
   openRegisterDialog() {
     this.dialog.open(RegisterDialogComponent, this.config);
+  }
+
+  public getFlight() {
+    this.supkrep = this.service.getAllFlight().subscribe(async query => {
+      this.flight = query.data.getAllFlight
+      await this.setService()
+    })
+  }
+
+  setService() {
+    this.sharedService.fetchFlight(this.flight)
+    this.emitterService.onAssign()
   }
 
 }

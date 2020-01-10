@@ -23,18 +23,6 @@ export class QuickCardPesawatComponent implements OnInit {
 
    }
 
-  public getFlight() {
-    this.supkrep = this.service.getAllFlight().subscribe(async query => {
-      this.flight = query.data.getAllFlight
-      await this.setService()
-    })
-  }
-
-  setService() {
-    this.sharedService.fetchFlight(this.flight)
-    this.emitterService.onAssign()
-  }
-
   ngOnInit() {
   }
 

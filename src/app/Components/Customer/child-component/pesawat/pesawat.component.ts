@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { EventEmitterService } from 'src/app/Service/event-emitter.service';
+import { SharedServiceService } from 'src/app/Service/shared-service.service';
 
 @Component({
   selector: 'app-pesawat',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PesawatComponent implements OnInit {
 
-  constructor() { }
+  flightData: Object
+  test: Object
+
+  constructor(
+    private eventEmitterService: EventEmitterService,
+    private sharedService: SharedServiceService
+  ) { }
 
   ngOnInit() {
+    if(this.eventEmitterService.subsVar2 == undefined) {
+      this.eventEmitterService.subsVar2 = this.eventEmitterService.invokeAssignFunction.subscribe( async () => {
+        this.assignVariable()
+      })
+    }
+  }
+
+  assignVariable() {
+    this.flightData = this.sharedService.flightData[0]
+    console.log(this.flightData)
   }
 
 }

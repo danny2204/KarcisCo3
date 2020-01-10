@@ -28,15 +28,7 @@ export class QuickCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.eventEmitterService.subsVar2 == undefined) {
-      this.eventEmitterService.subsVar2 = this.eventEmitterService.invokeAssignFunction.subscribe(() => {
-        this.assignVariable()
-      })
-    }
-  }
-
-  assignVariable() {
-    this.flightData = this.sharedServie.flightData[0]
+    
   }
 
   scrollToTop(e1: HTMLElement, e2:HTMLElement){
