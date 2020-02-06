@@ -19,16 +19,6 @@ type Admin struct {
 var db *gorm.DB
 var err error
 
-func init() {
-	db, err = connection.ConnectDatabase()
-	if err != nil {
-		panic(err)
-	}
-
-	defer db.Close()
-	db.AutoMigrate(&Admin {})
-}
-
 func GetAllAdmin()([]Admin, error) {
 	db, err = connection.ConnectDatabase()
 	if err != nil {

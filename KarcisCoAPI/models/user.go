@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/danny2204/KarcisCoAPI/connection"
 	"time"
 )
@@ -16,17 +15,10 @@ type User struct {
 	Email     string     `gorm:"type:varchar(100);not null;primary_key"`
 	Password  string     `gorm:"type:varchar(100);not null;primary_key"`
 	PhoneNumber string `gorm:"type:varchar(50);not null""`
-
-}
-
-func init() {
-	db, err = connection.ConnectDatabase()
-	if err != nil {
-		panic(err)
-	}
-
-	defer db.Close()
-	db.AutoMigrate(&User{})
+	Title string `gorm:"type:varchar(100);"`
+	City string `gorm:"type:varchar(100);"`
+	Address string `gorm:"type:varchar(100);"`
+	PostCode string `gorm:"type:varchar(100);"`
 }
 
 func GetAllUser()([]User, error) {
@@ -43,10 +35,10 @@ func GetAllUser()([]User, error) {
 	return userList, err
 }
 
-func CreateUser(frontName string, backName string, email string, password string, phoneNumber string) (*User, error){
+func CreateUser(frontName string, backName string, email string, password string, phoneNumber string, title string, city string, address string, postcode string) (*User, error){
 	db, err = connection.ConnectDatabase()
 	if err != nil {
-		panic("tol")
+		panic(err)
 	}
 
 	defer db.Close()
@@ -57,13 +49,17 @@ func CreateUser(frontName string, backName string, email string, password string
 		Email:     email,
 		Password:  password,
 		PhoneNumber: phoneNumber,
+		Title: title,
+		City: city,
+		Address: address,
+		PostCode: postcode,
 	}
 
 	db.Save(user)
 	return user, err
 }
 
-func UpdateUser(id int, frontName string, backName string, email string, password string, phoneNumber string) (*User, error) {
+func UpdateUser(id int, frontName string, backName string, email string, password string, phoneNumber string, title string, city string, address string, postcode string) (*User, error) {
 	db, err := connection.ConnectDatabase()
 
 	if err != nil {
@@ -72,7 +68,7 @@ func UpdateUser(id int, frontName string, backName string, email string, passwor
 	defer db.Close()
 
 	var user User
-	db.Model(&user).Where("id = ?", id).Updates(map[string]interface{}{"front_name": frontName, "back_name": backName, "email": email, "password": password, "phone_number": phoneNumber})
+	db.Model(&user).Where("id = ?", id).Updates(map[string]interface{}{"front_name": frontName, "back_name": backName, "email": email, "password": password, "phone_number": phoneNumber, "title": title, "address": address, "city": city, "post_code": postcode})
 	//db.Where(Admin{ID: id}).Assign(Admin{Name: name, Email: email, Password: password}).FirstOrCreate(&admin)
 	db.Where("id = ?", id).Find(&user)
 	return &user, nil
@@ -91,7 +87,6 @@ func GetUserByEmailAndPhone(arg string) ([]User, error) {
 	if db.Where("email = ?", arg).Or("phone_number = ?", arg).Find(&user).RecordNotFound(){
 		return nil, nil
 	}
-	fmt.Println(user)
 	return user, err
 }
 

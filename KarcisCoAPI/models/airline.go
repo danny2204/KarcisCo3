@@ -10,19 +10,7 @@ type Airline struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt *time.Time `sql:"index"`
-	Name string
-	Code string
-	Seat int
-}
-
-func init() {
-	db, err = connection.ConnectDatabase()
-	if err != nil {
-		panic(err)
-	}
-
-	defer db.Close()
-	db.AutoMigrate(&Airline {})
+	Name string `gorm:varchar(100);not null`
 }
 
 func GetAllAirline()([]Airline, error) {
@@ -39,7 +27,7 @@ func GetAllAirline()([]Airline, error) {
 	return airlineList, err
 }
 
-func InsertAirline(name string, code string, seat int) (*Airline, error){
+func InsertAirline(name string) (*Airline, error){
 	db, err = connection.ConnectDatabase()
 	if err != nil {
 		panic(err)
@@ -49,15 +37,13 @@ func InsertAirline(name string, code string, seat int) (*Airline, error){
 
 	airline := &Airline{
 		Name:      name,
-		Code: code,
-		Seat: seat,
 	}
 
 	db.Save(airline)
 	return airline, err
 }
 
-func UpdateAirline(id int, name string, code string, seat int) (*Airline, error) {
+func UpdateAirline(id int, name string) (*Airline, error) {
 	db, err := connection.ConnectDatabase()
 
 	if err != nil {
@@ -66,8 +52,7 @@ func UpdateAirline(id int, name string, code string, seat int) (*Airline, error)
 	defer db.Close()
 
 	var airline Airline
-	db.Model(&airline).Where("id = ?", id).Updates(map[string]interface{}{"name": name, "code": code, "seat": seat})
-	//db.Where(Admin{ID: id}).Assign(Admin{Name: name, Email: email, Password: password}).FirstOrCreate(&admin)
+	db.Model(&airline).Where("id = ?", id).Updates(map[string]interface{}{"name": name})
 	db.Where("id = ?", id).Find(&airline)
 	return &airline, nil
 }
