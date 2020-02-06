@@ -16,21 +16,20 @@ import { HotelComponent } from './Components/Customer/child-component/hotel/hote
 import { KeretaApiComponent } from './Components/Customer/child-component/kereta-api/kereta-api.component';
 import { SewaMobilComponent } from './Components/Customer/child-component/sewa-mobil/sewa-mobil.component';
 import { HiburanComponent } from './Components/Customer/child-component/hiburan/hiburan.component';
-import { MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickCardComponent } from './Components/Customer/main-page/components/quick-card/quick-card.component';
-import { MatTabsModule } from '@angular/material/tabs';
 import { QuickCardListComponent } from './Components/Customer/main-page/components/quick-card-content/quick-card-list/quick-card-list.component';
 import { QuickCardPesawatComponent } from './Components/Customer/main-page/components/quick-card-content/quick-card-list/quick-card-pesawat/quick-card-pesawat.component';
 import { GoogleButtonComponent } from './Components/Customer/login-dialog/google-button/google-button.component';
 import { FacebookButtonComponent } from './Components/Customer/login-dialog/facebook-button/facebook-button.component';
 import { ImageSliderComponent } from './Components/Customer/main-page/components/image-slider/image-slider.component'
-import { MatDatepickerModule } from '@angular/material/datepicker'
 import { FormsModule } from '@angular/forms';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { QuickCardHotelComponent } from './Components/Customer/main-page/components/quick-card-content/quick-card-list/quick-card-hotel/quick-card-hotel.component';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
   declarations: [
@@ -62,15 +61,11 @@ import { CommonModule } from '@angular/common';
     ModalModule,
     MatDialogModule,
     BrowserAnimationsModule,
-    MatTabsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     GraphQLModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

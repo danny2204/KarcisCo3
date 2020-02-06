@@ -5,7 +5,12 @@
 <div>
     <div>
         <p>Tujuan</p>
-        <input type="text" id="tujuan-input" #tujuan>
+        <mat-form-field>
+            <mat-label>Mau Nginep Dimana ?</mat-label>
+            <mat-select [(ngModel)]="locationValue" style="background-color: white;" #locationSelect>
+                <mat-option *ngFor="let i of locationToView" value={{i.City}}> {{i.City}} </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
     <div>
         <p>Check-in</p>
@@ -27,5 +32,5 @@
     </div>
 </div>
 <div>
-    <button id="search-btn">CARI HOTEL</button>
+    <button id="search-btn" (click)="getHotelByLocation()">CARI HOTEL</button>
 </div>

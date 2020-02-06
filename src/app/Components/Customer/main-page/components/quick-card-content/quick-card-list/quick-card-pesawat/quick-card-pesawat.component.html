@@ -7,15 +7,27 @@
     <input type="radio" name="ticket-type" value="pulang-pergi"> Pulang - Pergi
 </div>
 <div>
-    <div>
+    <!-- <div>
         Dari
         <input type="text" id="from-input" placeholder="Mau ke mana ?">
     </div>
     <div>
         Ke
         <input type="text" id="to-input" placeholder="Mau ke mana ?">
-    </div>
-    <div>
+    </div> -->
+    <mat-form-field>
+        <mat-label>From</mat-label>
+        <mat-select [(ngModel)]="fromValue" style="background-color: white;">
+            <mat-option *ngFor="let i of flight" value={{i.city}}> {{i.city}} </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>To</mat-label>
+        <mat-select [(ngModel)]="toValue" style="background-color: white;">
+            <mat-option *ngFor="let i of flight" value={{i.city}}> {{i.city}} </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <!-- <div>
         Berangkat
         <input matInput [matDatepicker]="berangkat" placeholder="Choose a date" (click)="berangkat.open()">
         <mat-datepicker-toggle matSuffix [for]="berangkat">
@@ -28,7 +40,7 @@
         <mat-datepicker-toggle matSuffix [for]="pulang">
         </mat-datepicker-toggle>
         <mat-datepicker #pulang></mat-datepicker>
-    </div>
+    </div> -->
 </div>
 <div>
     <button id="search-btn" (click)="getFlight()">CARI PENERBANGAN</button>

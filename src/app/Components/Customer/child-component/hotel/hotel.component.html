@@ -1,1 +1,37 @@
-<p>hotel works!</p>
+<div class="container">
+    <div class="left-panel">
+        <div>
+            Bintang
+            <div *ngFor="let i of departureTimes" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="parentFlightContainer">
+        <div *ngFor="let i of displayedFlightData; let idx = index;" class="flightContainer">
+            <div *ngIf="checkValidation(idx)" class="flightsDatas">
+                <div>
+                    {{ i.airline.name }}
+                </div>
+                <div class="flightTimeData">
+                    <h3>
+                        Departure : {{ i.departure | date:'HH:mm':'z' }} ( {{ i.from.city }} )
+                    </h3>
+                    <h3>
+                        Arrival : {{ i.arrival | date:'HH:mm':'z' }} ( {{ i.to.city }} )
+                    </h3>
+                    <h3>
+                        Flight Time : {{ i.duration }} minutes
+                    </h3>
+                    <h3>
+                        IDR {{ i.price }}
+                    </h3>
+                </div>
+                <div>
+                    <a href="">Detail Pesawat</a>
+                    <a href="">Detail Harga</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

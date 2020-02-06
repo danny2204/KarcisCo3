@@ -6,8 +6,11 @@ import { Injectable } from '@angular/core';
 export class SharedServiceService {
 
   public flightData: Object[]
+  public flightSearchResult: Object[]
+  public hotelSearchResult: Object[]
+
   fetchFlight(flight) {
-    this.flightData = flight
+    this.flightSearchResult = this.flightData
   }
 
 }

@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HotelComponent implements OnInit {
 
+  hotelData: Object[]
+  displayedHotelData: Object[]
+  
+
   constructor() { }
 
   ngOnInit() {

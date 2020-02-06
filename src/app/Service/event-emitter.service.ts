@@ -12,6 +12,7 @@ export class EventEmitterService {
 
   subsVar: Subscription
   subsVar2: Subscription
+  subsVar3: Subscription
 
   constructor() { }
 

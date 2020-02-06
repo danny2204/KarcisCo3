@@ -1,20 +1,56 @@
-<div>
-    <h2>Airline Name</h2>
-    <h2>Airline Code</h2>
-    <h2>Flight Date To</h2>
-    <h2>Flight Date From</h2>
-    <h2>From</h2>
-    <h2>Destination</h2>
-    <h2>Price</h2>
-</div>
-
-<div *ngFor="let i of flightData">
-    <h4>{{ i.id }}</h4>
-    <h4>{{ i.airline.name }}</h4>
-    <h4>{{ i.airline.code }}</h4>
-    <h4>{{ i.flight_date_to }}</h4>
-    <h4>{{ i.flight_date_from }}</h4>
-    <h4>{{ i.from }}</h4>
-    <h4>{{ i.destination }}</h4>
-    <h4>{{ i.price }}</h4>
+<div class="container">
+    <div class="left-panel">
+        <div>
+            Departure
+            <div *ngFor="let i of departureTimes" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+            <button (click)="resetFilter()">Reset</button>
+        </div>
+        <div>
+            Arrival
+            <div *ngFor="let i of arrivalTimes" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </div>
+        <div>
+            Airline
+            <div *ngFor="let i of airlineList" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.airline }} </mat-checkbox>
+            </div>
+        </div>
+        <div>
+            Transit
+            <div *ngFor="let i of transitFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="parentFlightContainer">
+        <div *ngFor="let i of displayedFlightData; let idx = index;" class="flightContainer">
+            <div *ngIf="checkValidation(idx)" class="flightsDatas">
+                <div>
+                    {{ i.airline.name }}
+                </div>
+                <div class="flightTimeData">
+                    <h3>
+                        Departure : {{ i.departure | date:'HH:mm':'z' }} ( {{ i.from.city }} )
+                    </h3>
+                    <h3>
+                        Arrival : {{ i.arrival | date:'HH:mm':'z' }} ( {{ i.to.city }} )
+                    </h3>
+                    <h3>
+                        Flight Time : {{ i.duration }} minutes
+                    </h3>
+                    <h3>
+                        IDR {{ i.price }}
+                    </h3>
+                </div>
+                <div>
+                    <a href="">Detail Pesawat</a>
+                    <a href="">Detail Harga</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

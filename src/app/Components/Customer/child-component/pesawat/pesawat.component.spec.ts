@@ -5,7 +5,7 @@ import { PesawatComponent } from './pesawat.component';
 describe('PesawatComponent', () => {
   let component: PesawatComponent;
   let fixture: ComponentFixture<PesawatComponent>;
-
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PesawatComponent ]

@@ -67,6 +67,8 @@ export class QuickCardListComponent {
         this.injectComponent()
       })
     }
+    this.type = "pesawat"
+    this.injectComponent()
   }
 
 }

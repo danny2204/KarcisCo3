@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 import { SharedServiceService } from 'src/app/Service/shared-service.service';
 import { EventEmitterService } from 'src/app/Service/event-emitter.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +23,8 @@ export class HeaderComponent implements OnInit {
     public dialog: MatDialog,
     private service: GraphqlServiceService,
     private sharedService: SharedServiceService,
-    private emitterService: EventEmitterService
+    private emitterService: EventEmitterService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -40,14 +42,8 @@ export class HeaderComponent implements OnInit {
 
   public getFlight() {
     this.supkrep = this.service.getAllFlight().subscribe(async query => {
-      this.flight = query.data.getAllFlight
-      await this.setService()
+      this.sharedService.flightSearchResult = query.data.getAllFlight
+      await this.router.navigate(["/pesawat"])
     })
   }
-
-  setService() {
-    this.sharedService.fetchFlight(this.flight)
-    this.emitterService.onAssign()
-  }
-
 }
