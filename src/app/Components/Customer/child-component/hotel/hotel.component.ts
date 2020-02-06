@@ -9,11 +9,15 @@ export class HotelComponent implements OnInit {
 
   hotelData: Object[]
   displayedHotelData: Object[]
-  
+
 
   constructor() { }
 
   ngOnInit() {
   }
 
+}
+
+export class StarFilter {
+  
 }
