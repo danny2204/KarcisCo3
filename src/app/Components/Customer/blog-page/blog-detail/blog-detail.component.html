@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="left-panel">
+        <img src="{{ blog.ImagePath }}" alt="" style="width: 100%; height: 50vh;">
+        <p> {{ blog.Category }} </p>
+        <h1> {{ blog.BlogTitle }} </h1>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; flex-direction: column;">
+                <p>by {{ blog.AuthorName }} </p>
+                <p> {{ blog.UploadDate | date}} </p>
+            </div>
+            <p> {{ blog.View }} Views </p>
+        </div>
+        <hr>
+        <div style="display: flex; justify-content: space-around;">
+            <a href="https://www.facebook.com/sharer.php?u={{ currentUrl }}" style="background-color: blue;">Facebook</a>
+            <a href="https://api.whatsapp.com/send?text={{ currentUrl }}" style="background-color: chartreuse;">Whatsapp</a>
+            <a href="http://line.me/R/msg/text/?{{ currentUrl }}" style="background-color: green;">Line</a>
+        </div>
+        <div style="margin-top: 5vh">
+            {{ blog.BlogDetail }}
+        </div>
+    </div>
+    <div class="trending-now">
+        <h3>Trending Now</h3>
+        <div *ngFor="let i of trendingBlog" (click)="changeDetail(i.Id)">
+            <img src="{{ i.ImagePath }}" alt="" style="width: 100%; height: 50%;">
+            <h3> {{ i.BlogTitle }} </h3>
+        </div>
+    </div>
+</div>

@@ -1,1 +1,103 @@
-<p>kereta-api works!</p>
+<div class="widget-pesawat">
+    <div>
+        <h2>Pilih Kereta Pergi</h2>
+        <div>
+            <div style="display: flex;">
+                <div>
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="fromValue" style="background-color: white;" #fromLocationSelect>
+                            <mat-option *ngFor="let i of fromLocationToView" value={{i}}> {{i}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="toValue" style="background-color: white;" #fromLocationSelect>
+                            <mat-option *ngFor="let i of toLocationToView" value={{i}}> {{i}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="change-search" (click)="changeSearch()">
+        UBAH PENCARIAN
+    </div>
+</div>
+<div class="container">
+
+    <div class="left-panel">
+        <div>
+            Departure
+            <div *ngFor="let i of departureTimes" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+            <button (click)="resetFilter()">Reset</button>
+        </div>
+        <div>
+            Kelas
+            <div *ngFor="let i of kelasList" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.class }} </mat-checkbox>
+            </div>
+            <button (click)="resetFilter()">Reset</button>
+        </div>
+        <div>
+            Nama Kereta
+            <div *ngFor="let i of nameFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.name }} </mat-checkbox>
+            </div>
+            <button (click)="resetFilter()">Reset</button>
+        </div>        
+    </div>
+    <div class="parentFlightContainer">
+        <div *ngFor="let i of displayedTrainData; let idx = index;" class="flightContainer">
+            <div *ngIf="checkValidation(idx)" class="flightsDatas">
+                <div matTooltip={{i.Train.Name}}>
+                    {{ i.Train.Name }}
+                </div>
+                <div class="flightTimeData">
+                    <h3>
+                        Departure : {{ i.Departure | date:'HH:mm':'z' }} ( {{ i.From.Location.City }} )
+                    </h3>
+                    <h3>
+                        Arrival : {{ i.Arrival | date:'HH:mm':'z' }} ( {{ i.To.Location.City }} )
+                    </h3>
+                    <h3>
+                        Flight Time : {{ i.Duration }} minutes
+                    </h3>
+                    <h3>
+                        IDR {{ i.Price }}
+                    </h3>
+                </div>
+                <hr>
+                <div id="bottom-panel">
+                    <div id="detail-tab">
+                        <div class="detail-button" (click)="showDetail('perjalanan', idx)">
+                            Detail Perjalanan
+                        </div>
+                        <div class="detail-button" (click)="showDetail('harga', idx)">
+                            Detail Harga
+                        </div>
+                    </div>
+                    <div id="pesan-button">
+                        PILIH
+                    </div>
+                </div>
+                <hr>
+                <div *ngIf="detailString[idx] != '' ">
+                    <div *ngIf="detailString[idx] == 'perjalanan'">
+                        From : {{ i.To.Location.City }}
+                        <br>
+                        Duration : {{ i.Duration }}
+                        <br>
+                        To : {{ i.From.Location.City }}
+                        <br>
+                    </div>
+                    <div *ngIf="detailString[idx]=='harga'">
+                        Dewasa (1x) {{ i.Price }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

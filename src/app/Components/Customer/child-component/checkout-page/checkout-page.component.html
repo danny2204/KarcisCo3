@@ -1,0 +1,131 @@
+<div class="container">
+    <h2>Detail Pemesanan</h2>
+    <div style="display: flex; width: 70vw">
+        <div class="left-panel">
+            <div class="pemesanDetail">
+                <div style="display: flex; align-items: center; justify-content: space-around; width: 100%">
+                    <mat-form-field>
+                        <mat-label>Titel</mat-label>
+                        <mat-select [(ngModel)]="titelValue" style="background-color: white;" #titelSelect>
+                            <mat-option value="Tuan">
+                                Tuan
+                            </mat-option>
+                            <mat-option value="Nyonya">
+                                Nyonya
+                            </mat-option>
+                            <mat-option value="Nona">
+                                Nona
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="display: flex; flex-direction: column;">
+                        Nama
+                        <input type="text" [(ngModel)]="nameValue" placeholder="cth. Aditya Dwi Saputra">
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-around; width: 100%">
+                    <mat-form-field>
+                        <mat-label>Titel</mat-label>
+                        <mat-select [(ngModel)]="titelValue" style="background-color: white;" #titelSelect>
+                            <mat-option value="Tuan">
+                                Tuan
+                            </mat-option>
+                            <mat-option value="Nyonya">
+                                Nyonya
+                            </mat-option>
+                            <mat-option value="Nona">
+                                Nona
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="display: flex; flex-direction: column;">
+                        Nama
+                        <input type="text" [(ngModel)]="nameValue" placeholder="cth. Aditya Dwi Saputra">
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; width: 80%">
+                    Alamat Email
+                    <input type="text" placeholder="cth.youremail@example.com">
+                </div>
+            </div>
+            <div class="buyBtn">
+                Lanjutkan ke Pembayaran
+            </div>
+        </div>
+        <div class="right-panel" *ngIf="isFlightBought == true">
+            <h2> {{ flightData.Airline.Name }} </h2>
+            <h3> {{ flightData.Price | currency: "IDR" }} </h3>
+            Routes : ( {{ flightData.Departure }} - {{ flightData.Arrival }} )
+            <div *ngIf="flightData.Routes.length > 0">
+                <p *ngFor="let i of flightData.routes">
+                    {{ i.AirportFrom.name }} -> {{ i.AirportTo.name }}
+                    Duration : {{ i.Duration }}
+                </p>
+            </div>
+            <div *ngIf="flightData.Routes.length == 0">
+                <p>
+                    {{ flightData.From.Name }} -> {{ flightData.To.Name }}
+                    Duration : {{ flightData.Duration }}
+                </p>
+            </div>
+        </div>
+        <div class="right-panel" *ngIf="isHotelBought == true">
+            <div style="display: flex; align-items: center;">
+                <img src="../../../../../assets/house.png" alt="" style="height: 40%; width: 40%">
+                <div style="display: flex; flex-direction: column; margin-left: 5px;">
+                    <h2> {{ hotelData.Name }} </h2>
+                    <p style="color: lightgray;"> {{ hotelData.Address }} </p>
+                </div>
+            </div>
+            <h2> {{ hotelData.Price | currency: "IDR" }} </h2>
+            <div style="display: flex; flex-direction: column;">
+                <h2> Rooms </h2>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <img src="../../../../../assets/room.jpg" alt="" style="width: 40%; height: 40%;">
+                    <h2> {{ roomData.Name }} </h2>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <div>
+                        <p>Maks. {{ roomData.MaxPassenger }}</p>
+                        <p>{{ roomData.RoomSize }}m<sup>2</sup> </p>
+                        <p> {{ roomData.Bed }} </p>
+                    </div>
+                    <div>
+                        <p *ngIf="roomData.FreeWifi == true" style="color: black;">
+                            Free Wifi
+                        </p>
+                        <p *ngIf="roomData.FreeWifi == false" style="color: gray;">
+                            Free Wifi
+                        </p>
+                        <p *ngIf="roomData.FreeBreakfast == true" style="color: black;">
+                            Free Breakfast
+                        </p>
+                        <p *ngIf="roomData.FreeBreakfast == false" style="color: gray;">
+                            Free Breakfast
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel" *ngIf="isCarBought == true">
+            <div style="display: flex; justify-content: center; flex-direction: column;">
+                <h2> {{ vendorData.Name }} </h2>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <img src="../../../../../assets/ehyYNK6.png" alt="" style="width: 100px; height: 100px;">
+                    <h2> {{ carData.Brand }} {{ carData.Model }} </h2>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-around;">
+                <p> Penumpang : {{ carData.Passenger }} </p>
+                <p> Bagasi : {{ carData.Luggage }} </p>
+            </div>
+            <h2> {{ carData.Price | currency: "IDR" }} </h2>
+        </div>
+        <div class="right-panel" *ngIf="isTrainBought == true">
+            
+        </div>
+        <div class="right-panel" *ngIf="isEntertainmentBought == true">
+            
+        </div>
+    </div>
+</div>

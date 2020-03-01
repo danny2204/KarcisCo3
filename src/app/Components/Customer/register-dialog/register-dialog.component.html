@@ -4,19 +4,21 @@
         <div class="column">
             <input type="text" placeholder=" " id="email-input" #emailInput>
             <div class="label">Email</div>
+            <label for="" *ngIf="emailError == true" style="color: red;">Email tidak boleh kosong</label>
         </div>
         <div class="column">
             <input type="text" placeholder=" " id="first-name" #firstName>
             <div class="label">Nama Depan</div>
+            <label for="" *ngIf="firstNameError == true" style="color: red;">Nama depan tidak boleh kosong</label>
         </div>
         <div class="column">
             <input type="text" placeholder=" " id="second-name" #secondName>
             <div class="label">Nama Belakang</div>
         </div>
-        <div>
+        <div style="display: flex;">
             <div class="column">
-                <select name="" id="">
-                    <option value="Indonesia">+62</option>
+                <select name="" id="" (value)="dialCode">
+                    <option value="i.dial_code" *ngFor="let i of countryCode"> {{ i.dial_code }} </option>
                 </select>
                 <div class="label">Kode Negara</div>
             </div>
@@ -24,11 +26,23 @@
                 <input type="text" placeholder=" " id="phone-number" #phoneNumber>
                 <div class="label">Nomor ponsel</div>
             </div>
+            <label for="" *ngIf="phoneNumberError == true" style="color: red;">Telepon tidak boleh kosong</label>
         </div>
         <div class="column">
             <input type="password" placeholder=" " id="password-input" #passwordInput>
             <div class="label">Kata Sandi</div>
+            <label for="" *ngIf="passwordError == true" style="color: red;">Password tidak boleh kosong</label>
         </div>
+
+        <div class="loginOption" (click)="googleInit()">
+            <img src="../../../../assets/google-logo.png" alt="" id="login-option-img">
+            <span>Google</span>
+        </div>
+        <div class="loginOption" (click)='facebookLogin()'>
+            <img src="../../../../assets/facebook-logo.png" alt="" id="login-option-img">
+            <span>Facebook</span>
+        </div>
+            
         <button (click)='doRegister(emailInput.value, firstName.value, secondName.value, passwordInput.value, phoneNumber.value)'>Register</button>
     </form>
 </div>

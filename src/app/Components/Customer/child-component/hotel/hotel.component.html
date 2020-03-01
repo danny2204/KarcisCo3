@@ -1,35 +1,70 @@
 <div class="container">
-    <div class="left-panel">
-        <div>
-            Bintang
-            <div *ngFor="let i of departureTimes" class="check-box-field">
+    <mat-accordion class="left-panel" [multi]="true">
+
+        <button id="showMapBtn" (click)="goToMap()">SHOW MAP</button>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>Bintang</mat-expansion-panel-header>
+            <div *ngFor="let i of starsFilter" class="check-box-field">
                 <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
             </div>
-        </div>
-    </div>
-    <div class="parentFlightContainer">
-        <div *ngFor="let i of displayedFlightData; let idx = index;" class="flightContainer">
-            <div *ngIf="checkValidation(idx)" class="flightsDatas">
+            <button (click)="resetFilter()">Reset</button>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>Fasilitas</mat-expansion-panel-header>
+            <div *ngFor="let i of fasilitasFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>Tipe Properti</mat-expansion-panel-header>
+            <div *ngFor="let i of tipeFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>Rating</mat-expansion-panel-header>
+            <div *ngFor="let i of ratingFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>Urutkan</mat-expansion-panel-header>
+            <mat-radio-group [(ngModel)]="sortBy" (click)="sort()">
+                <mat-radio-button value="rekomendasi">Rekomendasi</mat-radio-button>
+                <mat-radio-button value="harga-murah">Harga (termurah lebih dulu)</mat-radio-button>
+                <mat-radio-button value="harga-mahal">Harga (termahal lebih dulu)</mat-radio-button>
+                <mat-radio-button value="rating">Rating (tertinggi lebih dulu)</mat-radio-button>
+                <mat-radio-button value="bintang">Bintang Hotel (tertinggi lebih dulu)</mat-radio-button>
+            </mat-radio-group>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <div class="parentHotelContainer">
+        <div *ngFor="let i of displayedHotelData; let idx = index;" class="hotelContainer">
+            <div *ngIf="checkValidation(idx)" class="hotelsDatas" (click)="selectHotel(idx)">
                 <div>
-                    {{ i.airline.name }}
+                    <img src="../../../../../assets/house.png" alt="" style="width: 150px; height: 150px;">
                 </div>
-                <div class="flightTimeData">
-                    <h3>
-                        Departure : {{ i.departure | date:'HH:mm':'z' }} ( {{ i.from.city }} )
-                    </h3>
-                    <h3>
-                        Arrival : {{ i.arrival | date:'HH:mm':'z' }} ( {{ i.to.city }} )
-                    </h3>
-                    <h3>
-                        Flight Time : {{ i.duration }} minutes
-                    </h3>
-                    <h3>
-                        IDR {{ i.price }}
-                    </h3>
+                <div class="hotelTimeData">
+                    <h2>
+                        {{ i.Name }}
+                    </h2>
+                    {{ i.Rating }}*
+                    <div class="reviewDiv">
+                        <h3>
+                            Tiket : {{ i.TiketComReview.AverageScore }}
+                        </h3>
+                        <h3>
+                            Trip Advisor : {{ i.TripAdvisorReview.AverageScore }}
+                        </h3>
+                    </div>
+                    <p *ngFor="let item of i.HotelFacilities;">
+                        {{ item.FacilityName }}
+                    </p>
                 </div>
-                <div>
-                    <a href="">Detail Pesawat</a>
-                    <a href="">Detail Harga</a>
+                <div class="priceDiv">
+                    <h3>
+                        {{ priceList[idx] | currency: "IDR" }}
+                    </h3>
                 </div>
             </div>
         </div>

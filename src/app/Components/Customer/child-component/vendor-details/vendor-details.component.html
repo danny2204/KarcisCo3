@@ -1,0 +1,25 @@
+<div style="width: 100%; display: flex; justify-content: space-around;">
+    <div id="carView" style="display: flex; flex-direction: column; background-color: white; padding: 10px;">
+        <img src="../../../../../assets/ehyYNK6.png" alt="" style="width: 150px; height: 150px;">
+        <div>
+            {{ carData.Brand }} {{ carData.Model }}
+        </div>
+        <div style="display: flex;">
+            {{ carData.Passenger }} penumpang {{ carData.Luggage }} bagasi
+        </div>
+    </div>
+    <div style="width: 80%;">
+        Mendapatkan {{ vendorList.length }} daftar vendor
+        <div *ngFor="let i of vendorList; let idx = index;" id="carDivData">
+            <div style="width: 80%;">
+                <div style="display: flex; justify-content: space-between;">
+                    <h3> {{ i.Vendor.Name | uppercase }} </h3>
+                    <h3> {{ i.Price | currency: 'IDR' }} </h3>
+                </div>
+                <div id="search-btn" style="display: flex; text-align: center;" (click)="toCheckout(idx)">
+                    PILIH
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

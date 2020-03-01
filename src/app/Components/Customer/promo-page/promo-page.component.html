@@ -1,0 +1,23 @@
+<div style="display: flex; justify-content: center;">
+    <div class="container">
+        <mat-card *ngFor="let i of promoList" class="promo-card">
+            <img mat-card-image src="../../../../assets/promo-1.jpg" alt="">
+            <mat-card-content>
+                <h2> {{ i.Name }} </h2>
+                <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <p>Periode Promo:</p>
+                        <p> {{ i.PromoStart | date }} - {{ i.PromoEnd | date }} </p>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <p>Platform:</p>
+                        <p> {{ i.Platform }} </p>
+                    </div>
+                    <div class="detail-btn" (click)="goToDetail(i)">
+                        LIHAT DETAIL
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

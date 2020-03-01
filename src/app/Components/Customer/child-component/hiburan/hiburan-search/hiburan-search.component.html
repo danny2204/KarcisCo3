@@ -1,0 +1,91 @@
+<app-image-slider></app-image-slider>
+<div style="background-color: lightgray;">
+    <div class="search-bar">
+        <div>
+            <h2>Pengalaman tak terlupakan dimulai dari sini</h2>
+        </div>
+        <div style="display: flex; width: 60%; justify-content: space-around; align-items: center;">
+            <mat-form-field>
+                <mat-select [(value)]="typeValue" style="background-color: white;">
+                    <mat-option value="">Semua</mat-option>
+                    <mat-option value="Activities">Activities</mat-option>
+                    <mat-option value="Attractions">Attractions</mat-option>
+                    <mat-option value="Events">Events</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div id="searchBtn" (click)="searchEntertainmentByType()">
+                Pencarian Entertainment
+            </div>
+        </div>
+    </div>
+    <div style="display: flex; width: 100vw; justify-content: center;">
+        <div class="filterPanel">
+            <div id="reset-button" (click)="resetFilter()">
+                Reset
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <p>Rentang Harga</p>
+                <div>
+                    <input type="number" [(ngModel)]="bottomPrice" min="0">
+                    <input type="number" [(ngModel)]="topPrice" min="0">
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <p>Tanggal Perjalanan</p>
+                <div>
+                    <input matInput [matDatepicker]="start" placeholder="Dari" (click)="start.open()" [(ngModel)]="fromDate">
+                    <mat-datepicker-toggle matSuffix [for]="start">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #start></mat-datepicker>
+                </div>
+                <div>
+                    <input matInput [matDatepicker]="end" placeholder="Ke" (click)="end.open()" [(ngModel)]="toDate">
+                    <mat-datepicker-toggle matSuffix [for]="end">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #end></mat-datepicker>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <p>Kategori</p>
+                <div *ngFor="let i of categoryList" class="check-box-field">
+                    <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+            <div>
+                <mat-form-field>
+                    <mat-select [(value)]="sortValue">
+                        <mat-option value="newest" (click)="sort()">
+                            Newest
+                        </mat-option>
+                        <mat-option value="highToLow" (click)="sort()">
+                            Harga: Tinggi ke Rendah
+                        </mat-option>
+                        <mat-option value="lowToHigh" (click)="sort()">
+                            Harga: Rendah ke Tinggi
+                        </mat-option>
+                        <mat-option value="recommend" (click)="sort()">
+                            Rekomendasi
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="hiburanPanel">
+                <div *ngFor="let i of displayedHiburanList; let idx = index" (click)="goToDetail(idx)">
+                    <mat-card class="hiburanCard" *ngIf="checkValidation(idx)">
+                        <img mat-card-image src="../../../../../../assets/entertainment.jpg" alt="">
+                        <mat-card-content>
+                            <h4>{{ i.Name }}</h4>
+                            <p> {{ i.Location.City }}, {{ i.Location.Country }} </p>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <p>mulai dari</p>
+                                <h5 style="color: orange;"> {{ getEntertainmentTicketLowestPrice(idx) | currency: "IDR" }} </h5>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

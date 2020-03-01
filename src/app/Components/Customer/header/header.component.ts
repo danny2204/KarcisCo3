@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   config: MatDialogConfig = new MatDialogConfig();
   supkrep: Subscription
   flight: Object[]
+  user: Object = {}
 
   constructor(
     public dialog: MatDialog,
@@ -27,9 +28,22 @@ export class HeaderComponent implements OnInit {
     private router: Router
   ) { }
 
+  toManage() {
+    this.router.navigate(['/user-page'])
+  }
+
+  directToPromo() {
+    this.router.navigate(['promo-page'])
+  }
+
   ngOnInit() {
     this.config.autoFocus = false;
     this.config.restoreFocus = true;
+    this.user = JSON.parse(sessionStorage.getItem("user"))
+  }
+
+  public toHome() {
+    this.router.navigate(['/'])
   }
 
   openLoginDialog() {
@@ -41,6 +55,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public getFlight() {
+    this.sharedService.flightSearchResult = null
     this.supkrep = this.service.getAllFlight().subscribe(async query => {
       this.sharedService.flightSearchResult = query.data.getAllFlight
       await this.router.navigate(["/pesawat"])

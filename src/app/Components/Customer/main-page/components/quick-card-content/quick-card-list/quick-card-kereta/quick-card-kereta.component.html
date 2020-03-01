@@ -1,0 +1,47 @@
+<div>
+    <img src="" alt="">
+    <h2>Cari, Reservasi & Pesan Tiket Kereta Api KAI Online</h2>
+</div>
+<!-- <div>
+    <input type="radio" name="ticket-type" value="sekali-jalan"> Sekali Jalan
+    <input type="radio" name="ticket-type" value="pulang-pergi"> Pulang - Pergi
+</div> -->
+<div>
+    <!-- <div>
+        Dari
+        <input type="text" id="from-input" placeholder="Mau ke mana ?">
+    </div>
+    <div>
+        Ke
+        <input type="text" id="to-input" placeholder="Mau ke mana ?">
+    </div> -->
+    <mat-form-field>
+        <mat-label>From</mat-label>
+        <mat-select [(ngModel)]="fromValue" style="background-color: white;" #fromLocationSelect>
+            <mat-option *ngFor="let i of fromLocationToView" value={{i}}> {{i}} </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>To</mat-label>
+        <mat-select [(ngModel)]="toValue" style="background-color: white;" #toLocationSelect>
+            <mat-option *ngFor="let i of toLocationToView" value={{i}}> {{i}} </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <!-- <div>
+        Berangkat
+        <input matInput [matDatepicker]="berangkat" placeholder="Choose a date" (click)="berangkat.open()">
+        <mat-datepicker-toggle matSuffix [for]="berangkat">
+        </mat-datepicker-toggle>
+        <mat-datepicker #berangkat></mat-datepicker>
+    </div>
+    <div>
+        Pulang
+        <input matInput [matDatepicker]="pulang" placeholder="Choose a date" (click)="pulang.open()">
+        <mat-datepicker-toggle matSuffix [for]="pulang">
+        </mat-datepicker-toggle>
+        <mat-datepicker #pulang></mat-datepicker>
+    </div> -->
+</div>
+<div>
+    <button id="search-btn" (click)="getTrain()">CARI KERETA API</button>
+</div>

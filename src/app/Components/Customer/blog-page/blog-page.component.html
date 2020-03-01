@@ -1,0 +1,12 @@
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: white;">
+    <div class="container">
+        <div *ngFor="let i of displayedBlog;" class="blog-thumbnail">
+            <img src="{{ i.ImagePath }}" alt="" style="width: 25vw; height: 25vh;">
+            <h3> {{ i.BlogTitle }} </h3>
+        </div>
+    </div>
+    <div id="loadMoreBtn" (click)="addInfiniteScroll()" *ngIf="isInfiniteScroll == false">
+        LOAD MORE
+    </div>
+</div>
+

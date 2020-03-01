@@ -22,7 +22,7 @@ export class QuickCardComponent implements OnInit {
   ) { }
 
   inject(type: string) {
-    console.log(type)
+    // console.log(type)
     this.type = type
     this.eventEmitterService.onInject(type);
   }

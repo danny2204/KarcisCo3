@@ -1,35 +1,27 @@
-<div>
-    <img src="" alt="">
+<div style="display: flex; justify-content: space-between;">
     <h2>Cari harga tiket pesawat murah & promo disini</h2>
+    <p style="color: blue; cursor: pointer;" (click)="openHistory()">Pencarian Terakhir</p>
 </div>
 <div>
     <input type="radio" name="ticket-type" value="sekali-jalan"> Sekali Jalan
     <input type="radio" name="ticket-type" value="pulang-pergi"> Pulang - Pergi
 </div>
 <div>
-    <!-- <div>
-        Dari
-        <input type="text" id="from-input" placeholder="Mau ke mana ?">
-    </div>
-    <div>
-        Ke
-        <input type="text" id="to-input" placeholder="Mau ke mana ?">
-    </div> -->
     <mat-form-field>
         <mat-label>From</mat-label>
         <mat-select [(ngModel)]="fromValue" style="background-color: white;">
-            <mat-option *ngFor="let i of flight" value={{i.city}}> {{i.city}} </mat-option>
+            <mat-option *ngFor="let i of flight" value={{i.City}}> {{i.City}} </mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field>
         <mat-label>To</mat-label>
         <mat-select [(ngModel)]="toValue" style="background-color: white;">
-            <mat-option *ngFor="let i of flight" value={{i.city}}> {{i.city}} </mat-option>
+            <mat-option *ngFor="let i of flight" value={{i.City}}> {{i.City}} </mat-option>
         </mat-select>
     </mat-form-field>
-    <!-- <div>
+    <div>
         Berangkat
-        <input matInput [matDatepicker]="berangkat" placeholder="Choose a date" (click)="berangkat.open()">
+        <input matInput [matDatepicker]="berangkat" placeholder="Choose a date" (click)="berangkat.open()" [(ngModel)]="fromDateValue">
         <mat-datepicker-toggle matSuffix [for]="berangkat">
         </mat-datepicker-toggle>
         <mat-datepicker #berangkat></mat-datepicker>
@@ -40,7 +32,7 @@
         <mat-datepicker-toggle matSuffix [for]="pulang">
         </mat-datepicker-toggle>
         <mat-datepicker #pulang></mat-datepicker>
-    </div> -->
+    </div>
 </div>
 <div>
     <button id="search-btn" (click)="getFlight()">CARI PENERBANGAN</button>

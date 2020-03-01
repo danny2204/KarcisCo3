@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 
 @Component({
   selector: 'app-main-home',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainHomeComponent implements OnInit {
 
-  constructor() { }
+  toEmail: string = ""
+
+  constructor(
+    private graphqlService: GraphqlServiceService
+  ) { }
 
   ngOnInit() {
+  }
+
+  sendMail() {
+    this.graphqlService.sendMail(this.toEmail).subscribe(async query => {})
   }
 
 }

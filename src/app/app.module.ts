@@ -16,7 +16,8 @@ import { HotelComponent } from './Components/Customer/child-component/hotel/hote
 import { KeretaApiComponent } from './Components/Customer/child-component/kereta-api/kereta-api.component';
 import { SewaMobilComponent } from './Components/Customer/child-component/sewa-mobil/sewa-mobil.component';
 import { HiburanComponent } from './Components/Customer/child-component/hiburan/hiburan.component';
-import { MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule } from '@angular/material';
+import { VendorDetailsComponent } from './Components/Customer/child-component/vendor-details/vendor-details.component';
+import { MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatAccordion, MatExpansionModule, MatTableModule, MatSpinner, MatProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickCardComponent } from './Components/Customer/main-page/components/quick-card/quick-card.component';
 import { QuickCardListComponent } from './Components/Customer/main-page/components/quick-card-content/quick-card-list/quick-card-list.component';
@@ -30,6 +31,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { QuickCardHotelComponent } from './Components/Customer/main-page/components/quick-card-content/quick-card-list/quick-card-hotel/quick-card-hotel.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material/material.module';
+import { PesawatWidgetComponent } from './Components/Customer/child-component/pesawat/pesawat-widget/pesawat-widget.component';
+import { QuickCardKeretaComponent } from './Components/Customer/main-page/components/quick-card-content/quick-card-list/quick-card-kereta/quick-card-kereta.component';
+import { QuickCardMobilComponent } from './Components/Customer/main-page/components/quick-card-content/quick-card-list/quick-card-mobil/quick-card-mobil.component';
+import { HotelDetailComponent } from './Components/Customer/child-component/hotel/hotel-detail/hotel-detail.component';
+import { HotelMapComponent } from './Components/Customer/child-component/hotel/hotel-map/hotel-map.component';
+import { PopUpImageComponent } from './Components/Customer/child-component/hotel/hotel-detail/pop-up-image/pop-up-image.component';
+import { CheckoutPageComponent } from './Components/Customer/child-component/checkout-page/checkout-page.component';
+import { AdminMainComponent } from './Components/Admin/admin-main/admin-main.component'
+import { HistorySearchComponent } from './Components/Customer/main-page/history-search/history-search.component';
+import { PromoPageComponent } from './Components/Customer/promo-page/promo-page.component';
+import { PromoDetailPageComponent } from './Components/Customer/promo-page/promo-detail-page/promo-detail-page.component';
+import { BlogPageComponent } from './Components/Customer/blog-page/blog-page.component';
+import { BlogDetailComponent } from './Components/Customer/blog-page/blog-detail/blog-detail.component';
+import { HiburanDetailComponent } from './Components/Customer/child-component/hiburan/hiburan-detail/hiburan-detail.component';
+import { HiburanSearchComponent } from './Components/Customer/child-component/hiburan/hiburan-search/hiburan-search.component';
+import { UserPageComponent } from './Components/Customer/child-component/user-page/user-page.component';
 
 @NgModule({
   declarations: [
@@ -46,15 +63,32 @@ import { MaterialModule } from './material/material.module';
     KeretaApiComponent,
     SewaMobilComponent,
     HiburanComponent,
+    VendorDetailsComponent,
+    HotelDetailComponent,
     QuickCardComponent,
     QuickCardListComponent,
     QuickCardPesawatComponent,
     QuickCardHotelComponent,
+    QuickCardKeretaComponent,
+    QuickCardMobilComponent,
     GoogleButtonComponent,
     FacebookButtonComponent,
     ImageSliderComponent,
+    PesawatWidgetComponent,
+    HotelMapComponent,
+    PopUpImageComponent,
+    CheckoutPageComponent,
+    AdminMainComponent,
+    HistorySearchComponent,
+    PromoPageComponent,
+    PromoDetailPageComponent,
+    BlogPageComponent,
+    BlogDetailComponent,
+    HiburanSearchComponent,
+    HiburanDetailComponent,
+    UserPageComponent
   ],
-  entryComponents: [LoginDialogComponent, RegisterDialogComponent, QuickCardPesawatComponent, QuickCardHotelComponent],
+  entryComponents: [LoginDialogComponent, RegisterDialogComponent, QuickCardPesawatComponent, QuickCardHotelComponent, PesawatWidgetComponent, QuickCardKeretaComponent, QuickCardMobilComponent, PopUpImageComponent, HistorySearchComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -65,7 +99,10 @@ import { MaterialModule } from './material/material.module';
     GraphQLModule,
     HttpClientModule,
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,54 +1,122 @@
+<!-- <div class="widget-pesawat">
+    <div>
+        <h2>Pilih Penerbangan Pergi</h2>
+        <div>
+            {{ flightSearchData.from }} -> {{ flightsSearchData.to }}
+        </div>
+    </div>
+    <div id="change-search" (click)="changeSearch()">
+        UBAH PENCARIAN
+    </div>
+</div> -->
 <div class="container">
     <div class="left-panel">
-        <div>
-            Departure
-            <div *ngFor="let i of departureTimes" class="check-box-field">
-                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
-            </div>
-            <button (click)="resetFilter()">Reset</button>
-        </div>
-        <div>
-            Arrival
-            <div *ngFor="let i of arrivalTimes" class="check-box-field">
-                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
-            </div>
-        </div>
-        <div>
-            Airline
-            <div *ngFor="let i of airlineList" class="check-box-field">
-                <mat-checkbox [(ngModel)]="i.checked"> {{ i.airline }} </mat-checkbox>
-            </div>
-        </div>
         <div>
             Transit
             <div *ngFor="let i of transitFilter" class="check-box-field">
                 <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
             </div>
+            <button (click)="resetFilter()">Reset</button>
+        </div>
+        <div>
+            Berangkat
+            <div *ngFor="let i of departureTimes" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </div>
+        <div>
+            Tiba
+            <div *ngFor="let i of arrivalTimes" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </div>
+        <div>
+            Maskapai
+            <div *ngFor="let i of airlineList" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.airline }} </mat-checkbox>
+            </div>
+        </div>
+        <div>
+            Fasilitas
+            <div *ngFor="let i of facilityFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.facility }} </mat-checkbox>
+            </div>
         </div>
     </div>
     <div class="parentFlightContainer">
+        <select name="" id="" [(ngModel)]="sortBy" (click)="sort()">
+            <option value="rekomendasi" selected>Rekomendasi</option>
+            <option value="harga-terendah">Harga Terendah</option>
+            <option value="keberangkatan-awal">Keberangkatan Paling Awal</option>
+            <option value="keberangkatan-akhir">Keberangkatan Paling Akhir</option>
+            <option value="kedatangan-awal">Kedatangan Paling Awal</option>
+            <option value="kedatangan-akhir">Kedatangan Paling Akhir</option>
+            <option value="durasi">Durasi Tercepat</option>
+        </select>
         <div *ngFor="let i of displayedFlightData; let idx = index;" class="flightContainer">
             <div *ngIf="checkValidation(idx)" class="flightsDatas">
-                <div>
-                    {{ i.airline.name }}
+                <div matTooltip={{i.Airline.Name}}>
+                    {{ i.Airline.Name }}
                 </div>
                 <div class="flightTimeData">
                     <h3>
-                        Departure : {{ i.departure | date:'HH:mm':'z' }} ( {{ i.from.city }} )
+                        Departure : {{ i.Departure | date:'HH:mm':'z' }} ( {{ i.From.City }} )
                     </h3>
                     <h3>
-                        Arrival : {{ i.arrival | date:'HH:mm':'z' }} ( {{ i.to.city }} )
+                        Arrival : {{ i.Arrival | date:'HH:mm':'z' }} ( {{ i.To.City }} )
                     </h3>
                     <h3>
-                        Flight Time : {{ i.duration }} minutes
+                        Duration : {{ i.Duration }} minutes
                     </h3>
                     <h3>
-                        IDR {{ i.price }}
+                        IDR {{ i.Price }}
                     </h3>
                 </div>
-                <div>
-                    <a href="">Detail Pesawat</a>
-                    <a href="">Detail Harga</a>
+                <hr>
+                <div id="bottom-panel">
+                    <div id="detail-tab">
+                        <div class="detail-button" (click)="showDetail('penerbangan', idx)">
+                            Detail Penerbangan
+                        </div>
+                        <div class="detail-button" (click)="showDetail('harga', idx)">
+                            Detail Harga
+                        </div>
+                    </div>
+                    <div id="pesan-button" (click)="toCheckout(idx)">
+                        PESAN
+                    </div>
+                </div>
+                <hr>
+                <div *ngIf="detailString[idx] != '' ">
+                    <div *ngIf="detailString[idx] == 'penerbangan'">
+                        <div *ngIf="i.routes.length != 0">
+                            <div *ngIf="detailString[idx] == 'penerbangan'">
+                                <div *ngFor="let item of i.routes">
+                                    From : {{ item.AirportFrom.Name }}
+                                    <br>
+                                    Duration : {{ item.Duration }}
+                                    <br>
+                                    To : {{ item.AirportTo.Name }}
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="i.routes.length == 0">
+                            <div *ngIf="detailString[idx] == 'penerbangan'">
+                                <div>
+                                    From : {{ i.From.Name }}
+                                    <br>
+                                    Duration : {{ i.Duration }}
+                                    <br>
+                                    To : {{ i.To.Name }}
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="detailString[idx]=='harga'">
+                        Dewasa (1x) {{ i.Price }}
+                    </div>
                 </div>
             </div>
         </div>

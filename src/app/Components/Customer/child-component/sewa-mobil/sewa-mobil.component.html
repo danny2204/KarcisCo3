@@ -1,1 +1,56 @@
-<p>sewa-mobil works!</p>
+<div class="container">
+    <mat-accordion class="left-panel" [multi]="true">
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>Kapasitas Penumpang</mat-expansion-panel-header>
+            <div *ngFor="let i of passengerFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+            <button (click)="resetFilter()">Reset</button>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>Merek Mobil</mat-expansion-panel-header>
+            <div *ngFor="let i of brandFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>Model</mat-expansion-panel-header>
+            <div *ngFor="let i of modelFilter" class="check-box-field">
+                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <div class="parentFlightContainer">
+        <select name="" id="" [(ngModel)]="sortBy" (click)="sort()">
+            <option value="rekomendasi" selected>Rekomendasi</option>
+            <option value="harga-terendah">Harga Terendah</option>
+            <option value="harga-tertinggi">Harga Tertinggi</option>
+        </select>
+        <div *ngFor="let i of displayedCarData; let idx = index;" class="flightContainer">
+            <div *ngIf="checkValidation(idx)" class="flightsDatas">
+                <div style="display: flex;">
+                    <img src="../../../../../assets/ehyYNK6.png" alt="" style="width: 150px; height: 150px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <div style="margin: 5px;">
+                            <div (click)="showVendors(idx)" style="cursor:pointer;">
+                                <h2> {{ i.Brand }} {{ i.Model }} </h2>
+                            </div>
+                            <div>
+                                Maksimal Penumpang : {{ i.Passenger }}
+                                Bagasi : {{ i.Luggage }}
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: space-around;">
+                            <div class="flightTimeData">
+                                {{ priceList[idx] | currency: 'IDR'}} / hari
+                            </div>
+                            <div id="pesan-button" (click)="showVendors(idx)">
+                                PILIH
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

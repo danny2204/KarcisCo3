@@ -9,7 +9,7 @@ input, select
     border-radius: 10px
     padding: 5px 10px
     transition: all .1s teal
-    font-size: 24px
+    font-size: 14px
 
 .column
     position: relative
@@ -22,8 +22,26 @@ input, select
     left: 5px
     transition: all 0.1s linear
     color: black
-
-.label:hover, input:hover+.label, input:focus+.label
     transform: translateY(-75%) scale(.80)
-    color: teal
     background-color: white
+
+
+.loginOption
+    display: flex
+    align-items: center
+
+    span
+        padding-left: 10px
+        color: black
+
+.loginOption:hover
+    cursor: pointer
+    background-color: gray
+
+.loginOption-container
+    background-color: white
+    border: 2px solid gray
+
+#login-option-img
+    width: 40px
+    height: 40px

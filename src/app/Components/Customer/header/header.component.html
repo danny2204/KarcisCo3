@@ -1,8 +1,8 @@
 <div class="top-header">
     <div class="navbar">
-        <a href="">Unduh Aplikasi tiket.com</a>
-        <a href="">Promo</a>
-        <a href="">Pusat Bantuan</a>
+        <label>Unduh Aplikasi tiket.com</label>
+        <label (click)="directToPromo()" style="cursor: pointer;">Promo</label>
+        <label>Pusat Bantuan</label>
     </div>
     <div>
         <select name="" id="">
@@ -16,7 +16,8 @@
 
 <div class="main-header">
     <div>
-        <img src="../../../assets/logo.png" alt="" id="logo-img">
+        <div style="background-image: url('../../../assets/logo.png'); background-size: cover;" id="logo-img" (click)="toHome()">
+        </div>
         <div class="navigation">
             <label href="" (click)="getFlight()">Pesawat</label>
             <label href="">Hotel</label>
@@ -33,8 +34,9 @@
         <a href="">
             Cek Order
         </a>
-        <button (click)='openLoginDialog()' id="login-btn">Login</button>
-        <button (click)='openRegisterDialog()' id="register-btn">Register</button>
+        <button (click)='openLoginDialog()' id="login-btn" *ngIf="user == null">Login</button>
+        <button (click)='openRegisterDialog()' id="register-btn" *ngIf="user == null">Register</button>
+        <button *ngIf="user != null" (click)="toManage()"> {{ user[0].FrontName }} </button>
     </div>
 </div>
 

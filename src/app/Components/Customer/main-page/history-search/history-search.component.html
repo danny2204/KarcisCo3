@@ -1,0 +1,10 @@
+<div style="display: flex; justify-content: flex-end;">
+    <h3 style="color: blue; cursor: pointer;" (click)="clearHistory()">HAPUS SEMUA</h3>
+</div>
+<div *ngFor="let i of history">
+    {{ i.label }}
+    {{ i.date | date }}
+    <div *ngIf="i.label == 'Flight'">
+        {{ i.from }} ke {{ i.to }}
+    </div>
+</div>

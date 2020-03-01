@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 import { SharedServiceService } from 'src/app/Service/shared-service.service';
@@ -11,7 +11,7 @@ import { MatSelect } from '@angular/material/select';
   templateUrl: './quick-card-hotel.component.html',
   styleUrls: ['./quick-card-hotel.component.sass']
 })
-export class QuickCardHotelComponent implements AfterViewInit {
+export class QuickCardHotelComponent implements OnInit {
 
   @ViewChild('locationSelect') child: MatSelect;
   hotels: Object[]
@@ -20,7 +20,6 @@ export class QuickCardHotelComponent implements AfterViewInit {
   locationValue: string
   supkrep2: Subscription
   locationToView: Object[]
-  supkrep3: Subscription
   amount = 10
 
   constructor(
@@ -31,28 +30,23 @@ export class QuickCardHotelComponent implements AfterViewInit {
   ) { }
     
     init() {
-      // this.child.panel.nativeElement.addEventListener('scroll', event => this.loadMore(event))
-      // this.child.addEventListener('scroll', event => this.loadMore(event))
-      // console.log(this.child)
       this.child._openedStream.subscribe(() => {
         this.child.panel.nativeElement.addEventListener('scroll', event => {
-          // console.log("scroll height : ", event.target.scrollHeight, "scroll top : ", event.target.scrollTop)
           if(event.target.scrollTop+256 >= event.target.scrollHeight) {
             this.amount += 5
             this.addItems(this.amount)
           }
-          // console.log(event.target,scrollY)
         })
       })
+      // this.addItems(this.amount)
     }
 
-  ngAfterViewInit() {
-    this.locationToView = []
-    this.supkrep = this.service.getAllLocation().subscribe(async query => {
-      this.locations = query.data.getAllLocation
-      this.addItems(this.amount)
-      await this.init()
-    })
+  ngOnInit() {
+    this.locationToView = ["Jakarta Pusat"]
+    // this.supkrep = this.service.getAllLocation().subscribe(async query => {
+    //   this.locations = query.data.getAllLocation
+    //   await this.init()
+    // })
   }
 
   public getHotelByLocation() {

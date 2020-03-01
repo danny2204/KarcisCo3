@@ -1,0 +1,45 @@
+.column
+    position: relative
+    margin: 10px 0px
+
+.label
+    position: absolute
+    z-index: 1
+    top: 5px
+    left: 5px
+    transition: all 0.1s linear
+    transform: translateY(-75%) scale(.80)
+    color: black
+    background-color: white
+
+input, select
+    border: 1px solid black
+    border-radius: 10px
+    padding: 5px
+    width: 30vw
+    transition: all .1s teal
+    font-size: 14px
+
+.email-phone, .user-data
+    display: flex
+    flex-direction: column
+    width: 40%
+
+.email-phone
+    background-color: lightgray
+    height: 40vh
+    margin: 0 5vw
+    padding-left: 2vw
+
+#setting-account
+    cursor: pointer
+    text-align: right
+    padding-right: 2vw
+    color: blue
+    font-weight: bold
+
+#updateBtn
+    cursor: pointer
+
+.errorMsg
+    color: red

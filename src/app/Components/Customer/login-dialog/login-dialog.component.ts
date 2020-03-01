@@ -20,10 +20,11 @@ export class LoginDialogComponent implements OnInit {
   }
 
   user$: Subscription
-  user: User[]
+  user: Object[] = []
 
   doLogin(emailInput : string) {
     this.user = []
+    console.log((emailInput))
     this.user$ = this.GraphQLService.getUserByEmailAndPhone(emailInput).subscribe(async query => {
       this.user = query.data.getUserByEmailAndPhone;
       await this.doCheck()
@@ -39,15 +40,17 @@ export class LoginDialogComponent implements OnInit {
   }
 
   checkPass(password: string){
-    if(this.user[0].password == password) {
+    if(this.user[0].Password == password) {
       console.log("success login")
       sessionStorage.setItem("user", JSON.stringify(this.user))
+      window.location.reload()
     } else {
       console.log("invalild password")
     }
   }
 
   doCheck() {
+    console.log(this.user)
     if (this.user == null) {
       console.log("no user")
     } else {

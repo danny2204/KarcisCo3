@@ -1,0 +1,95 @@
+<div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+    <div style="background-color: white; width: 90%;">
+        <h2>Detail Akun</h2>
+        <p>Disini kamu bisa mengatur detail akunmu</p>
+    
+        <div style="display: flex;">
+            <div class="email-phone">
+                <div>
+                    <p>Email</p>
+                    <input type="text" [(ngModel)]="emailValue" *ngIf="editEmail == true">
+                    <input type="text" [(ngModel)]="emailValue" *ngIf="editEmail != true" disabled>                    
+                </div>
+                <div>
+                    <p>Nomor Ponsel</p>
+                    <input type="text" [(ngModel)]="phoneNumberValue" *ngIf="editPhone == true">
+                    <input type="text" [(ngModel)]="phoneNumberValue" *ngIf="editPhone != true" disabled>
+                </div>
+                <hr>
+                <div id="setting-account" (click)="openEdit()">
+                    PENGATURAN AKUN
+                </div>
+                <div id="confirm-change" (click)="updateEmailPhone()">
+                    OKE
+                </div>
+            </div>
+        
+            <div class="user-data">
+                <div>
+                    <div class="column">
+                        <select name="" id="" [(ngModel)]="titelValue" (change)="checkTitelError()">
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                        </select>
+                        <div class="label">Titel</div>
+                    </div>
+                    <label for="" class="errorMsg" *ngIf="titelError ==  true">Titel tidak boleh kosong !</label>
+                </div>
+                <div>
+                    <div class="column">
+                        <input type="text" placeholder=" " id="first-name" [(ngModel)]="firstNameValue" (input)="checkFirstNameError()">
+                        <div class="label">Nama depan</div>
+                    </div>
+                    <label for="" class="errorMsg" *ngIf="firstNameError == true">Nama depan tidak boleh kosong !</label>
+                </div>
+                <div>
+                    <div class="column">
+                        <input type="text" placeholder=" " id="second-name" [(ngModel)]="secondNameValue" (input)="checkSecondNameError()">
+                        <div class="label">Nama belakang</div>
+                    </div>
+                    <label for="" class="errorMsg" *ngIf="secondNameError ==  true">Nama belakang tidak boleh kosong !</label>
+                </div>
+                <div>
+                    <div class="column">
+                        <select name="" id="" [(ngModel)]="kotaValue">
+                            <option value="i.City" *ngFor="let i of location"> {{ i.City }} </option>
+                        </select>
+                        <div class="label">Kota</div>
+                    </div>
+                    <label for="" class="errorMsg" *ngIf="kotaError ==  true">Kota tidak boleh kosong !</label>
+                </div>
+                <div>
+                    <div class="column">
+                        <input type="text" placeholder=" " id="address" [(ngModel)]="addressValue" (input)="checkAddressError()">
+                        <div class="label">Alamat</div>
+                    </div>
+                    <label for="" class="errorMsg" *ngIf="addressError ==  true">Alamat tidak boleh kosong !</label>
+                </div>
+                <div>
+                    <div class="column">
+                        <input type="text" placeholder=" " id="postCode" [(ngModel)]="postCodeValue" (input)="checkPostCodeError()">
+                        <div class="label">Kode Pos</div>
+                    </div>
+                    <label for="" class="errorMsg" *ngIf="codePostError ==  true">Kode Post tidak boleh kosong !</label>
+                </div>
+                <div id="updateBtn" (click)="updateUser()">
+                    SIMPAN
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div style="display: flex;">
+            <p>Facebook</p>
+            <button *ngIf="User[0].FacebookId == ''" (click)="facebookLogin()" >Sync</button>
+            <button *ngIf="User[0].FacebookId != ''" (click)="clearFacebookId()"> Unsync </button>
+        </div>
+        <div style="display: flex;">
+            <p>Google</p>
+            <button *ngIf="User[0].GoogleId == ''" (click)="googleInit()">Sync</button>
+            <button *ngIf="User[0].GoogleId != ''" (click)="clearGoogleId()">Unsync</button>
+        </div>
+    </div>
+
+</div>

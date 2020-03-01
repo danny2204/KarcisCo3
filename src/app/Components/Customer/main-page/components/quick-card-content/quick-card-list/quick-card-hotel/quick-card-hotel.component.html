@@ -6,9 +6,9 @@
     <div>
         <p>Tujuan</p>
         <mat-form-field>
-            <mat-label>Mau Nginep Dimana ?</mat-label>
+            <mat-label>Tujuan</mat-label>
             <mat-select [(ngModel)]="locationValue" style="background-color: white;" #locationSelect>
-                <mat-option *ngFor="let i of locationToView" value={{i.City}}> {{i.City}} </mat-option>
+                <mat-option *ngFor="let i of locationToView" value={{i}}> {{i}} </mat-option>
             </mat-select>
         </mat-form-field>
     </div>
@@ -24,11 +24,10 @@
         <input matInput [matDatepicker]="checkOut" placeholder="Choose a date" (click)="checkOut.open()">
         <mat-datepicker-toggle matSuffix [for]="checkOut">
         </mat-datepicker-toggle>
-        <mat-datepicker #checkIn></mat-datepicker>
+        <mat-datepicker #checkOut></mat-datepicker>
     </div>
     <div>
-        <p>Tamu & Kamar</p>
-        
+        <p>Tamu & Kamar</p>        
     </div>
 </div>
 <div>

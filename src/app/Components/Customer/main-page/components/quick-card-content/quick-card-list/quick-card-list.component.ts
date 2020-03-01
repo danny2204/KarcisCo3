@@ -1,6 +1,8 @@
 import { Input, Output, Component, ComponentFactoryResolver, ViewContainerRef, EventEmitter, ViewChild } from '@angular/core';
 import { QuickCardPesawatComponent } from './quick-card-pesawat/quick-card-pesawat.component';
 import { QuickCardHotelComponent } from './quick-card-hotel/quick-card-hotel.component';
+import { QuickCardKeretaComponent } from './quick-card-kereta/quick-card-kereta.component';
+import { QuickCardMobilComponent } from './quick-card-mobil/quick-card-mobil.component';
 import { EventEmitterService } from 'src/app/Service/event-emitter.service';
 
 @Component({
@@ -17,6 +19,8 @@ export class QuickCardListComponent {
   components = [];
   PesawatComponent = QuickCardPesawatComponent
   HotelComponent = QuickCardHotelComponent
+  KeretaComponent = QuickCardKeretaComponent
+  MobilComponent = QuickCardMobilComponent
   
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -30,6 +34,8 @@ export class QuickCardListComponent {
         component.instance instanceof this.PesawatComponent
       } else if(this.type == "hotel") {
         component.instance instanceof this.HotelComponent
+      } else if(this.type == "kereta") {
+        component.instance instanceof this.KeretaComponent
       }
       return component
     });
@@ -53,6 +59,18 @@ export class QuickCardListComponent {
     }
     else if(this.type == "hotel") {
       const factory = this.componentFactoryResolver.resolveComponentFactory(this.HotelComponent)
+      const ref = this.container.createComponent(factory)
+      ref.changeDetectorRef.detectChanges()
+      this.components.push(ref)
+    }
+    else if(this.type == "kereta") {
+      const factory = this.componentFactoryResolver.resolveComponentFactory(this.KeretaComponent)
+      const ref = this.container.createComponent(factory)
+      ref.changeDetectorRef.detectChanges()
+      this.components.push(ref)
+    }
+    else if(this.type == "sewa-mobil") {
+      const factory = this.componentFactoryResolver.resolveComponentFactory(this.MobilComponent)
       const ref = this.container.createComponent(factory)
       ref.changeDetectorRef.detectChanges()
       this.components.push(ref)

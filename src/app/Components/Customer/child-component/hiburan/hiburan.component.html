@@ -1,1 +1,54 @@
-<p>hiburan works!</p>
+<app-image-slider></app-image-slider>
+<div class="container">
+    <div class="search-bar">
+        <div>
+            <h2>Pengalaman tak terlupakan dimulai dari sini</h2>
+        </div>
+        <div style="display: flex; width: 60%; justify-content: space-around; align-items: center;">
+            <mat-form-field>
+                <mat-select [(value)]="typeValue" style="background-color: white;">
+                    <mat-option value="">Semua</mat-option>
+                    <mat-option value="Activities">Activities</mat-option>
+                    <mat-option value="Attractions">Attractions</mat-option>
+                    <mat-option value="Events">Events</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div id="searchBtn" (click)="searchEntertainmentByType()">
+                Pencarian Entertainment
+            </div>
+        </div>
+    </div>
+    <div class="trendingDiv">
+        <h2>Trending Activities</h2>
+        <div style="display: flex; width: 100%; justify-content: space-around;">
+            <div *ngFor="let i of trendingActivities; let idx = index" style="width: 20vw; cursor: pointer;" (click)="toDetail(idx)">
+                <img src="../../../../../assets/entertainment-activities.jpg" alt="" style="width: 100%;">
+                <h4> {{ i.Name }} </h4>
+                <p> {{ i.Location.Country }} </p>
+                <p> Mulai dari {{ getActivitiesLowestPrice(idx) | currency: "IDR"}} </p>
+            </div>
+        </div>
+    </div>
+    <div class="trendingDiv">
+        <h2>Trending Attractions</h2>
+        <div style="display: flex; width: 100%; justify-content: space-around;">
+            <div *ngFor="let i of trendingAttractions; let idx = index" style="width: 20vw; cursor: pointer;" (click)="toDetail(idx)">
+                <img src="../../../../../assets/attraction.jpg" alt="" style="width: 100%;">
+                <h4> {{ i.Name }} </h4>
+                <p> {{ i.Location.Country }} </p>
+                <p> Mulai dari {{ getAttractionLowestPrice(idx) | currency: "IDR"}} </p>
+            </div>
+        </div>
+    </div>
+    <div class="trendingDiv">
+        <h2>Trending Events</h2>
+        <div style="display: flex; width: 100%; justify-content: space-around;">
+            <div *ngFor="let i of trendingEvents; let idx = index" style="width: 20vw; cursor: pointer;" (click)="toDetail(idx)">
+                <img src="../../../../../assets/events.jpg" alt="" style="width: 100%;">
+                <h4> {{ i.Name }} </h4>
+                <p> {{ i.Location.Country }} </p>
+                <p> Mulai dari {{ getEventLowestPrice(idx) | currency: "IDR"}} </p>
+            </div>
+        </div>
+    </div>
+</div>

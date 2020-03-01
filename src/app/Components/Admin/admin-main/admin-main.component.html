@@ -1,0 +1,707 @@
+<div class="container">
+    <mat-tab-group style="background-color: white; height: 100vh;">
+        <mat-tab label="Manage Flight">
+            <mat-tab-group style="width: 70vw">
+                <mat-tab label="Insert Flight" style="display: flex;">
+                    <div style="display: flex; justify-content: space-around;">
+                        <mat-form-field>
+                            <mat-label>From</mat-label>
+                            <mat-select [(ngModel)]="fromValue" style="background-color: white;" #fromLocationSelect>
+                                <mat-option *ngFor="let i of fromLocationToView" value={{i.Id}}> {{i.City}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <h3> Ke </h3>
+                        <mat-form-field>
+                            <mat-label>To</mat-label>
+                            <mat-select [(ngModel)]="toValue" style="background-color: white;" #toLocationSelect>
+                                <mat-option *ngFor="let i of toLocationToView" value={{i.Id}}> {{i.City}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div>
+                            <h3>Berangkat</h3>
+                            <input matInput [matDatepicker]="berangkat" placeholder="Choose a date" (click)="berangkat.open()" [(ngModel)]="berangkatValue">
+                            <mat-datepicker-toggle matSuffix [for]="berangkat">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #berangkat></mat-datepicker>
+                        </div>
+                        <div>
+                            <h3>Sampai</h3>
+                            <input matInput [matDatepicker]="sampai" placeholder="Choose a date" (click)="sampai.open()" [(ngModel)]="sampaiValue">
+                            <mat-datepicker-toggle matSuffix [for]="sampai">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #sampai></mat-datepicker>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <mat-radio-group [(ngModel)]="selectedAirlines" style="display: flex; justify-content: space-around; width: 100%">
+                            <mat-radio-button *ngFor="let i of airlineList" [value]="i.ID">
+                                {{ i.Name }}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div class="inputDiv">
+                            <h3> Price </h3>
+                            <input type="number" [(ngModel)]="price">
+                        </div>
+                        <div class="inputDiv">
+                            <h3> Tax </h3>
+                            <input type="number" [(ngModel)]="tax">
+                        </div>
+                        <div class="inputDiv">
+                            <h3> Service </h3>
+                            <input type="number" [(ngModel)]="service">
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="nextBtn" (click)="insertFlight()">
+                        Insert Flight
+                    </div>
+                </mat-tab>
+                <mat-tab label="Update Flight">
+                    <div style="display: flex;">
+                        <div style="display: flex; flex-direction: column;">
+                            <table mat-table [dataSource]="flightDataSource" style="width: 40vw">
+                                <ng-container matColumnDef="index">
+                                    <th mat-header-cell *matHeaderCellDef>Index </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="from">
+                                    <th mat-header-cell *matHeaderCellDef>From </th>
+                                    <td mat-cell *matCellDef="let element"> {{ element.from }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="to">
+                                    <th mat-header-cell *matHeaderCellDef>To </th>
+                                    <td mat-cell *matCellDef="let element"> {{ element.to }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="airline">
+                                    <th mat-header-cell *matHeaderCellDef>Airline </th>
+                                    <td mat-cell *matCellDef="let element"> {{ element.airline }} </td>
+                                </ng-container>
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                            <div style="display: flex; justify-content: space-around;">
+                                <div *ngFor="let i of flightPageCount;" (click)="flightChangePageNow(i)" id="pageBtn">
+                                    {{ i }}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <button (click)="resetFilter()">Reset</button>
+                            <div>
+                                Airline
+                                <div *ngFor="let i of airlineFilter" class="check-box-field">
+                                    <mat-checkbox [(ngModel)]="i.checked"> {{ i.airline }} </mat-checkbox>
+                                </div>
+                            </div>
+                            <button (click)="doFilterAirline()">Start Filter</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Select Flight By Id : </h3>
+                        <mat-form-field>
+                            <mat-label>Id</mat-label>
+                            <mat-select [(ngModel)]="selectedFlightId" style="background-color: white;" (selectionChange)="setValue()">
+                                <mat-option *ngFor="let i of flights" value={{i.ID}}> {{i.ID}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <mat-form-field>
+                            <mat-label>From</mat-label>
+                            <mat-select [(ngModel)]="fromUpdateValue" style="background-color: white;" name="asdasdFrom">
+                                <mat-option *ngFor="let i of fromLocationToView" value="{{i.Id}}"> {{i.City}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <h3> Ke </h3>
+                        <mat-form-field>
+                            <mat-label>To</mat-label>
+                            <mat-select [(ngModel)]="toUpdateValue" style="background-color: white;" #toUpdateLocationSelect>
+                                <mat-option *ngFor="let i of toLocationToView" value={{i.Id}}> {{i.City}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div>
+                            <h3>Berangkat</h3>
+                            <input matInput [matDatepicker]="berangkatUpdate" placeholder="Choose a date" (click)="berangkat.open()" [(ngModel)]="berangkatUpdateValue">
+                            <mat-datepicker-toggle matSuffix [for]="berangkatUpdate">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #berangkatUpdate></mat-datepicker>
+                            <div>
+                                <input type="number" min="0" max="23" [(ngModel)]="departureUpdateTimeValue.hours" value="0">
+                                :
+                                <input type="number" min="0" max="60" [(ngModel)]="departureUpdateTimeValue.minutes" value="0">
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Sampai</h3>
+                            <input matInput [matDatepicker]="sampaiUpdate" placeholder="Choose a date" (click)="sampai.open()" [(ngModel)]="sampaiUpdateValue">
+                            <mat-datepicker-toggle matSuffix [for]="sampaiUpdate">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #sampaiUpdate></mat-datepicker>
+                            <div>
+                                <input type="number" min="0" max="23" [(ngModel)]="arrivalUpdateTimeValue.hours" value="0">
+                                :
+                                <input type="number" min="0" max="60" [(ngModel)]="arrivalUpdateTimeValue.minutes" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <mat-radio-group [(ngModel)]="selectedUpdateAirlines" style="display: flex; justify-content: space-around; width: 100%">
+                            <mat-radio-button *ngFor="let i of airlineList" [value]="i.ID">
+                                {{ i.Name }}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div class="inputDiv">
+                            <h3> Price </h3>
+                            <input type="number" [(ngModel)]="updatePrice">
+                        </div>
+                        <div class="inputDiv">
+                            <h3> Tax </h3>
+                            <input type="number" [(ngModel)]="updateTax">
+                        </div>
+                        <div class="inputDiv">
+                            <h3> Service </h3>
+                            <input type="number" [(ngModel)]="updateService">
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="nextBtn" (click)="updateFlight()">
+                        Update Flight
+                    </div>
+                </mat-tab>
+                <mat-tab label="Remove Flight">
+                    <div style="display: flex;">
+                        <div>
+                            <table mat-table [dataSource]="flightDataSource" style="width: 40vw">
+                                <ng-container matColumnDef="index">
+                                    <th mat-header-cell *matHeaderCellDef>Index </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="from">
+                                    <th mat-header-cell *matHeaderCellDef>From </th>
+                                    <td mat-cell *matCellDef="let element"> {{ element.from }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="to">
+                                    <th mat-header-cell *matHeaderCellDef>To </th>
+                                    <td mat-cell *matCellDef="let element"> {{ element.to }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="airline">
+                                    <th mat-header-cell *matHeaderCellDef>Airline </th>
+                                    <td mat-cell *matCellDef="let element"> {{ element.airline }} </td>
+                                </ng-container>
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                            <div style="display: flex; justify-content: space-around;">
+                                <div *ngFor="let i of flightPageCount;" (click)="flightChangePageNow(i)" id="pageBtn">
+                                    {{ i }}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <button (click)="resetFilter()">Reset</button>
+                            <div>
+                                Airline
+                                <div *ngFor="let i of airlineFilter" class="check-box-field">
+                                    <mat-checkbox [(ngModel)]="i.checked"> {{ i.airline }} </mat-checkbox>
+                                </div>
+                            </div>
+                            <button (click)="doFilterAirline()">Start Filter</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Select Flight By Id : </h3>
+                        <mat-form-field>
+                            <mat-label>Id</mat-label>
+                            <mat-select [(ngModel)]="selectedDeleteFlightId" style="background-color: white;">
+                                <mat-option *ngFor="let i of flights" value={{i.ID}}> {{i.ID}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div id="nextBtn" (click)="removeFlight()">
+                        Remove Flight
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-tab>
+        
+        <mat-tab label="Manage Trip">
+            <mat-tab-group style="width: 70vw">
+                <mat-tab label="Insert Trip" style="display: flex;">
+                    <div style="display: flex; justify-content: space-around;">
+                        <mat-form-field>
+                            <mat-label>From</mat-label>
+                            <mat-select [(ngModel)]="tripFromValue" style="background-color: white;" #fromLocationSelect>
+                                <mat-option *ngFor="let i of tripLocationToView" value={{i.Id}}> {{i.Location.City}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <h3> Ke </h3>
+                        <mat-form-field>
+                            <mat-label>To</mat-label>
+                            <mat-select [(ngModel)]="tripToValue" style="background-color: white;" #toLocationSelect>
+                                <mat-option *ngFor="let i of tripLocationToView" value={{i.Id}}> {{i.Location.City}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div>
+                            <h3>Berangkat</h3>
+                            <input matInput [matDatepicker]="tripBerangkat" placeholder="Choose a date" (click)="tripBerangkat.open()" [(ngModel)]="tripBerangkatValue">
+                            <mat-datepicker-toggle matSuffix [for]="tripBerangkat">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #tripBerangkat></mat-datepicker>
+                        </div>
+                        <div>
+                            <h3>Sampai</h3>
+                            <input matInput [matDatepicker]="tripSampai" placeholder="Choose a date" (click)="tripSampai.open()" [(ngModel)]="tripSampaiValue">
+                            <mat-datepicker-toggle matSuffix [for]="tripSampai">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #tripSampai></mat-datepicker>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <mat-radio-group [(ngModel)]="selectedTrain" style="display: flex; justify-content: space-around; width: 100%">
+                            <mat-radio-button *ngFor="let i of trainList" [value]="i.Id">
+                                {{ i.Name }}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div class="inputDiv">
+                            <h3> Price </h3>
+                            <input type="number" [(ngModel)]="tripPrice">
+                        </div>
+                        <div class="inputDiv">
+                            <h3> Tax </h3>
+                            <input type="number" [(ngModel)]="tripTax">
+                        </div>
+                        <div class="inputDiv">
+                            <h3> Service </h3>
+                            <input type="number" [(ngModel)]="tripService">
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="nextBtn" (click)="insertTrip()">
+                        Insert Trip
+                    </div>
+                </mat-tab>
+                <mat-tab label="Update Trip">
+                    <div style="display: flex;">
+                        <div style="display: flex; flex-direction: column;">
+                            <table mat-table [dataSource]="tripDataSource" style="width: 40vw">
+                                <ng-container matColumnDef="index">
+                                    <th mat-header-cell *matHeaderCellDef>Index </th>
+                                    <td mat-cell *matCellDef="let elements"> {{elements.index}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="from">
+                                    <th mat-header-cell *matHeaderCellDef>From </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.from }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="to">
+                                    <th mat-header-cell *matHeaderCellDef>To </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.to }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="train">
+                                    <th mat-header-cell *matHeaderCellDef>Train </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.train }} </td>
+                                </ng-container>
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedTripColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedTripColumns;"></tr>
+                            </table>
+                            <div style="display: flex; justify-content: space-around;">
+                                <div *ngFor="let i of tripPageCount;" (click)="tripChangePageNow(i)" id="pageBtn">
+                                    {{ i }}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <button (click)="resetTrainFilter()">Reset</button>
+                            <div>
+                                Train
+                                <div *ngFor="let i of trainFilter" class="check-box-field">
+                                    <mat-checkbox [(ngModel)]="i.checked"> {{ i.train }} </mat-checkbox>
+                                </div>
+                            </div>
+                            <button (click)="doFilterTrain()">Start Filter</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Select Trip By Id : </h3>
+                        <mat-form-field>
+                            <mat-label>Id</mat-label>
+                            <mat-select [(ngModel)]="selectedTripId" style="background-color: white;">
+                                <mat-option *ngFor="let i of trips" value={{i.Id}}> {{i.Id}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <mat-form-field>
+                            <mat-label>From</mat-label>
+                            <mat-select [(ngModel)]="tripFromUpdateValue" style="background-color: white;" name="asdasdFrom">
+                                <mat-option *ngFor="let i of tripLocationToView" value="{{i.Id}}"> {{i.Location.City}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <h3> Ke </h3>
+                        <mat-form-field>
+                            <mat-label>To</mat-label>
+                            <mat-select [(ngModel)]="tripToUpdateValue" style="background-color: white;">
+                                <mat-option *ngFor="let i of tripLocationToView" value={{i.Id}}> {{i.Location.City}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div>
+                            <h3>Berangkat</h3>
+                            <input matInput [matDatepicker]="tripBerangkatUpdate" placeholder="Choose a date" (click)="tripBerangkatUpdate.open()" [(ngModel)]="tripBerangkatUpdateValue">
+                            <mat-datepicker-toggle matSuffix [for]="tripBerangkatUpdate">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #tripBerangkatUpdate></mat-datepicker>
+                            <div>
+                                <input type="number" min="0" max="23" [(ngModel)]="tripDepartureUpdateTimeValue.hours" value="0">
+                                :
+                                <input type="number" min="0" max="60" [(ngModel)]="tripDepartureUpdateTimeValue.minutes" value="0">
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Sampai</h3>
+                            <input matInput [matDatepicker]="tripSampaiUpdate" placeholder="Choose a date" (click)="tripSampaiUpdate.open()" [(ngModel)]="tripSampaiUpdateValue">
+                            <mat-datepicker-toggle matSuffix [for]="tripSampaiUpdate">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #tripSampaiUpdate></mat-datepicker>
+                            <div>
+                                <input type="number" min="0" max="23" [(ngModel)]="tripArrivalUpdateTimeValue.hours" value="0">
+                                :
+                                <input type="number" min="0" max="60" [(ngModel)]="tripArrivalUpdateTimeValue.minutes" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <mat-radio-group [(ngModel)]="selectedTrainUpdate" style="display: flex; justify-content: space-around; width: 100%">
+                            <mat-radio-button *ngFor="let i of trainList" [value]="i.Id">
+                                {{ i.Name }}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div class="inputDiv">
+                            <h3> Price </h3>
+                            <input type="number" [(ngModel)]="tripUpdatePrice">
+                        </div>
+                        <div class="inputDiv">
+                            <h3> Tax </h3>
+                            <input type="number" [(ngModel)]="tripUpdateTax">
+                        </div>
+                        <div class="inputDiv">
+                            <h3> Service </h3>
+                            <input type="number" [(ngModel)]="tripUpdateService">
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="nextBtn" (click)="updateTrip()">
+                        Update Trip
+                    </div>
+                </mat-tab>
+                <mat-tab label="Remove Trip">
+                    <div style="display: flex;">
+                        <div>
+                            <table mat-table [dataSource]="tripDataSource">
+                                <ng-container matColumnDef="index">
+                                    <th mat-header-cell *matHeaderCellDef>Index </th>
+                                    <td mat-cell *matCellDef="let elements"> {{elements.index}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="from">
+                                    <th mat-header-cell *matHeaderCellDef>From </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.from }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="to">
+                                    <th mat-header-cell *matHeaderCellDef>To </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.to }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="train">
+                                    <th mat-header-cell *matHeaderCellDef>Train </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.train }} </td>
+                                </ng-container>
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedTripColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedTripColumns;"></tr>
+                            </table>
+                            <div style="display: flex; justify-content: space-around;">
+                                <div *ngFor="let i of tripPageCount;" (click)="tripChangePageNow(i)" id="pageBtn">
+                                    {{ i }}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <button (click)="resetTrainFilter()">Reset</button>
+                            <div>
+                                Train
+                                <div *ngFor="let i of trainFilter" class="check-box-field">
+                                    <mat-checkbox [(ngModel)]="i.checked"> {{ i.train }} </mat-checkbox>
+                                </div>
+                            </div>
+                            <button (click)="doFilterTrain()">Start Filter</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Select Trip By Id : </h3>
+                        <mat-form-field>
+                            <mat-label>Id</mat-label>
+                            <mat-select [(ngModel)]="selectedDeleteTripId" style="background-color: white;">
+                                <mat-option *ngFor="let i of trips" value={{i.Id}}> {{i.Id}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div id="nextBtn" (click)="removeTrip()">
+                        Remove Trip
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-tab>
+        <mat-tab label="Manage Hotel">
+
+        </mat-tab>
+        <mat-tab label="Manage Blog">
+            <mat-tab-group style="width: 70vw">
+                <mat-tab label="Insert Blog" style="display: flex;">
+                    <div>
+                        Judul : <input type="text" [(ngModel)]="blogTitle">
+                    </div>
+                    <div>
+                        Category : <input type="text" [(ngModel)]="blogCategory">
+                    </div>
+                    <div class="toolbar">
+                        <ul class="tool-list">
+                            <li class="tool">
+                                <button (click)="format('justifyLeft')">
+                                    JL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('justifyCenter')">
+                                    JC
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('justifyRight')">
+                                    JR
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('bold')">
+                                    B
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('italic')">
+                                    I
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('underline')">
+                                    U
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('insertOrderedList')">
+                                    OL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('insertUnorderedList')">
+                                    UL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('createlink')">
+                                    Link
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    Content :
+                    <div contenteditable="true" style="height: 50vh; border: 1px solid black;" id="blogDetail">
+                    </div>
+                    <div style="color: white; background-color: orange; text-align: center;" (click)="saveBlog()">
+                        Save
+                    </div>
+                </mat-tab>
+                <mat-tab label="Update Blog">
+                    <div>
+                        <table mat-table [dataSource]="blogDataSource">
+                            <ng-container matColumnDef="index">
+                                <th mat-header-cell *matHeaderCellDef>Index </th>
+                                <td mat-cell *matCellDef="let elements"> {{elements.index}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Blog Title">
+                                <th mat-header-cell *matHeaderCellDef>Blog Title </th>
+                                <td mat-cell *matCellDef="let elements"> {{ elements.blogTitle }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Author Name">
+                                <th mat-header-cell *matHeaderCellDef>Author Name </th>
+                                <td mat-cell *matCellDef="let elements"> {{ elements.authorName }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Upload Date">
+                                <th mat-header-cell *matHeaderCellDef>Uploaded Date </th>
+                                <td mat-cell *matCellDef="let elements"> {{ elements.uploadDate }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="View">
+                                <th mat-header-cell *matHeaderCellDef>View </th>
+                                <td mat-cell *matCellDef="let elements"> {{ elements.view }} </td>
+                            </ng-container>
+    
+    
+                            <tr mat-header-row *matHeaderRowDef="displayedBlogColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedBlogColumns;"></tr>
+                        </table>
+                        <div style="display: flex; justify-content: space-around;">
+                            <div *ngFor="let i of blogPageCount;" (click)="blogChangePageNow(i)" id="pageBtn">
+                                {{ i }}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Select Blog By Id : </h3>
+                        <mat-form-field>
+                            <mat-label>Id</mat-label>
+                            <mat-select [(ngModel)]="selectedBlogId" style="background-color: white;">
+                                <mat-option *ngFor="let i of blogs" value={{i.Id}}> {{i.Id}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        Judul : <input type="text" [(ngModel)]="updateBlogTitle">
+                    </div>
+                    <div>
+                        Category : <input type="text" [(ngModel)]="updateBlogCategory">
+                    </div>
+                    <div class="toolbar">
+                        <ul class="tool-list">
+                            <li class="tool">
+                                <button (click)="format('justifyLeft')">
+                                    JL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('justifyCenter')">
+                                    JC
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('justifyRight')">
+                                    JR
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('bold')">
+                                    B
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('italic')">
+                                    I
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('underline')">
+                                    U
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('insertOrderedList')">
+                                    OL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('insertUnorderedList')">
+                                    UL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('createlink')">
+                                    Link
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    Content :
+                    <div contenteditable="true" style="height: 50vh; border: 1px solid black;" id="updateBlogDetail">
+                    </div>
+                    <div style="color: white; background-color: orange; text-align: center;" (click)="updateBlog()">
+                        Save
+                    </div>
+                </mat-tab>
+                <mat-tab label="Remove Blog">
+                    <div style="display: flex;">
+                        <div>
+                            <table mat-table [dataSource]="blogDataSource">
+                                <ng-container matColumnDef="index">
+                                    <th mat-header-cell *matHeaderCellDef>Index </th>
+                                    <td mat-cell *matCellDef="let elements"> {{elements.index}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Blog Title">
+                                    <th mat-header-cell *matHeaderCellDef>Blog Title </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.blogTitle }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Author Name">
+                                    <th mat-header-cell *matHeaderCellDef>Author Name </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.authorName }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Upload Date">
+                                    <th mat-header-cell *matHeaderCellDef>Uploaded Date </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.uploadDate }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="View">
+                                    <th mat-header-cell *matHeaderCellDef>View </th>
+                                    <td mat-cell *matCellDef="let elements"> {{ elements.view }} </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedBlogColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedBlogColumns;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Select Blog By Id : </h3>
+                        <mat-form-field>
+                            <mat-label>Id</mat-label>
+                            <mat-select [(ngModel)]="selectedRemoveBlogId" style="background-color: white;">
+                                <mat-option *ngFor="let i of blogs" value={{i.Id}}> {{i.Id}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div id="nextBtn" (click)="removeBlog()">
+                        Remove Blog
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-tab>
+        <mat-tab label="Manage Event">
+
+        </mat-tab>
+    </mat-tab-group>
+</div>

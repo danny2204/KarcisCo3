@@ -1,0 +1,142 @@
+<div class="container">
+    <div class="top-panel">
+        <div class="image-div" style="width: 100%; height: 50vh;">
+            <div class="image-preview" [ngStyle]="{'background-image': test}" style="background-size: cover; background-position: center; width: 60%; height: 100%;" (click)="openDialog()">
+            </div>
+            <div style="width: 50%; height: 100%;">
+                <div class="image-preview" style="background-image: url('../../../../../../assets/house.png'); background-size: cover; background-position: center; width: 100%; height: 50%;">
+                </div>
+                <div style="width: 100%; height: 50%; display: flex;">
+                    <div class="image-preview" style="background-image: url('../../../../../../assets/house.png'); background-size: cover; background-position: center; width: 50%; height: 100%;">
+                    </div>
+                    <div class="image-preview" style="background-image: url('../../../../../../assets/house.png'); background-size: cover; background-position: center; width: 50%; height: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="hotel-review">
+            <div>
+                <div>
+                    {{ hotel.Name }} {{ hotel.Rating }}*
+                </div>
+                <div>
+                    Trip Advisor: {{ hotel.TripAdvisorReview.AverageScore }}
+                </div>
+                <div>
+                    <a href="" style="color: lightseagreen; text-decoration: none; ">BUKA DI PETA</a>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <h3>Fasilitas</h3>
+                <div *ngFor="let i of hotel.HotelFacilities">
+                    {{ i.FacilityName }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="middle-panel" style="width: 100%;">
+        <div class="middle-panel-cek">
+            [cek ketersediaan]
+        </div>
+        <hr style="border-top: 1px solid gray; width: 90%;">
+        <div class="middle-panel-room">
+            <div>
+                Kamar {{ hotel.Name }}
+            </div>
+            <div>
+                [list filter]
+                <!-- <div *ngFor="let i of fasilitasFilter" class="check-box-field">
+                    <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+                </div> -->
+            </div>
+            <div style="display: flex; border: 1px solid gray; border-bottom-right-radius: 10px; border-top-right-radius: 10px; margin: 10px 0px;" *ngFor="let i of hotel.Room; let indeksKamar = index">
+                <div style="width: 30%; height: 40vh; background-image: url('../../../../../../assets/room.jpg'); background-position: center; background-size: cover;">
+                </div>
+                <div style="display: flex; width: 50%; flex-direction: column; padding-left: 20px;">
+                    <h3>{{ i.Name }}</h3>
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <div>
+                            <h3>Info Kamar</h3>
+                            <p>Maks. {{ i.MaxPassenger }} tamu</p>
+                            <p>{{ i.RoomSize }}m<sup>2</sup></p>
+                            <p>{{ i.Bed }}</p>
+                        </div>
+                        <div>
+                            <h3>Layanan Gratis</h3>
+                            <p style="color: black;" *ngIf="(i.FreeBreakfast == true)">Sarapan Gratis</p>
+                            <p style="color: gray;" *ngIf="(i.FreeBreakfast == false)">Sarapan Gratis</p>
+                            <p style="color: black;" *ngIf="(i.FreeWifi == true)">WiFi Gratis</p>
+                            <p style="color: gray;" *ngIf="(i.FreeWifi == false)">WiFi Gratis</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-end; width: 20%; padding-right: 5px;">
+                    <h3>{{ i.Price | currency: "IDR" }}</h3>
+                    <div class="pesanBtn" (click)="toCheckout(indeksKamar)">
+                        Pesan Sekarang
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-panel" style="display: flex; flex-direction: column; width: 60vw;">
+        <h2>Ulasan {{ hotel.Name }}</h2>
+        <mat-tab-group style="background-color: white;">
+            <mat-tab label="Trip Advisor">
+                <div style="display: flex; width: 100%; ">
+                    <div class="panel-kiri-review">
+                        <div style="display: flex; align-items: flex-end;">
+                            <h2>{{ hotel.TripAdvisorReview.AverageScore }}</h2><p>/5</p>
+                        </div>
+                        <div class="penilaian">
+                            <p>Lokasi     : {{ hotel.TripAdvisorReview.LocationScore }}</p>
+                            <p>Pelayanan  : {{ hotel.TripAdvisorReview.ServiceScore }}</p>
+                            <!-- <p>Kamar      : {{ hotel.TripAdvisorReview }}</p> -->
+                            <p>Kebersihan : {{ hotel.TripAdvisorReview.CleanlinessScore }}</p>
+                            <p>Value      : {{ hotel.TripAdvisorReview.ValueScore }}</p>
+                        </div>
+                    </div>
+                    <div class="panel-kanan-review" *ngFor="let item of hotel.TripAdvisorReview.Reviews">
+                        <div>
+                            <p>{{ item.Name }} {{ item.Score }}</p>
+                            <p>{{ item.UploadDate | date }}</p>
+                            <p><b>"{{ item.Conclusion }}"</b></p>
+                            <p>{{ item.ReviewString }}</p>
+                        </div>
+                        <hr style="width: 100%">
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="tiket.com">
+                <div style="display: flex; width: 100%; ">
+                    <div class="panel-kiri-review">
+                        <div style="display: flex; align-items: flex-end;">
+                            <h2>{{ hotel.TiketComReview.AverageScore }}</h2><p>/10</p>
+                        </div>
+                        <div class="penilaian">
+                            <p>Lokasi     : {{ hotel.TiketComReview.LocationScore }}</p>
+                            <p>Pelayanan  : {{ hotel.TiketComReview.ServiceScore }}</p>
+                            <!-- <p>Kamar      : {{ hotel.TiketComReview }}</p> -->
+                            <p>Kebersihan : {{ hotel.TiketComReview.CleanlinessScore }}</p>
+                            <p>Value      : {{ hotel.TiketComReview.ValueScore }}</p>
+                        </div>
+                    </div>
+                    <div class="panel-kanan-review" *ngFor="let item of hotel.TiketComReview.Reviews">
+                        <div>
+                            <p>{{ item.Name }} {{ item.Score }}</p>
+                            <p>{{ item.UploadDate | date }}</p>
+                            <p><b>"{{ item.Conclusion }}"</b></p>
+                            <p>{{ item.ReviewString }}</p>
+                        </div>
+                        <hr style="width: 100%">
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+</div>

@@ -1,0 +1,82 @@
+<div class="container">
+    <div id="search-bar">
+        <mat-form-field>
+            <mat-select [(value)]="typeValue" style="background-color: white;">
+                <mat-option value="">Semua</mat-option>
+                <mat-option value="Activities">Activities</mat-option>
+                <mat-option value="Attractions">Attractions</mat-option>
+                <mat-option value="Events">Events</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div id="searchBtn" (click)="searchEntertainmentByType()">
+            Pencarian Entertainment
+        </div>
+    </div>
+    <div class="bread-crumb">
+        <p style="color: blue;" (click)="redirectTo('/')">Home</p>
+        >
+        <p style="color: blue;" (click)="redirectTo('evebt-page')">Entertainment</p>
+        >
+        <p> {{ Event.Name }} </p>
+    </div>
+    <div class="top-panel">
+        <div style="display: flex; flex-direction: column;" id="left">
+            <div id="top-image">
+            </div>
+            <div id="bottom-image">
+                <div style="background-image: url('../../../../../../assets/entertainment.jpg'); background-size: contain; background-repeat: no-repeat;"></div>
+                <div style="background-image: url('../../../../../../assets/entertainment.jpg'); background-size: contain; background-repeat: no-repeat;"></div>
+                <div style="background-image: url('../../../../../../assets/entertainment.jpg'); background-size: contain; background-repeat: no-repeat;"></div>
+            </div>
+            <hr>
+            <h3> {{ Event.Name }} </h3>
+        </div>
+        <div id="right">
+            <div class="top-right">
+                <p>Mulai Dari</p>
+                <p> {{ getLowestPrice() }} </p>
+                <!-- <div (click)="goToDetail()" id="cari-tiket">
+                    Cari Tiket
+                </div> -->
+            </div>
+            <div class="bottom-right" id="map">
+            </div>
+        </div>
+    </div>
+
+    <h2>Pilihan Tiket</h2>
+    <div class="middle-panel">
+        <div *ngFor="let i of eventTicketList; let idx = index" id="entertainmentTicket">
+            <p> {{ i.Type }} </p>
+            <div style="display: flex; justify-content: space-between;">
+                <p> {{ i.Description }} </p>
+                <div style="display: flex;">
+                    <p> {{ i.Price | currency: "IDR" }} </p>
+                    <input type="number" [(ngModel)]="i.Quantity" min="0">
+                </div> 
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; flex-direction: column;">
+                <p> Total {{ allTicketQuantity() }} </p>
+                <h4> {{ getTotalPrice() | currency: "IDR" }} </h4>
+            </div>
+            <div id="cari-tiket">
+                pesan button
+            </div>
+        </div>
+        <mat-tab-group style="width: 80vw; margin: 10vh 0 ; background-color: #fff;">
+            <mat-tab label="Deskripsi">
+                <div>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque praesentium distinctio aut, amet iusto expedita atque porro deleniti numquam ab nemo eos dicta aliquid facere! A ducimus error quisquam cum.
+                </div>
+            </mat-tab>
+            <mat-tab label="Syarat & Ketentuan">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt iste, porro perspiciatis rerum aut, tenetur iure tempore delectus exercitationem in sapiente dolorem, amet corrupti nam ullam doloribus voluptatum. Perspiciatis, ipsa!
+            </mat-tab>
+            <mat-tab label="Venue">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo modi consequatur, quis, at quia sed, architecto placeat alias recusandae iure nihil adipisci aspernatur totam. Earum doloremque ipsum culpa. Exercitationem, consectetur?
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
