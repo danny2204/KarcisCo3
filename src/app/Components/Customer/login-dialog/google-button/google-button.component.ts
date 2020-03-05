@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, ElementRef } from '@angular/core';
+import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 
 declare const gapi: any;
 
@@ -33,6 +34,9 @@ export class GoogleButtonComponent implements AfterViewInit {
       that.attachSignin(that.element.nativeElement.firstChild);
     });
   }
+
+  user: Object[] = []
+
   public attachSignin(element) {
     const that = this;
     this.auth2.attachClickHandler(element, {},
@@ -43,11 +47,24 @@ export class GoogleButtonComponent implements AfterViewInit {
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail());
+        this.graphqlService.getUserByAuthId(profile.getId().toString()).subscribe(async query => {
+          this.user = query.data.getUserByAuthId
+          console.table(this.user)
+          if(this.user.length == 0) alert("no user")
+          else {
+            alert("success")
+            sessionStorage.setItem("user", JSON.stringify(this.user))
+          }
+        })
       }, (error) => {
         console.log(JSON.stringify(error, undefined, 2));
       });
 
-  } constructor(private element: ElementRef) {
+  } 
+  constructor(
+    private element: ElementRef,
+    private graphqlService: GraphqlServiceService
+  ) {
     console.log('ElementRef: ', this.element);
   }
 

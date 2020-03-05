@@ -48,6 +48,7 @@ export class QuickCardPesawatComponent implements OnInit {
   }
 
   public getFlight() {
+    console.log(localStorage.getItem("history"))
     if(localStorage.getItem("history") != null) {
       this.historyList = JSON.parse(localStorage.getItem("history"))
     } else {

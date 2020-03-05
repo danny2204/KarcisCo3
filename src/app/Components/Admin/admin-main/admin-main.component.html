@@ -1,7 +1,7 @@
 <div class="container">
-    <mat-tab-group style="background-color: white; height: 100vh;">
+    <mat-tab-group style="background-color: white; height: 100vh;" (selectedTabChange)="triggerLoadData($event)">
         <mat-tab label="Manage Flight">
-            <mat-tab-group style="width: 70vw">
+            <mat-tab-group style="width: 70vw" (selectedTabChange)="setLoading($event)">
                 <mat-tab label="Insert Flight" style="display: flex;">
                     <div style="display: flex; justify-content: space-around;">
                         <mat-form-field>
@@ -64,7 +64,10 @@
                     </div>
                 </mat-tab>
                 <mat-tab label="Update Flight">
-                    <div style="display: flex;">
+                    <div style="height: 50vh; display: flex; justify-content: center; align-items: center;" *ngIf="isLoading == true">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <div style="display: flex;" *ngIf="isLoading == false">
                         <div style="display: flex; flex-direction: column;">
                             <table mat-table [dataSource]="flightDataSource" style="width: 40vw">
                                 <ng-container matColumnDef="index">
@@ -104,7 +107,7 @@
                             <button (click)="doFilterAirline()">Start Filter</button>
                         </div>
                     </div>
-                    <div>
+                    <div *ngIf="isLoading == false">
                         <h3>Select Flight By Id : </h3>
                         <mat-form-field>
                             <mat-label>Id</mat-label>
@@ -113,8 +116,8 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <hr>
-                    <div style="display: flex; justify-content: space-around;">
+                    <hr *ngIf="isLoading == false">
+                    <div style="display: flex; justify-content: space-around;" *ngIf="isLoading == false">
                         <mat-form-field>
                             <mat-label>From</mat-label>
                             <mat-select [(ngModel)]="fromUpdateValue" style="background-color: white;" name="asdasdFrom">
@@ -129,8 +132,8 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <hr>
-                    <div style="display: flex; justify-content: space-around;">
+                    <hr *ngIf="isLoading == false">
+                    <div style="display: flex; justify-content: space-around;" *ngIf="isLoading == false">
                         <div>
                             <h3>Berangkat</h3>
                             <input matInput [matDatepicker]="berangkatUpdate" placeholder="Choose a date" (click)="berangkat.open()" [(ngModel)]="berangkatUpdateValue">
@@ -156,16 +159,16 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <div style="display: flex; justify-content: space-around;">
+                    <hr *ngIf="isLoading == false">
+                    <div style="display: flex; justify-content: space-around;" *ngIf="isLoading == false">
                         <mat-radio-group [(ngModel)]="selectedUpdateAirlines" style="display: flex; justify-content: space-around; width: 100%">
                             <mat-radio-button *ngFor="let i of airlineList" [value]="i.ID">
                                 {{ i.Name }}
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
-                    <hr>
-                    <div style="display: flex; justify-content: space-around;">
+                    <hr *ngIf="isLoading == false">
+                    <div style="display: flex; justify-content: space-around;" *ngIf="isLoading == false">
                         <div class="inputDiv">
                             <h3> Price </h3>
                             <input type="number" [(ngModel)]="updatePrice">
@@ -179,13 +182,16 @@
                             <input type="number" [(ngModel)]="updateService">
                         </div>
                     </div>
-                    <hr>
-                    <div id="nextBtn" (click)="updateFlight()">
+                    <hr *ngIf="isLoading == false">
+                    <div id="nextBtn" (click)="updateFlight()" *ngIf="isLoading == false">
                         Update Flight
                     </div>
                 </mat-tab>
                 <mat-tab label="Remove Flight">
-                    <div style="display: flex;">
+                    <div style="height: 50vh; display: flex; justify-content: center; align-items: center;" *ngIf="isLoading == true">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <div style="display: flex;" *ngIf="isLoading == false">
                         <div>
                             <table mat-table [dataSource]="flightDataSource" style="width: 40vw">
                                 <ng-container matColumnDef="index">
@@ -225,7 +231,7 @@
                             <button (click)="doFilterAirline()">Start Filter</button>
                         </div>
                     </div>
-                    <div>
+                    <div *ngIf="isLoading == false">
                         <h3>Select Flight By Id : </h3>
                         <mat-form-field>
                             <mat-label>Id</mat-label>
@@ -234,7 +240,7 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div id="nextBtn" (click)="removeFlight()">
+                    <div id="nextBtn" (click)="removeFlight()" *ngIf="isLoading == false">
                         Remove Flight
                     </div>
                 </mat-tab>
@@ -482,7 +488,116 @@
             </mat-tab-group>
         </mat-tab>
         <mat-tab label="Manage Hotel">
-
+            <mat-tab-group style="width: 70vw">
+                <mat-tab label="Insert Hotel">
+                    <div style="width: 30vw; display: flex; justify-content: space-between;">
+                        Name : <input type="text" [(ngModel)]="hotelName" style="width: 20vw">
+                    </div>
+                    <div style="width: 30vw; display: flex; justify-content: space-between;">
+                        Type : <input type="text" [(ngModel)]="hotelType" style="width: 20vw">
+                    </div>
+                    <div style="width: 30vw; display: flex; justify-content: space-between;">
+                        Kota
+                        <select name="" id="" [(ngModel)]="hotelCity">
+                            <option value="{{i.Id}}" *ngFor="let i of cityList"> {{ i.City }} </option>
+                        </select>
+                    </div>
+                    <div style="width: 30vw; display: flex; justify-content: space-between;">
+                        Address : <input type="text" [(ngModel)]="hotelAddress" style="width: 20vw">
+                    </div>
+                    <div style="width: 30vw; display: flex; justify-content: space-between;">
+                        Rating : <input type="number" [(ngModel)]="hotelRating" style="width: 20vw">
+                    </div>
+                    <div style="color: white; background-color: orange; text-align: center;" (click)="insertHotel()">
+                        Save
+                    </div>
+                </mat-tab>
+                <mat-tab label="Update Hotel">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <!-- <div style="display: flex; flex-direction: column;">
+                            <p>Tanggal Perjalanan</p>
+                            <div>
+                                <input matInput [matDatepicker]="filterFrom" placeholder="Dari" (click)="filterFrom.open()" [(ngModel)]="filterFromDate">
+                                <mat-datepicker-toggle matSuffix [for]="filterFrom">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #filterFrom></mat-datepicker>
+                            </div>
+                            <div>
+                                <input matInput [matDatepicker]="filterTo" placeholder="Ke" (click)="filterTo.open()" [(ngModel)]="filterToDate">
+                                <mat-datepicker-toggle matSuffix [for]="filterTo">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #filterTo></mat-datepicker>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <p>Kategori</p>
+                            <div *ngFor="let i of categoryList" class="check-box-field">
+                                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+                            </div>
+                        </div> -->
+                        <div style="display: flex; flex-direction: column; align-items: space-around;">
+                            <div class="eventLists">
+                                <div *ngFor="let i of hotelList; let idx = index" id="event">
+                                    <mat-card *ngIf="hotelPagination(idx)" (click)="fillHotelForm(idx)">
+                                        <img mat-card-image id="eventImage" src="../../../../assets/house.jpg" alt="">
+                                        <mat-card-content>
+                                            <h4> {{ i.Name }} ({{ i.Typpe }}) </h4>
+                                            <p> {{ i.Location.City }}, {{ i.Location.Country }} </p>
+                                            <p> {{ getHotelLowestPrice(idx) | currency: "IDR" }} </p>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-around;">
+                                <div *ngFor="let i of hotelPageCount;" (click)="hotelChangePageNow(i)" id="pageBtn">
+                                    {{ i }}
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div style="width: 30vw; display: flex; justify-content: space-between;">
+                            Name : <input type="text" [(ngModel)]="hotelUpdateName" style="width: 20vw">
+                        </div>
+                        <div style="width: 30vw; display: flex; justify-content: space-between;">
+                            Type : <input type="text" [(ngModel)]="hotelUpdateType" style="width: 20vw">
+                        </div>
+                        <div style="width: 30vw; display: flex; justify-content: space-between;">
+                            Address : <input type="text" [(ngModel)]="hotelUpdateAddress" style="width: 20vw">
+                        </div>
+                        <div style="width: 30vw; display: flex; justify-content: space-between;">
+                            Rating : <input type="number" [(ngModel)]="hotelUpdateRating" style="width: 20vw">
+                        </div>
+                        <div>
+                            Kota
+                            <select name="" id="" [(ngModel)]="hotelUpdateKotaValue">
+                                <option value="{{i.Id}}" *ngFor="let i of cityList"> {{ i.City }} </option>
+                            </select>
+                        </div>
+                        <div style="color: white; background-color: orange; text-align: center;" (click)="updateHotel()">
+                            Save
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Remove Hotel">
+                    <div class="eventLists">
+                        <div *ngFor="let i of hotelList; let idx = index" id="event">
+                            <mat-card *ngIf="hotelPagination(idx)" (click)="removeHotel(idx)">
+                                <img mat-card-image id="eventImage" src="../../../../assets/house.jpg" alt="">
+                                <mat-card-content>
+                                    <h4> {{ i.Name }} ({{ i.Typpe }}) </h4>
+                                    <p> {{ i.Location.City }}, {{ i.Location.Country }} </p>
+                                    <p> {{ getHotelLowestPrice(idx) | currency: "IDR" }} </p>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div *ngFor="let i of hotelPageCount;" (click)="hotelChangePageNow(i)" id="pageBtn">
+                            {{ i }}
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
         </mat-tab>
         <mat-tab label="Manage Blog">
             <mat-tab-group style="width: 70vw">
@@ -701,7 +816,250 @@
             </mat-tab-group>
         </mat-tab>
         <mat-tab label="Manage Event">
+            <mat-tab-group style="width: 70vw">
+                <mat-tab label="Insert Event">
+                    <div style="width: 30vw; display: flex; justify-content: space-between;">
+                        Name : <input type="text" [(ngModel)]="eventName" style="width: 20vw">
+                    </div>
+                    <div style="width: 30vw; display: flex; justify-content: space-between;">
+                        Type : <input type="text" [(ngModel)]="eventType" style="width: 20vw">
+                    </div>
 
+                    <div>
+                        Event Start
+                        <input matInput [matDatepicker]="start" placeholder="Choose a date" (click)="start.open()" [(ngModel)]="eventFromDate">
+                        <mat-datepicker-toggle matSuffix [for]="start">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #start></mat-datepicker>
+                    </div>
+
+                    <div>
+                        Event End
+                        <input matInput [matDatepicker]="end" placeholder="Choose a date" (click)="end.open()" [(ngModel)]="eventToDate">
+                        <mat-datepicker-toggle matSuffix [for]="end">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #end></mat-datepicker>
+                    </div>
+                    
+                    <div>
+                        Kota
+                        <select name="" id="" [(ngModel)]="eventKotaValue">
+                            <option value="{{i.Id}}" *ngFor="let i of cityList"> {{ i.City }} </option>
+                        </select>
+                    </div>
+                    <div class="toolbar">
+                        <ul class="tool-list">
+                            <li class="tool">
+                                <button (click)="format('justifyLeft')">
+                                    JL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('justifyCenter')">
+                                    JC
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('justifyRight')">
+                                    JR
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('bold')">
+                                    B
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('italic')">
+                                    I
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('underline')">
+                                    U
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('insertOrderedList')">
+                                    OL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('insertUnorderedList')">
+                                    UL
+                                </button>
+                            </li>
+                            <li class="tool">
+                                <button (click)="format('createlink')">
+                                    Link
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    Description :
+                    <div contenteditable="true" style="height: 50vh; border: 1px solid black;" id="eventDetail">
+                    </div>
+                    <div style="color: white; background-color: orange; text-align: center;" (click)="saveEvent()">
+                        Save
+                    </div>
+                </mat-tab>
+                <mat-tab label="Update Event">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <div style="display: flex; flex-direction: column;">
+                            <p>Tanggal Perjalanan</p>
+                            <div>
+                                <input matInput [matDatepicker]="filterFrom" placeholder="Dari" (click)="filterFrom.open()" [(ngModel)]="filterFromDate">
+                                <mat-datepicker-toggle matSuffix [for]="filterFrom">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #filterFrom></mat-datepicker>
+                            </div>
+                            <div>
+                                <input matInput [matDatepicker]="filterTo" placeholder="Ke" (click)="filterTo.open()" [(ngModel)]="filterToDate">
+                                <mat-datepicker-toggle matSuffix [for]="filterTo">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #filterTo></mat-datepicker>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <p>Kategori</p>
+                            <div *ngFor="let i of categoryList" class="check-box-field">
+                                <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: space-around;">
+                            <div class="eventLists">
+                                <div *ngFor="let i of eventList; let idx = index" id="event">
+                                    <mat-card *ngIf="checkValidationEvent(idx) && eventPagination(idx)" (click)="fillForm(idx)">
+                                        <img mat-card-image id="eventImage" src="../../../../assets/attraction.jpg" alt="" *ngIf="i.Type == 'Attraction'">
+                                        <img mat-card-image id="eventImage" src="../../../../assets/entertainment-activities.jpg" alt="" *ngIf="i.Type == 'Activities'">
+                                        <img mat-card-image id="eventImage" src="../../../../assets/events.jpg" alt="" *ngIf="i.Type != 'Attraction' && i.Type != 'Activities'">
+                                        <mat-card-content>
+                                            <h4> {{ i.Name }} </h4>
+                                            <p> {{ i.Location.City }}, {{ i.Location.Country }} </p>
+                                            <div style="display: flex;">
+                                                {{ i.EventStartDate | date }} - {{ i.EventEndDate | date }}
+                                            </div>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-around;">
+                                <div *ngFor="let i of eventPageCount;" (click)="eventChangePageNow(i)" id="pageBtn">
+                                    {{ i }}
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div style="width: 30vw; display: flex; justify-content: space-between;">
+                            Name : <input type="text" [(ngModel)]="eventUpdateName" style="width: 20vw">
+                        </div>
+                        <div style="width: 30vw; display: flex; justify-content: space-between;">
+                            Type : <input type="text" [(ngModel)]="eventUpdateType" style="width: 20vw">
+                        </div>
+    
+                        <div>
+                            Event Start
+                            <input matInput [matDatepicker]="updateStart" placeholder="Choose a date" (click)="updateStart.open()" [(ngModel)]="eventUpdateFromDate">
+                            <mat-datepicker-toggle matSuffix [for]="updateStart">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #updateStart></mat-datepicker>
+                        </div>
+    
+                        <div>
+                            Event End
+                            <input matInput [matDatepicker]="updateEnd" placeholder="Choose a date" (click)="updateEnd.open()" [(ngModel)]="eventUpdateToDate">
+                            <mat-datepicker-toggle matSuffix [for]="updateEnd">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #updateEnd></mat-datepicker>
+                        </div>
+                        
+                        <div>
+                            Kota
+                            <select name="" id="" [(ngModel)]="eventUpdateKotaValue">
+                                <option value="{{i.Id}}" *ngFor="let i of cityList"> {{ i.City }} </option>
+                            </select>
+                        </div>
+                        <div class="toolbar">
+                            <ul class="tool-list">
+                                <li class="tool">
+                                    <button (click)="format('justifyLeft')">
+                                        JL
+                                    </button>
+                                </li>
+                                <li class="tool">
+                                    <button (click)="format('justifyCenter')">
+                                        JC
+                                    </button>
+                                </li>
+                                <li class="tool">
+                                    <button (click)="format('justifyRight')">
+                                        JR
+                                    </button>
+                                </li>
+                                <li class="tool">
+                                    <button (click)="format('bold')">
+                                        B
+                                    </button>
+                                </li>
+                                <li class="tool">
+                                    <button (click)="format('italic')">
+                                        I
+                                    </button>
+                                </li>
+                                <li class="tool">
+                                    <button (click)="format('underline')">
+                                        U
+                                    </button>
+                                </li>
+                                <li class="tool">
+                                    <button (click)="format('insertOrderedList')">
+                                        OL
+                                    </button>
+                                </li>
+                                <li class="tool">
+                                    <button (click)="format('insertUnorderedList')">
+                                        UL
+                                    </button>
+                                </li>
+                                <li class="tool">
+                                    <button (click)="format('createlink')">
+                                        Link
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        Description :
+                        <div contenteditable="true" style="height: 50vh; border: 1px solid black;" id="eventUpdateDetail">
+                        </div>
+                        <div style="color: white; background-color: orange; text-align: center;" (click)="updateEvent()" *ngIf="eventToUpdate != ''">
+                            Save
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Remove Event">
+                    <div class="eventLists">
+                        <div *ngFor="let i of eventList; let idx = index" id="event">
+                            <mat-card *ngIf="checkValidationEvent(idx) && eventPagination(idx)" (click)="removeEvent(idx)">
+                                <img mat-card-image id="eventImage" src="../../../../assets/attraction.jpg" alt="" *ngIf="i.Type == 'Attraction'">
+                                <img mat-card-image id="eventImage" src="../../../../assets/entertainment-activities.jpg" alt="" *ngIf="i.Type == 'Activities'">
+                                <img mat-card-image id="eventImage" src="../../../../assets/events.jpg" alt="" *ngIf="i.Type != 'Attraction' && i.Type != 'Activities'">
+                                <mat-card-content>
+                                    <h4> {{ i.Name }} </h4>
+                                    <p> {{ i.Location.City }}, {{ i.Location.Country }} </p>
+                                    <div style="display: flex;">
+                                        {{ i.EventStartDate | date }} - {{ i.EventEndDate | date }}
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-around;">
+                        <div *ngFor="let i of eventPageCount;" (click)="eventChangePageNow(i)" id="pageBtn">
+                            {{ i }}
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
         </mat-tab>
     </mat-tab-group>
 </div>

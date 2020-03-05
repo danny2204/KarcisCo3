@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { EventEmitterService } from 'src/app/Service/event-emitter.service';
 import { SharedServiceService } from 'src/app/Service/shared-service.service';
-import { Time } from '@angular/common';
+import { Time, DatePipe } from '@angular/common';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
+import { CalendarEventTimesChangedEvent, CalendarEvent, CalendarView } from 'angular-calendar';
+import { isSameMonth, isSameDay, startOfDay, endOfDay } from 'date-fns';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-kereta-api',
   templateUrl: './kereta-api.component.html',
-  styleUrls: ['./kereta-api.component.sass']
+  styleUrls: ['./kereta-api.component.sass'],
+  providers: [DatePipe]
 })
 export class KeretaApiComponent implements OnInit {
 
@@ -96,7 +100,8 @@ export class KeretaApiComponent implements OnInit {
     private eventEmitterService: EventEmitterService,
     private sharedService: SharedServiceService,
     private dialog: MatDialog,
-    private graphqlService: GraphqlServiceService
+    private graphqlService: GraphqlServiceService,
+    private datePipe: DatePipe
   ) { }
 
   public filterTrain() {
@@ -135,12 +140,41 @@ export class KeretaApiComponent implements OnInit {
       // this.fromLocationToView = query.data.getAllLocation
       // this.toLocationToView = query.data.getAllLocation
     // })
+
     this.loadData()
     window.addEventListener('scroll', this.scroll, true)
   }
 
   public loadData() {
     this.trainData = this.sharedService.trainSearchResult
+    var fl = []
+    var dateExist = false
+    for(let i = 0 ; i < this.trainData.length; i++) {
+      dateExist = false
+      for(let j = 0 ; j < fl.length; j++){
+        if(this.datePipe.transform(fl[j].Date, "yyyy-MM-dd") == this.datePipe.transform(this.trainData[i].Departure, "yyyy-MM-dd")) {
+          dateExist = true
+          if(fl[j].Price > this.trainData[i].Price) {
+            fl[j].Price = this.trainData[i].Price
+          }
+          break
+        }
+      }
+      if(dateExist == false) {
+        fl.push({
+          "Date": this.trainData[i].Departure,
+          "Price": this.trainData[i].Price
+        })
+      }
+    }
+
+    for(let i = 0 ; i < fl.length; i++) {
+      this.events.push({
+        start: startOfDay(new Date(fl[i].Date)),
+        title: fl[i].Price,
+      })
+    }
+
     for (let index = 0; index < this.trainData.length; index++) {
       this.detailString.push("")
     }
@@ -202,7 +236,7 @@ export class KeretaApiComponent implements OnInit {
     if(isChecked == true) {
       for (let index = 0; index < this.nameFilter.length; index++) {
         if(this.nameFilter[index].checked == true) {
-          if(this.trainData[idx].train.name == this.nameFilter[index].name) return true
+          if(this.trainData[idx].Train.Name == this.nameFilter[index].name) return true
           else continue
         }
       }
@@ -223,7 +257,7 @@ export class KeretaApiComponent implements OnInit {
     if(isChecked == true) {
       for (let index = 0; index < this.kelasList.length; index++) {
         if(this.kelasList[index].checked == true) {
-          if(this.trainData[idx].train.class == this.kelasList[index].class) {
+          if(this.trainData[idx].Train.Class == this.kelasList[index].class) {
             return true;
           } else continue;
         }
@@ -245,8 +279,8 @@ export class KeretaApiComponent implements OnInit {
     if(isChecked == true) {
       for (let index = 0; index < this.departureTimes.length; index++) {
         if(this.departureTimes[index].checked == true) {
-          var departureHour = new Date(this.trainData[idx].departure).getUTCHours()
-          var departureMinute = new Date(this.trainData[idx].departure).getUTCMinutes()
+          var departureHour = new Date(this.trainData[idx].Departure).getUTCHours()
+          var departureMinute = new Date(this.trainData[idx].Departure).getUTCMinutes()
           if(departureHour < this.departureTimes[index].start.hours || departureHour > this.departureTimes[index].end.hours) {
             continue
           }
@@ -286,6 +320,92 @@ export class KeretaApiComponent implements OnInit {
       this.loadData()
     })
 
+  }
+
+  openCalendar() {
+    document.getElementById('calendar').style.zIndex = (parseInt(document.getElementById('calendar').style.zIndex)*-1).toString()
+  }
+
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+
+  view: CalendarView = CalendarView.Month;
+
+  CalendarView = CalendarView;
+
+  viewDate: Date = new Date();
+
+  modalData: {
+    action: string;
+    event: CalendarEvent;
+  };
+
+  refresh: Subject<any> = new Subject();
+
+  events: CalendarEvent[] = [
+    // {
+    //   start: startOfDay(new Date()),
+    //   title: 'An event with no end date',
+    //   color: colors.yellow,
+    // },
+  ];
+
+  activeDayIsOpen: boolean = true;
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate)) {
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+      this.viewDate = date;
+    }
+  }
+
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd
+  }: CalendarEventTimesChangedEvent): void {
+    this.events = this.events.map(iEvent => {
+      if (iEvent === event) {
+        return {
+          ...event,
+          start: newStart,
+          end: newEnd
+        };
+      }
+      return iEvent;
+    });
+  }
+
+  addEvent(): void {
+    this.events = [
+      ...this.events,
+      {
+        title: 'New event',
+        start: startOfDay(new Date()),
+        end: endOfDay(new Date()),
+        color: colors.red,
+        draggable: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        }
+      }
+    ];
+  }
+
+
+  setView(view: CalendarView) {
+    this.view = view;
+  }
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
   }
 
 }

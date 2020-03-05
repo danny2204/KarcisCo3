@@ -138,6 +138,8 @@ export class UserPageComponent implements OnInit {
     else this.addressError = false
   }
 
+  mainLanguageValue: string = ""
+
   ngOnInit() {
     FB.init({
       appId: '1582559861881888',
@@ -168,6 +170,8 @@ export class UserPageComponent implements OnInit {
       this.addressValue = this.User[0].Address
       this.emailValue = this.User[0].Email
       this.phoneNumberValue = this.User[0].PhoneNumber
+      this.mainLanguageValue = this.User[0].MainLanguage
+      console.log(this.User)
     })
   }
 
@@ -180,7 +184,7 @@ export class UserPageComponent implements OnInit {
       console.log(q)
       if(q.phone_valid == false) alert("invalid phone number")
       else {
-        this.graphqlService.updateUser(this.User[0].password, this.User[0].Title, this.User[0].Address, this.User[0].GoogleId, this.User[0].Gender, this.User[0].FacebookId, this.User[0].ID, this.User[0].FrontName, this.User[0].BackName, this.emailValue, this.phoneNumberValue, this.User[0].City, this.User[0].PostCode).subscribe(async query => {})
+        this.graphqlService.updateUser(this.User[0].Password, this.User[0].Title, this.User[0].Address, this.User[0].GoogleId, this.User[0].Gender, this.User[0].FacebookId, this.User[0].ID, this.User[0].FrontName, this.User[0].BackName, this.emailValue, this.phoneNumberValue, this.User[0].City, this.User[0].PostCode, this.mainLanguageValue).subscribe(async query => {})
         this.editEmail = false
         this.editPhone = false
         alert("update success")
@@ -192,7 +196,7 @@ export class UserPageComponent implements OnInit {
   updateUser() {
 
     if(this.firstNameError == false && this.secondNameError == false && this.titelError == false && this.kotaError == false && this.addressError == false && this.codePostError == false) {
-      this.graphqlService.updateUser(this.User[0].password, this.titelValue, this.addressValue, this.User[0].GoogleId, this.User[0].Gender, this.User[0].FacebookId, this.User[0].id, this.firstNameValue, this.secondNameValue, this.User[0].email, this.User[0].phoneNumber, this.kotaValue, this.postCodeValue).subscribe(async query => {})
+      this.graphqlService.updateUser(this.User[0].Password, this.titelValue, this.addressValue, this.User[0].GoogleId, this.User[0].Gender, this.User[0].FacebookId, this.User[0].ID, this.firstNameValue, this.secondNameValue, this.User[0].Email, this.User[0].PhoneNumber, this.kotaValue, this.postCodeValue, this.User[0].MainLanguage).subscribe(async query => {})
       alert("update success")
     }
 

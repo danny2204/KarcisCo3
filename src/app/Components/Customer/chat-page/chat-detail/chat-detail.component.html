@@ -1,0 +1,24 @@
+<div (click)="backToChatPage()">
+    Back to Chat List
+</div>
+
+<div>
+    <div *ngFor="let i of chatList; let idx=index">
+        <div style="display: flex; width: 100%; justify-content: flex-start;" *ngIf="checkIsUser(idx) == false">
+            <div *ngIf="checkIsImage(idx) == ''">
+                {{ i.content }}
+            </div>
+            <img src="../../../../../assets/{{ checkIsImage(idx) }}" alt="" *ngIf="checkIsImage(idx) != ''">
+        </div>
+        <div style="display: flex; width: 100%; justify-content: flex-end;" *ngIf="checkIsUser(idx) == true">
+            <div *ngIf="checkIsImage(idx) == ''">
+                {{ i.content }}
+            </div>
+            <img src="../../../../../assets/{{ checkIsImage(idx) }}" alt="" *ngIf="checkIsImage(idx) != ''">
+        </div>
+    </div>
+    <div style="display: flex;">
+        <input type="text" id="inputChat" [(ngModel)]="chatContent">
+        <button id="sendBtn" (click)="sendMsg()">SEND</button>
+    </div>
+</div>

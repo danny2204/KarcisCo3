@@ -14,6 +14,8 @@ export class HotelComponent implements OnInit {
   displayedHotelData: Object[]
   showData: number = 5
   sortBy: string
+  showAllTipeFilter = false
+  showAllFasilitasFilter = false
   starsFilter: StarFilter[] = [
     {
       label: "1 star",
@@ -162,6 +164,23 @@ export class HotelComponent implements OnInit {
   config: MatDialogConfig = new MatDialogConfig();
   priceList: number[] = []
 
+  displayedTipeFilter: TipePropertiFilter[] = []
+  displayedFasilitasFilter: FasilitasFilter[] = []
+
+  showAllTipe() {
+    this.showAllTipeFilter = true
+    for(let i = 5; i < this.tipeFilter.length; i++) {
+      this.displayedTipeFilter.push(this.tipeFilter[i])
+    }
+  }
+
+  showAllFasilitas() {
+    this.showAllFasilitasFilter = true
+    for (let i = 5; i < this.fasilitasFilter.length; i++) {
+      this.displayedFasilitasFilter.push(this.fasilitasFilter[i])
+    }
+  }
+
   constructor(
     private sharedService: SharedServiceService,
     private dialog: MatDialog,
@@ -179,6 +198,10 @@ export class HotelComponent implements OnInit {
     this.config.autoFocus = false
     this.config.restoreFocus = true
     this.hotelData = this.sharedService.hotelSearchResult
+    for(let i = 0 ; i < 5; i++){
+      this.displayedTipeFilter.push(this.tipeFilter[i])
+      this.displayedFasilitasFilter.push(this.fasilitasFilter[i])
+    }
     this.loadLowestPrice()
     this.loadData()
     window.addEventListener('scroll', this.scroll, true)

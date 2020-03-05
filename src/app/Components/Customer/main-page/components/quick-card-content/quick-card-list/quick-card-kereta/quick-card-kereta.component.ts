@@ -54,8 +54,9 @@ export class QuickCardKeretaComponent implements OnInit {
   ngOnInit() {
     this.fromLocationToView = ['Surabaya', 'Jakarta Pusat']
     this.toLocationToView = ['Surabaya', 'Jakarta Pusat']
-    // this.supkrep = this.service.getAllLocation().subscribe(async query => {
+    // this.service.getAllLocation().subscribe(async query => {
     //   this.locations = query.data.getAllLocation
+    //   console.table(this.locations)
     //   await this.init()
     // })
     // this.init()
@@ -63,6 +64,7 @@ export class QuickCardKeretaComponent implements OnInit {
 
   addItems(count: number) {
     let index = this.fromLocationToView.length
+    console.log(index)
     for (let idx = index; idx < count; idx++) {
       this.fromLocationToView.push(this.locations[idx])
       this.toLocationToView.push(this.locations[idx])

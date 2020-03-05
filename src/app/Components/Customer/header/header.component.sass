@@ -2,6 +2,7 @@
     display: flex
     justify-content: space-between
     background-color: silver
+    width: 100%
 
 a
     text-decoration: none
@@ -19,13 +20,15 @@ a:hover
     justify-content: space-between
     align-items: center
     background-color: white
+    width: 100%
+    max-width: 100%
     div
         display: flex
 
 .navigation
     display: flex
     justify-content: space-around
-    width: 40vw
+    width: 80%
     align-items: center
 
 #logo-img
@@ -41,3 +44,11 @@ a:hover
     width: 20%
     display: flex
     justify-content: space-around
+
+@media screen and ( max-width: 700px )
+    .main-header
+        flex-direction: column
+
+        div
+            display: flex
+            flex-direction: column

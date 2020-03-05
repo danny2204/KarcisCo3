@@ -1,15 +1,98 @@
-<!-- <div class="widget-pesawat">
-    <div>
+<div class="widget-pesawat">
+    <div style="width: 50%;">
         <h2>Pilih Penerbangan Pergi</h2>
-        <div>
-            {{ flightSearchData.from }} -> {{ flightsSearchData.to }}
+        <div style="display: flex; justify-content: space-between;">
+                <mat-form-field>
+                    <mat-label>From</mat-label>
+                    <mat-select [(ngModel)]="fromChangeLocation">
+                        <mat-option *ngFor="let i of fromLocation" value={{i.City}}>
+                            {{ i.City }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>To</mat-label>
+                    <mat-select [(ngModel)]="toChangeLocation">
+                        <mat-option *ngFor="let i of toLocation" value={{i.City}}>
+                            {{ i.City }}
+                        </mat-option>                    
+                    </mat-select>
+                </mat-form-field>
         </div>
     </div>
     <div id="change-search" (click)="changeSearch()">
         UBAH PENCARIAN
     </div>
-</div> -->
+</div>
 <div class="container">
+    <div style="position: absolute; margin-top: 10vh; z-index: -1;" id="calendar">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="btn-group">
+                <div
+                    class="btn btn-primary"
+                    mwlCalendarPreviousView
+                    [view]="view"
+                    [(viewDate)]="viewDate"
+                    (viewDateChange)="closeOpenMonthViewDay()"
+                >
+                    Previous
+                </div>
+                <div
+                    class="btn btn-outline-secondary"
+                    mwlCalendarToday
+                    [(viewDate)]="viewDate"
+                >
+                    Today
+                </div>
+                <div
+                    class="btn btn-primary"
+                    mwlCalendarNextView
+                    [view]="view"
+                    [(viewDate)]="viewDate"
+                    (viewDateChange)="closeOpenMonthViewDay()"
+                >
+                    Next
+                </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+        </div>
+        <br />
+        <div [ngSwitch]="view">
+        <mwl-calendar-month-view
+            *ngSwitchCase="CalendarView.Month"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view
+            *ngSwitchCase="CalendarView.Week"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view
+            *ngSwitchCase="CalendarView.Day"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-day-view>
+        </div>
+    </div>
     <div class="left-panel">
         <div>
             Transit
@@ -44,6 +127,9 @@
         </div>
     </div>
     <div class="parentFlightContainer">
+        <div>
+            <button (click)="openCalendar()">Open Calendar</button>
+        </div>
         <select name="" id="" [(ngModel)]="sortBy" (click)="sort()">
             <option value="rekomendasi" selected>Rekomendasi</option>
             <option value="harga-terendah">Harga Terendah</option>
@@ -89,9 +175,9 @@
                 <hr>
                 <div *ngIf="detailString[idx] != '' ">
                     <div *ngIf="detailString[idx] == 'penerbangan'">
-                        <div *ngIf="i.routes.length != 0">
+                        <div *ngIf="i.Routes.length != 0">
                             <div *ngIf="detailString[idx] == 'penerbangan'">
-                                <div *ngFor="let item of i.routes">
+                                <div *ngFor="let item of i.Routes">
                                     From : {{ item.AirportFrom.Name }}
                                     <br>
                                     Duration : {{ item.Duration }}
@@ -101,7 +187,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="i.routes.length == 0">
+                        <div *ngIf="i.Routes.length == 0">
                             <div *ngIf="detailString[idx] == 'penerbangan'">
                                 <div>
                                     From : {{ i.From.Name }}

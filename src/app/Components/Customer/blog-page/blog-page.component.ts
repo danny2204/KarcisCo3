@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-blog-page',
@@ -14,12 +15,17 @@ export class BlogPageComponent implements OnInit {
   isInfiniteScroll: boolean = false
 
   constructor(
-    private graphqlService: GraphqlServiceService
+    private graphqlService: GraphqlServiceService,
+    private router: Router
   ) { }
 
   addInfiniteScroll() {
     window.addEventListener('scroll', this.scroll, true)
     this.isInfiniteScroll = true
+  }
+
+  toDetail(id: number) {
+    this.router.navigate(['/blog-detail/', id])
   }
 
   ngOnInit() {

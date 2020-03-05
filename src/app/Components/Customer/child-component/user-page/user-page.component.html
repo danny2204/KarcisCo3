@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
-    <div style="background-color: white; width: 90%;">
+    <div style="background-color: white; width: 90%; height: 70vh;">
         <h2>Detail Akun</h2>
         <p>Disini kamu bisa mengatur detail akunmu</p>
     
@@ -14,6 +14,18 @@
                     <p>Nomor Ponsel</p>
                     <input type="text" [(ngModel)]="phoneNumberValue" *ngIf="editPhone == true">
                     <input type="text" [(ngModel)]="phoneNumberValue" *ngIf="editPhone != true" disabled>
+                </div>
+                <hr>
+                <div>
+                    <p>Main Language</p>
+                    <mat-select [(ngModel)]="mainLanguageValue">
+                        <mat-option value="ID">
+                            ID
+                        </mat-option>
+                        <mat-option value="EN">
+                            EN
+                        </mat-option>
+                    </mat-select>
                 </div>
                 <hr>
                 <div id="setting-account" (click)="openEdit()">

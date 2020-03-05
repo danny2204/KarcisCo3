@@ -1,3 +1,6 @@
+<div>
+    00 : 0{{ minutes }} : {{ seconds }}
+</div>
 <div class="container">
     <h2>Detail Pemesanan</h2>
     <div style="display: flex; width: 70vw">
@@ -45,10 +48,10 @@
                 </div>
                 <div style="display: flex; flex-direction: column; width: 80%">
                     Alamat Email
-                    <input type="text" placeholder="cth.youremail@example.com">
+                    <input type="text" placeholder="cth.youremail@example.com" [(ngModel)]="emailValue">
                 </div>
             </div>
-            <div class="buyBtn">
+            <div class="buyBtn" (click)="toPayment()">
                 Lanjutkan ke Pembayaran
             </div>
         </div>

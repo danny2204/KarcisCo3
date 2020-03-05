@@ -5,6 +5,9 @@
         <input type="text" placeholder="" name="emailInput" #emailInput id="emailInput">
         <br>
         <input type="password" name="passwordInput" #passwordInput id="passwordInput" [style.display]="showPassField()">
+        <div style="display: flex;" [style.display]="showPassField()">
+            <input type="checkbox" (click)="toogleVisible()"> Show Password
+        </div>
         <br *ngIf="showPass">
         <button *ngIf="text == 'LANJUTKAN'" id="next-btn" (click)='doLogin(emailInput.value)'>LANJUTKAN</button>
         <button *ngIf="text == 'LOGIN'" id="next-btn" (click)='checkPass(passwordInput.value)'>LOGIN</button>

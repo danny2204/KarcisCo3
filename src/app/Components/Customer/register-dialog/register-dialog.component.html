@@ -32,6 +32,9 @@
             <input type="password" placeholder=" " id="password-input" #passwordInput>
             <div class="label">Kata Sandi</div>
             <label for="" *ngIf="passwordError == true" style="color: red;">Password tidak boleh kosong</label>
+            <div style="display: flex;">
+                <input type="checkbox" (click)="toogleVisible()"> Show Password
+            </div>    
         </div>
 
         <div class="loginOption" (click)="googleInit()">

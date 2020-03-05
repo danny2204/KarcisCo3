@@ -14,12 +14,62 @@ export class GraphqlServiceService {
     private apollo : Apollo
     ) { }
 
-  updateUser(password: string, title: string, address: string, GoogleId: string, Gender: string, FacebookId: string, id: number, frontName: string, backName: string, email: string, phoneNumber: string, city: string, postCode: string) {
+  getHotelById(id : number): Observable<any> {
+    return this.apollo.query<Query> ({
+      query: gql`
+        query getHotelById($id: Int!) {
+          getHotelById(Id: $id) {
+            Address
+            Id
+            Latitude
+            Longitude
+            Name
+            Rating
+            Type
+            Location {
+              City
+            }
+            Room {
+              Price
+            }
+          }
+        }
+      `, variables: {
+        "id": id
+      }
+    })
+  }
+
+  getAllHotel(): Observable<any> {
+    return this.apollo.query<Query> ({
+      query: gql`
+        query {
+          getAllHotel {
+            Address
+            Id
+            Latitude
+            Longitude
+            Name
+            Rating
+            Type
+            Location {
+              City
+            }
+            Room {
+              Price
+            }
+          }
+        }
+      `
+    })
+  }
+
+  updateUser(password: string, title: string, address: string, GoogleId: string, Gender: string, FacebookId: string, id: number, frontName: string, backName: string, email: string, phoneNumber: string, city: string, postCode: string, mainLanguage: string) {
     return this.apollo.mutate<any>({
       mutation: gql`
-        mutation updateUser($password: String!, $title: String!, $address: String!, $googleId: String!, $gender: String!, $facebookId: String!, $id: Int!, $frontName: String!, $backName: String!, $email: String!, $phoneNumber: String!, $city: String!, $postCode: String!) {
-          updateUser(password: $password, title: $title, address: $address, GoogleId: $googleId, Gender: $gender, FacebookId: $facebookId, id: $id, frontName: $frontName, backName: $backName, email: $email, phoneNumber: $phoneNumber, city: $city, postCode: $postCode) {
-            id
+        mutation updateUser($password: String!, $title: String!, $address: String!, $googleId: String!, $gender: String!, $facebookId: String!, $id: Int!, $frontName: String!, $backName: String!, $email: String!, $phoneNumber: String!, $city: String!, $postCode: String!, $mainLanguage: String!) {
+          updateUser(Password: $password, Title: $title, Address: $address, GoogleId: $googleId, Gender: $gender, FacebookId: $facebookId, ID: $id, FrontName: $frontName, BackName: $backName, Email: $email, PhoneNumber: $phoneNumber, City: $city, PostCode: $postCode, MainLanguage: $mainLanguage) {
+            ID
           }
         }
       `,
@@ -36,7 +86,61 @@ export class GraphqlServiceService {
         "email": email,
         "phoneNumber": phoneNumber,
         "city": city,
-        "postCode": postCode
+        "postCode": postCode,
+        "mainLanguage": mainLanguage
+      }
+    })
+  }
+
+  removeEvent(id: number) {
+    return this.apollo.mutate<any>({
+      mutation: gql`
+        mutation removeEntertainment($id: Int!) {
+          removeEntertainment(Id: $id) {
+            Id
+          }
+        }
+      `, variables: {
+        "id": id
+      }
+    })
+  }
+
+  updateEntertainment(id: number, name: string, locationReferId: number, type: string, eventStartDate: string, eventEndDate: string, description: string): Observable<any> {
+    return this.apollo.mutate<any> ({
+      mutation: gql`
+        mutation updateEntertainment($id: Int!, $name: String!, $type: String!, $locationReferId: Int!, $eventStartDate: DateTime!, $eventEndDate: DateTime!, $description: String!) {
+          updateEntertainment(Id: $id, Name: $name, Type: $type, LocationReferId: $locationReferId, EventStartDate: $eventStartDate, EventEndDate: $eventEndDate, IsTrending: false, Description: $description) {
+            Id
+          }
+        }
+      `, variables: {
+        "id": id,
+        "name": name,
+        "type": type,
+        "locationReferId": locationReferId,
+        "eventStartDate": eventStartDate,
+        "eventEndDate": eventEndDate,
+        "description": description
+      }
+    })
+  }
+
+  createEntertainment(name: string, locationReferId: number, type: string, eventStartDate: string, eventEndDate: string, description: string):Observable<any> {
+    return this.apollo.mutate<any>({
+      mutation: gql`
+        mutation createEntertainment($name: String!, $type: String!, $locationReferId: Int!, $eventStartDate: DateTime!, $eventEndDate: DateTime!, $description: String!) {
+          createEntertainment(Name: $name, Type: $type, LocationReferId: $locationReferId, EventStartDate: $eventStartDate, EventEndDate: $eventEndDate, IsTrending: false, Description: $description) {
+            Id
+          }
+        }
+      `, variables: {
+        "name": name,
+        "type": type,
+        "locationReferId": locationReferId,
+        "eventStartDate": eventStartDate,
+        "eventEndDate": eventEndDate,
+        "description": description
       }
     })
   }
@@ -101,6 +205,7 @@ export class GraphqlServiceService {
             }
             Name
             Type
+            Description
           }
         }
       `
@@ -538,7 +643,7 @@ export class GraphqlServiceService {
     })
   }
 
-  updateFlight(id: number, fromReferId: number, toReferId: number, departure: String, arrival: String, airlineReferId: number, price: number, tax: number, service: number, duration: number) {
+  updateFlight(id: number, fromReferId: number, toReferId: number, departure: string, arrival: string, airlineReferId: number, price: number, tax: number, service: number, duration: number) {
     return this.apollo.mutate<any> ({
       mutation: gql`
         mutation updateFlight($id: Int!, $airlineRefer: Int!, $price: Int!, $serviceCharge: Int!, $arrival: DateTime!, $toRefer: Int!, $fromRefer: Int!, $tax: Int!, $departure: DateTime!, $duration: Int!) {
@@ -687,7 +792,7 @@ export class GraphqlServiceService {
     })
   }
 
-  createFlight(fromReferId: number, toReferId: number, departure: String, arrival: String, airlineReferId: number, price: number, tax: number, service: number, duration: number) {
+  createFlight(fromReferId: number, toReferId: number, departure: Date, arrival: Date, airlineReferId: number, price: number, tax: number, service: number, duration: number) {
       return this.apollo.mutate<any>({
         mutation: gql`
         mutation createFlight($airlineRefer: Int!, $price: Int!, $serviceCharge: Int!, $arrival: DateTime!, $toRefer: Int!, $fromRefer: Int!, $tax: Int!, $departure: DateTime!, $duration: Int!) {
@@ -714,7 +819,7 @@ export class GraphqlServiceService {
     return this.apollo.mutate<any>({
       mutation: gql`
       mutation createUser($postCode: String!, $googleId: String!, $backName: String!, $email: String!, $password: String!, $phoneNumber: String!, $title: String!, $address: String!, $facebookId: String!, $gender: String!, $frontName: String!, $city: String!){
-        createUser(PostCode: $postCode, GoogleId: $googleId, BackName: $backName, Email: $email, Password: $password, PhoneNumber: $phoneNumber, Title: $title, Address: $address, FacebookId: $facebookId, Gender: $gender, FrontName: $frontName, City: $city) {
+        createUser(PostCode: $postCode, GoogleId: $googleId, BackName: $backName, Email: $email, Password: $password, PhoneNumber: $phoneNumber, Title: $title, Address: $address, FacebookId: $facebookId, Gender: $gender, FrontName: $frontName, City: $city, MainLanguage: 'ID') {
           ID
         }
       }
@@ -754,6 +859,7 @@ export class GraphqlServiceService {
             ID
             Password
             PhoneNumber
+            MainLanguage  
           }
         }
       `
@@ -919,6 +1025,7 @@ export class GraphqlServiceService {
             ID
             Password
             PhoneNumber
+            MainLanguage
           }
         }
       `,
@@ -1205,6 +1312,33 @@ export class GraphqlServiceService {
     })
   }
 
+  getUserByAuthId(authId: string): Observable<any> {
+    return this.apollo.query<Query> ({
+      query: gql`
+        query getUserByAuthId($authId: String!) {
+          getUserByAuthId(AuthId: $authId) {
+            Address
+            City
+            FacebookId
+            Gender
+            GoogleId
+            PostCode
+            Title
+            BackName
+            Email
+            FrontName
+            ID
+            Password
+            PhoneNumber
+            MainLanguage
+          }
+        }
+      `, variables: {
+        "authId": authId
+      }
+    })
+  }
+
   sendMail(email: string) {
     return this.apollo.query<Query> ({
       query: gql`
@@ -1213,6 +1347,148 @@ export class GraphqlServiceService {
         }
       `, variables: {
         "to": email
+      }
+    })
+  }
+
+  getLimitedLocation(): Observable<any> {
+    return this.apollo.query<Query> ({
+      query: gql`
+        query {
+          getLimitedLocation{
+            City
+            Country
+            Id
+            Latitude
+            Longitude
+            Province
+            ZIndex          
+          }
+        }
+      `
+    })
+  }
+
+
+
+  removeHotel(id: number): Observable<any> {
+    return this.apollo.mutate<any> ({
+      mutation: gql`
+        mutation removeHotel($id: Int!) {
+          removeHotel(id: $id) {
+            Id
+          }
+        }
+      `, variables: {
+        "id": id
+      }
+    })
+  }
+
+  updateHotel(id: number, name: string, type: string, longitude: number, latitude: number, address: string, rating: number, locationReferId: number): Observable<any> {
+    return this.apollo.mutate<any> ({
+      mutation: gql`
+        mutation updateHotel($id: Int!, $name: String!, $type: String!, $longitude: Float!, $latitude: Float!, $address: String!, $rating: Int!, $locationReferId: Int!) {
+          updateHotel(id: $id, Name: $name, Type: $type, Longitude: $longitude, Latitude: $latitude, Address: $address, Rating: $rating, LocationRefer: $locationReferId, TripAdvisorReviewReferId: 1, TiketComReviewReferId: 1){
+            Id
+          }
+        }
+      `, variables: {
+        "id": id,
+        "name": name,
+        "type": type,
+        "longitude": longitude,
+        "latitude": latitude,
+        "address": address,
+        "rating": rating,
+        "locationReferId": locationReferId
+      }
+    })
+  }
+
+  createHotel(name: string, type: string, longitude: number, latitude: number, address: string, rating: number, locationReferId: number): Observable<any> {
+    return this.apollo.mutate<any> ({
+      mutation: gql`
+        mutation createHotel($name: String!, $type: String!, $longitude: Float!, $latitude: Float!, $address: String!, $rating: Int!, $locationReferId: Int!) {
+          createHotel(Name: $name, Type: $type, Longitude: $longitude, Latitude: $latitude, Address: $address, Rating: $rating, LocationRefer: $locationReferId, TripAdvisorReviewReferId: 1, TiketComReviewReferId: 1) {
+            Id
+          }
+        }
+      `, variables: {
+        "name": name,
+        "type": type,
+        "longitude": longitude,
+        "latitude": latitude,
+        "address": address,
+        "rating": rating,
+        "locationReferId": locationReferId
+      }
+    })
+  }
+
+  getAllChat(userId: number): Observable<any> {
+    return this.apollo.query<Query>({
+      query: gql`
+        query getAllChat($id: Int!) {
+          getAllChat(UserId: $id) {
+            Id
+            User1
+            User2
+            Content
+          }
+        }
+      `, variables: {
+        "id": userId
+      }
+    })
+  }
+
+  updateChat(id: number, content: string, user1: number, user2: number): Observable<any> {
+    return this.apollo.mutate<any> ({
+      mutation: gql`
+        mutation updateChat($id: Int!, $content: String!, $user1: Int!, $user2: Int!) {
+          updateChat(Id: $id, Content: $content, User1: $user1, User2: $user2){
+            Id
+          }
+        }
+      `, variables: {
+        "id": id,
+        "content": content,
+        "user1": user1,
+        "user2": user2
+      }
+    })
+  }
+
+  createChat(user1: number, user2: number, content: string): Observable<any> {
+    return this.apollo.mutate<any> ({
+      mutation: gql`
+        mutation createChat($user1: Int!, $user2: Int!, $content: String!) {
+          createChat(User1: $user1, User2: $user2, Content: $content) {
+            Id
+          }
+        }
+      `, variables: {
+        "user1": user1,
+        "user2": user2,
+        "content": content
+      }
+    })
+  }
+
+  getAdminByEmail(email: string): Observable<any> {
+    return this.apollo.query<Query> ({
+      query: gql`
+        query getAdminByEmail($email: String!) {
+          getAdminByEmail(Email: $email) {
+            id
+            email
+            name
+            password
+          }
+        }
+      `, variables: {
+        "email": email
       }
     })
   }

@@ -1,6 +1,6 @@
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: white;">
     <div class="container">
-        <div *ngFor="let i of displayedBlog;" class="blog-thumbnail">
+        <div *ngFor="let i of displayedBlog;" class="blog-thumbnail" (click)="toDetail(i.Id)">
             <img src="{{ i.ImagePath }}" alt="" style="width: 25vw; height: 25vh;">
             <h3> {{ i.BlogTitle }} </h3>
         </div>
@@ -10,3 +10,6 @@
     </div>
 </div>
 
+<div style="position: fixed; bottom: 10vh; right: 3vw; background-color: orange; color: white; font-size: 24px; padding: 5px 10px; border: 1px solid orange; border-radius: 15px;">
+    + Blog
+</div>

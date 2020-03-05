@@ -1,8 +1,8 @@
 <div class="widget-pesawat">
-    <div>
+    <div class="search-bar">
         <h2>Pilih Kereta Pergi</h2>
         <div>
-            <div style="display: flex;">
+            <div style="display: flex; width: 100%; justify-content: space-between;">
                 <div>
                     <mat-form-field>
                         <mat-select [(ngModel)]="fromValue" style="background-color: white;" #fromLocationSelect>
@@ -25,31 +25,99 @@
     </div>
 </div>
 <div class="container">
-
+    <div style="position: absolute; margin-top: 12vh; z-index: -1;" id="calendar">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="btn-group">
+                <div
+                    class="btn btn-primary"
+                    mwlCalendarPreviousView
+                    [view]="view"
+                    [(viewDate)]="viewDate"
+                    (viewDateChange)="closeOpenMonthViewDay()"
+                >
+                    Previous
+                </div>
+                <div
+                    class="btn btn-outline-secondary"
+                    mwlCalendarToday
+                    [(viewDate)]="viewDate"
+                >
+                    Today
+                </div>
+                <div
+                    class="btn btn-primary"
+                    mwlCalendarNextView
+                    [view]="view"
+                    [(viewDate)]="viewDate"
+                    (viewDateChange)="closeOpenMonthViewDay()"
+                >
+                    Next
+                </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+        </div>
+        <br />
+        <div [ngSwitch]="view">
+        <mwl-calendar-month-view
+            *ngSwitchCase="CalendarView.Month"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view
+            *ngSwitchCase="CalendarView.Week"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-week-view>
+        <mwl-calendar-day-view
+            *ngSwitchCase="CalendarView.Day"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-day-view>
+        </div>
+    </div>
     <div class="left-panel">
-        <div>
-            Departure
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>Departure</mat-expansion-panel-header>
             <div *ngFor="let i of departureTimes" class="check-box-field">
                 <mat-checkbox [(ngModel)]="i.checked"> {{ i.label }} </mat-checkbox>
             </div>
             <button (click)="resetFilter()">Reset</button>
-        </div>
-        <div>
-            Kelas
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header> Kelas </mat-expansion-panel-header>
             <div *ngFor="let i of kelasList" class="check-box-field">
                 <mat-checkbox [(ngModel)]="i.checked"> {{ i.class }} </mat-checkbox>
             </div>
             <button (click)="resetFilter()">Reset</button>
-        </div>
-        <div>
-            Nama Kereta
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header> Nama Kereta </mat-expansion-panel-header>
             <div *ngFor="let i of nameFilter" class="check-box-field">
                 <mat-checkbox [(ngModel)]="i.checked"> {{ i.name }} </mat-checkbox>
             </div>
             <button (click)="resetFilter()">Reset</button>
-        </div>        
+        </mat-expansion-panel>        
     </div>
     <div class="parentFlightContainer">
+        <button (click)="openCalendar()">Open Calendar</button>
         <div *ngFor="let i of displayedTrainData; let idx = index;" class="flightContainer">
             <div *ngIf="checkValidation(idx)" class="flightsDatas">
                 <div matTooltip={{i.Train.Name}}>
@@ -72,10 +140,10 @@
                 <hr>
                 <div id="bottom-panel">
                     <div id="detail-tab">
-                        <div class="detail-button" (click)="showDetail('perjalanan', idx)">
+                        <div class="detail-button" (click)="showDetail('perjalanan', idx)" style="display: flex; align-items: center;">
                             Detail Perjalanan
                         </div>
-                        <div class="detail-button" (click)="showDetail('harga', idx)">
+                        <div class="detail-button" (click)="showDetail('harga', idx)" style="display: flex; align-items: center;">
                             Detail Harga
                         </div>
                     </div>

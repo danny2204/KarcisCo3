@@ -1,0 +1,13 @@
+<div id="backHome" (click)="backToHome()">
+    Back To Home
+</div>
+<div id="addChat" (click)="addNewChat()">
+    Add New Chat
+</div>
+<div>
+    <div *ngFor="let i of chatList; let idx = index" class="chat-container" (click)="toDetail(idx)">
+        <p> {{ i.User1 }} </p>
+        <p> {{ i.User2 }} </p>
+        <p> {{ i.UpdatedAt }} </p>
+    </div>
+</div>

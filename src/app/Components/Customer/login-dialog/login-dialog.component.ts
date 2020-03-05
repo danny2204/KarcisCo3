@@ -45,14 +45,22 @@ export class LoginDialogComponent implements OnInit {
       sessionStorage.setItem("user", JSON.stringify(this.user))
       window.location.reload()
     } else {
-      console.log("invalild password")
+      alert("invalid password !")
+    }
+  }
+
+  toogleVisible() {
+    var x = document.getElementById("passwordInput")
+    if (x.getAttribute("type") === "password") {
+      x.setAttribute("type", "text")
+    } else {
+      x.setAttribute("type", "password")
     }
   }
 
   doCheck() {
-    console.log(this.user)
-    if (this.user == null) {
-      console.log("no user")
+    if (this.user.length == 0) {
+      alert("there is no such user")
     } else {
       console.table(this.user)
       this.showPass = true

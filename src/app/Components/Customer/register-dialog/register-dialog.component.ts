@@ -104,6 +104,15 @@ export class RegisterDialogComponent implements OnInit {
     } 
   }
 
+  toogleVisible() {
+    var x = document.getElementById("password-input")
+    if (x.getAttribute("type") === "password") {
+      x.setAttribute("type", "text")
+    } else {
+      x.setAttribute("type", "password")
+    }
+  }
+
   facebookLogin() {
     FB.login((response) => {
       if(response.authResponse) {

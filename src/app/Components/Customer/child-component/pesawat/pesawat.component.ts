@@ -1,17 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { EventEmitterService } from 'src/app/Service/event-emitter.service';
 import { SharedServiceService } from 'src/app/Service/shared-service.service';
-import { timer } from 'rxjs';
-import { Time } from '@angular/common';
+import { timer, Subject } from 'rxjs';
+import { Time, DatePipe } from '@angular/common';
 import { getTreeMissingMatchingNodeDefError } from '@angular/cdk/tree';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { PesawatWidgetComponent } from './pesawat-widget/pesawat-widget.component';
 import { Router } from '@angular/router';
+import { CalendarView, CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  addDays,
+  endOfMonth,
+  isSameDay,
+  isSameMonth,
+  addHours
+} from 'date-fns';
+import { parse } from 'querystring';
+import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
+
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3'
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF'
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA'
+  }
+};
 
 @Component({
   selector: 'app-pesawat',
   templateUrl: './pesawat.component.html',
-  styleUrls: ['./pesawat.component.sass']
+  styleUrls: ['./pesawat.component.sass'],
+  providers: [DatePipe]
 })
 export class PesawatComponent implements OnInit {
 
@@ -19,8 +48,12 @@ export class PesawatComponent implements OnInit {
   flightData: Object[]
   displayedFlightData: Object[]
   test: Object
+  fromLocation: Object[] = []
+  toLocation: Object[] = []
   tempFlightData: Object[]
   flightSearchData: FlightSearchData
+  fromChangeLocation: string
+  toChangeLocation: string
   departureTimes:TimeFilter[]=[
     {
       "label":"00:00-06:00",
@@ -150,7 +183,9 @@ export class PesawatComponent implements OnInit {
     private eventEmitterService: EventEmitterService,
     private sharedService: SharedServiceService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private datePipe: DatePipe,
+    private graphqlService: GraphqlServiceService
   ) { }
 
   public sort() {
@@ -325,16 +360,54 @@ export class PesawatComponent implements OnInit {
 
   ngOnInit() {
     this.displayedFlightData = []
+    this.fromLocation = this.sharedService.airports
+    this.toLocation = this.sharedService.airports
     this.config.autoFocus = false
     this.config.restoreFocus = true
     this.flightSearchData = {to: "", from: ""}
     this.flightSearchData.from = this.sharedService.flightSearchData.from
     this.flightSearchData.to = this.sharedService.flightSearchData.to
     this.flightData = this.sharedService.flightSearchResult
+
+    var fl = []
+    var dateExist = false
+    for(let i = 0 ; i < this.flightData.length; i++) {
+      dateExist = false
+      for(let j = 0 ; j < fl.length; j++){
+        if(this.datePipe.transform(fl[j].Date, "yyyy-MM-dd") == this.datePipe.transform(this.flightData[i].Departure, "yyyy-MM-dd")) {
+          dateExist = true
+          if(fl[j].Price > this.flightData[i].Price) {
+            fl[j].Price = this.flightData[i].Price
+          }
+          break
+        }
+      }
+      if(dateExist == false) {
+        fl.push({
+          "Date": this.flightData[i].Departure,
+          "Price": this.flightData[i].Price
+        })
+      }
+    }
+
+    console.table(fl)
+
+    for(let i = 0 ; i < fl.length; i++) {
+      this.events.push({
+        start: startOfDay(new Date(fl[i].Date)),
+        title: fl[i].Price,
+        color: colors.yellow,
+      })
+    }
+
     this.sort()
     this.filterAirline()
     this.filterFacility()
     window.addEventListener('scroll', this.scroll, true)
+  }
+
+  openCalendar() {
+    document.getElementById('calendar').style.zIndex = (parseInt(document.getElementById('calendar').style.zIndex)*-1).toString()
   }
 
   public loadData() {
@@ -347,6 +420,10 @@ export class PesawatComponent implements OnInit {
         this.displayedFlightData.push(this.flightData[index])
       }
       // console.log(this.displayedFlightData)
+    } else {
+      for(let index = 0; index < this.flightData.length; index++) {
+        this.displayedFlightData.push(this.flightData[index])
+      }
     }
   }
 
@@ -359,7 +436,18 @@ export class PesawatComponent implements OnInit {
   }
 
   public changeSearch() {
-    this.dialog.open(PesawatWidgetComponent, this.config)
+    this.graphqlService.getFlightByToAndFrom(this.toChangeLocation, this.fromChangeLocation).subscribe(async query => {
+      this.flightData = query.data.getFlightByToAndFrom
+      if(this.flightData.length != 0) {
+        this.displayedFlightData = []
+        this.detailString = []
+        this.facilityString = []
+        this.showData = 5
+        await this.ngOnInit()
+      } else {
+        alert("there is no such flight")
+      }
+    })
   }
 
   public checkValidation(idx: number) {
@@ -406,8 +494,8 @@ export class PesawatComponent implements OnInit {
     if(isChecked == true) {
       for (let index = 0; index < this.facilityFilter.length; index++) {
         if(this.facilityFilter[index].checked == true) {
-          for (let index2 = 0; index2 < this.flightData[idx].facilities.length; index2++) {
-            if(this.facilityFilter[index].facility == this.flightData[idx].facilities[index2].FacilityName) {
+          for (let index2 = 0; index2 < this.flightData[idx].Facilities.length; index2++) {
+            if(this.facilityFilter[index].facility == this.flightData[idx].Facilities[index2].FacilityName) {
               return true;
             } else continue
           }
@@ -431,12 +519,12 @@ export class PesawatComponent implements OnInit {
       for (let index = 0; index < this.transitFilter.length; index++) {
         if(this.transitFilter[index].checked == true) {
           if(this.transitFilter[index].amount == 2) {
-            if(this.flightData[idx].routes.length >= 2) {
+            if(this.flightData[idx].Routes.length >= 2) {
               return true
             } else continue
           }
           else {
-            if(this.flightData[idx].routes.length == this.transitFilter[index].amount) {
+            if(this.flightData[idx].Routes.length == this.transitFilter[index].amount) {
               return true
             } else continue
           }
@@ -459,7 +547,7 @@ export class PesawatComponent implements OnInit {
     if(isChecked == true) {
       for (let index = 0; index < this.airlineList.length; index++) {
         if(this.airlineList[index].checked == true) {
-          if(this.flightData[idx].airline.name == this.airlineList[index].airline) return true
+          if(this.flightData[idx].Airline.Name == this.airlineList[index].airline) return true
           else continue
         }
       }
@@ -480,8 +568,8 @@ export class PesawatComponent implements OnInit {
     if(isChecked == true) {
       for (let index = 0; index < this.arrivalTimes.length; index++) {
         if(this.arrivalTimes[index].checked == true) {
-          var arrivalHour = new Date(this.flightData[idx].arrival).getUTCHours()
-          var arrivalMinute = new Date(this.flightData[idx].arrival).getUTCMinutes()
+          var arrivalHour = new Date(this.flightData[idx].Arrival).getUTCHours()
+          var arrivalMinute = new Date(this.flightData[idx].Arrival).getUTCMinutes()
           if(arrivalHour < this.departureTimes[index].start.hours || arrivalHour > this.departureTimes[index].end.hours) {
             continue
           }
@@ -508,8 +596,8 @@ export class PesawatComponent implements OnInit {
     if(isChecked == true) {
       for (let index = 0; index < this.departureTimes.length; index++) {
         if(this.departureTimes[index].checked == true) {
-          var departureHour = new Date(this.flightData[idx].departure).getUTCHours()
-          var departureMinute = new Date(this.flightData[idx].departure).getUTCMinutes()
+          var departureHour = new Date(this.flightData[idx].Departure).getUTCHours()
+          var departureMinute = new Date(this.flightData[idx].Departure).getUTCMinutes()
           if(departureHour < this.departureTimes[index].start.hours || departureHour > this.departureTimes[index].end.hours) {
             continue
           }
@@ -545,6 +633,88 @@ export class PesawatComponent implements OnInit {
         }        
       }
     }
+  }
+
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+
+  view: CalendarView = CalendarView.Month;
+
+  CalendarView = CalendarView;
+
+  viewDate: Date = new Date();
+
+  modalData: {
+    action: string;
+    event: CalendarEvent;
+  };
+
+  refresh: Subject<any> = new Subject();
+
+  events: CalendarEvent[] = [
+    // {
+    //   start: startOfDay(new Date()),
+    //   title: 'An event with no end date',
+    //   color: colors.yellow,
+    // },
+  ];
+
+  activeDayIsOpen: boolean = true;
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate)) {
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+      this.viewDate = date;
+    }
+  }
+
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd
+  }: CalendarEventTimesChangedEvent): void {
+    this.events = this.events.map(iEvent => {
+      if (iEvent === event) {
+        return {
+          ...event,
+          start: newStart,
+          end: newEnd
+        };
+      }
+      return iEvent;
+    });
+  }
+
+  addEvent(): void {
+    this.events = [
+      ...this.events,
+      {
+        title: 'New event',
+        start: startOfDay(new Date()),
+        end: endOfDay(new Date()),
+        color: colors.red,
+        draggable: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        }
+      }
+    ];
+  }
+
+
+  setView(view: CalendarView) {
+    this.view = view;
+  }
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
   }
 
 }

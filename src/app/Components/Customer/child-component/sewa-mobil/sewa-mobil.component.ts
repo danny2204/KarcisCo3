@@ -3,6 +3,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 import { SharedServiceService } from 'src/app/Service/shared-service.service';
 import { EventEmitterService } from 'src/app/Service/event-emitter.service';
 import { Router } from '@angular/router';
+import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 
 @Component({
   selector: 'app-sewa-mobil',
@@ -44,12 +45,16 @@ export class SewaMobilComponent implements OnInit {
   carSearchData: CarSearchData
   showData = 5
   config: MatDialogConfig = new MatDialogConfig();
+  fromLocationToView: string[] = []
+  fromValue: string
+  cityList: Object[] = []
 
   constructor(
     private eventEmitterService: EventEmitterService,
     private sharedService: SharedServiceService,
     private dialog: MatDialog,
-    private Router: Router
+    private Router: Router,
+    private graphqlService: GraphqlServiceService
   ) { }
 
   ngOnInit() {
@@ -65,6 +70,13 @@ export class SewaMobilComponent implements OnInit {
     this.sort()
     this.filterBrand()
     this.filterModel()
+
+    this.graphqlService.getLimitedLocation().subscribe(async query => {
+      this.cityList = query.data.getLimitedLocation
+      this.cityList.push({
+        City: "Jakarta Pusat"
+      })
+    })
     window.addEventListener('scroll', this.scroll, true)
   }
 
@@ -142,6 +154,22 @@ export class SewaMobilComponent implements OnInit {
     this.loadData()
   }
 
+  totalMerekFilter: number
+  totalModelFilter: number
+
+  totalMerekShown: number = 5
+  totalModelShown: number = 5
+
+  public showMoreMerek() {
+    this.totalMerekShown = this.carData.length
+    this.filterBrand()
+  }
+
+  public showMoreModel() {
+    this.totalModelShown = this.carData.length
+    this.filterModel()
+  }
+
   public filterBrand() {
     var brandNameList: string[] = [];
     this.carData.forEach(element => {
@@ -150,11 +178,14 @@ export class SewaMobilComponent implements OnInit {
     var filteredCar = brandNameList.filter(
       (brandName, i, arr) => arr.findIndex( name => name === brandName ) === i
     )
+    this.totalMerekFilter = filteredCar.length
     filteredCar.forEach(element => {
-      this.brandFilter.push({
-        label: element,
-        checked: false
-      })
+      if(this.brandFilter.length < this.totalMerekShown) {
+        this.brandFilter.push({
+          label: element,
+          checked: false
+        })
+      }
     })
   }
 
@@ -166,16 +197,33 @@ export class SewaMobilComponent implements OnInit {
     var filteredModel = modelNameList.filter(
       (modelName, i, arr) => arr.findIndex( name => name === modelName ) === i
     )
+    this.totalModelFilter = filteredModel.length
     filteredModel.forEach(element => {
-      this.modelFilter.push({
-        label: element,
-        checked: false
-      })
+      if(this.modelFilter.length < 5) {
+        this.modelFilter.push({
+          label: element,
+          checked: false
+        })
+      }
     })
   }
 
+  fromDate: Date
+
   public changeSearch() {
-    this.dialog.open(PesawatWidgetComponent, this.config)
+    var searchDate = this.fromDate.getFullYear() + "-" + (this.fromDate.getMonth() + 1) + "-" + this.fromDate.getDate()
+    this.graphqlService.getCarByLocationAndToAndFrom(this.fromValue, searchDate).subscribe(async query => {
+      this.carData = query.data.getCarByLocationAndToAndFrom
+      if(this.carData.length == 0) {
+        alert("there is no such data")
+      } else {
+        this.loadLowestPrice()
+        this.sort()
+        this.filterBrand()
+        this.filterModel()
+      }
+
+    })
   }
 
   public checkValidation(idx: number) {
@@ -305,7 +353,6 @@ export class SewaMobilComponent implements OnInit {
       }
     }
   }
-
 
 }
 

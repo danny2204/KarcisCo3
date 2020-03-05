@@ -1,11 +1,11 @@
 <div id="parent">
-    <div>
+    <div style="width: 100%;">
         <div id="img-container">
             <div (click)="leftClick()">
                 <img src="../../../../../../assets/left.png" alt="" id="leftButton">
             </div>
             <div [@slideInOut]=doSlide id="img-slider">
-                <img src="../../../../../../assets/slider-image/slider-image({{currentIndex}}).jpg" alt="">
+                <img src="../../../../../../assets/slider-image/slider-image({{currentIndex}}).jpg" alt="" style="width: 100%">
             </div>
             <div (click)="rightClick()">
                 <img src="../../../../../../assets/right.png" alt="" id="rightButton">

@@ -1,5 +1,5 @@
 <app-image-slider></app-image-slider>
-<app-quick-card></app-quick-card>
+<app-quick-card style="width: 100%;"></app-quick-card>
 
 <div *ngIf="isLoading == true" style="display: flex; justify-content: center;">
     <mat-spinner></mat-spinner>
@@ -22,4 +22,8 @@
             </mat-card-content>
         </mat-card>
     </div>
+</div>
+
+<div id="whatsapp-button" style="display: flex; background-color: green; position: fixed; bottom: 50px; right: 50px; z-index: 10;">
+    <a href="https://web.whatsapp.com/send?phone=628551500878&text=Hi%2c%20tiket.com" style="color: white;">Whatsapp</a>
 </div>

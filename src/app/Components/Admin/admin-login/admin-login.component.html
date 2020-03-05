@@ -1,0 +1,14 @@
+<div style="display: flex; justify-content: center; align-items: center;">
+    <mat-card style="width: 40vw; height: 50vh; display: flex; align-items: center; justify-content: center;">
+        <mat-card-content>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <mat-label><h3>Admin Login</h3></mat-label>
+                <input type="text" class="admin-input" [(ngModel)]="adminEmail">
+                <input type="password" class="admin-input" [(ngModel)]="adminPassword">
+                <button (click)="doLogin()">
+                    Login
+                </button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

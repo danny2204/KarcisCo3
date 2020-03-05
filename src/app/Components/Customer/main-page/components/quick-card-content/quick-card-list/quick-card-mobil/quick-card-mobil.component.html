@@ -2,39 +2,35 @@
     <img src="" alt="">
     <h2>Cari Sewa Mobil Murah di Sini</h2>
 </div>
-<div>
-    <mat-form-field>
-        <mat-label>Mau Sewa Dimana</mat-label>
-        <mat-select [(ngModel)]="fromValue" style="background-color: white;" #fromLocationSelect>
-            <!-- <mat-option *ngFor="let i of rentLocationToView" value={{i.City}}> {{i.City}} </mat-option> -->
-            <mat-option *ngFor="let i of rentLocationToView" value={{i}}> {{i}} </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <div>
-        Tanggal Mulai
-        <input matInput [matDatepicker]="start" placeholder="Choose a date" (click)="start.open()" [(ngModel)]="fromDate">
-        <mat-datepicker-toggle matSuffix [for]="start">
-        </mat-datepicker-toggle>
-        <mat-datepicker #start></mat-datepicker>
+<div class="search-bar">
+    <div class="search-field">
+        <mat-form-field>
+            <mat-label>Mau Sewa Dimana</mat-label>
+            <mat-select [(ngModel)]="fromValue" style="background-color: white;" #fromLocationSelect>
+                <!-- <mat-option *ngFor="let i of rentLocationToView" value={{i.City}}> {{i.City}} </mat-option> -->
+                <mat-option *ngFor="let i of rentLocationToView" value={{i}}> {{i}} </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div style="display: flex;">
+            Tanggal Mulai
+            <input matInput [matDatepicker]="start" placeholder="Choose a date" (click)="start.open()" [(ngModel)]="fromDate">
+            <mat-datepicker-toggle matSuffix [for]="start">
+            </mat-datepicker-toggle>
+            <mat-datepicker #start></mat-datepicker>
+        </div>
+        <div style="display: flex;">
+            Tanggal Selesai
+            <input matInput [matDatepicker]="end" placeholder="Choose a date" (click)="end.open()" [(ngModel)]="toDate">
+            <mat-datepicker-toggle matSuffix [for]="end">
+            </mat-datepicker-toggle>
+            <mat-datepicker #end></mat-datepicker>
+        </div>
+        <div>
+            Jumlah Mobil
+            <input type="number" min="1" max="4" id="carQuantity" [(ngModel)]="carQuantity">
+        </div>
     </div>
     <div>
-        Tanggal Selesai
-        <input matInput [matDatepicker]="end" placeholder="Choose a date" (click)="end.open()" [(ngModel)]="toDate">
-        <mat-datepicker-toggle matSuffix [for]="end">
-        </mat-datepicker-toggle>
-        <mat-datepicker #end></mat-datepicker>
+        <button id="search-btn" (click)="getCar()">CARI MOBIL</button>
     </div>
-    <div>
-        Jumlah Mobil
-        <input type="number" min="1" max="4" id="carQuantity" [(ngModel)]="carQuantity">
-    </div>
-    <!-- <mat-form-field>
-        <mat-label>To</mat-label>
-        <mat-select [(ngModel)]="toValue" style="background-color: white;" #toLocationSelect>
-            <mat-option *ngFor="let i of toLocationToView" value={{i.City}}> {{i.City}} </mat-option>
-        </mat-select>
-    </mat-form-field> -->
-</div>
-<div>
-    <button id="search-btn" (click)="getCar()">CARI MOBIL</button>
 </div>

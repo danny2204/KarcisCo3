@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 declare var FB: any;
 
 @Component({
@@ -8,7 +9,9 @@ declare var FB: any;
 })
 export class FacebookButtonComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private graphqlService: GraphqlServiceService
+  ) { }
 
   ngOnInit() {
     FB.init({
@@ -30,15 +33,24 @@ export class FacebookButtonComponent implements OnInit {
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
   }
-
+  user: Object[] = []
   facebookLogin() {
     FB.login((response) => {
       if(response.authResponse) {
         let userID = response.authResponse.userID
         //tarik data user
+        this.graphqlService.getUserByAuthId(userID).subscribe(async query => {
+          this.user = query.data.getUserByAuthId
+          if(this.user.length == 0) {
+            alert("no such account")
+          } else {
+            alert("success")
+            sessionStorage.setItem("user", JSON.stringify(this.user))
+          }
+        })
         FB.api(
           userID, (res) => {
-            console.log(res);
+
           }
         )
       } else {

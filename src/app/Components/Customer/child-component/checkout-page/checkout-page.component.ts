@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { SharedServiceService } from 'src/app/Service/shared-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout-page',
@@ -22,11 +23,45 @@ export class CheckoutPageComponent implements OnInit {
   isHotelBought: boolean = false
   isEntertainmentBought: boolean = false
 
+  minutes: number = 0
+  seconds: number = 10
+
   constructor(
-    private sharedService: SharedServiceService
+    private sharedService: SharedServiceService,
+    private router: Router
   ) { }
 
+  titelValue: string = ""
+  nameValue: string = ""
+  emailValue: string = ""
+
+  toPayment() {
+    if(this.titelValue == "") {
+      alert("titel cannot be empty")
+    }
+    else if(this.nameValue == "") {
+      alert("name cannot be empty")
+    }
+    else if(this.emailValue == "") {
+      alert("email cannot be empty")
+    }
+  }
+
   ngOnInit() {
+
+    var interval = setInterval(() => {
+      this.seconds -= 1
+      if(this.seconds == 0 && this.minutes != 0) {
+        this.minutes -= 1
+        this.seconds = 59
+      }
+      if(this.minutes <= 0 && this.seconds <= 0) {
+        alert("times out")
+        clearInterval(interval)
+        this.router.navigate(['/'])
+      }
+    }, 1000)
+
     if(localStorage["whichBought"] == "flight") {
       this.flightData = []
       this.isFlightBought = true

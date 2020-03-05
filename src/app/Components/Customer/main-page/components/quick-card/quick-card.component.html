@@ -1,11 +1,11 @@
 <div class="quick-card" #quickCard (click)="scrollToTop(quickCard, overlay)">
     <div class="quick-card-navigation">
-        <div>
+        <div id="label-text">
             <h3>Hey, kamu</h3>
             <h1>Mau ke mana ?</h1>
         </div>
 
-        <mat-tab-group dynamicHeight>
+        <mat-tab-group dynamicHeight style="width: 100%;" id="tab-panel">
             <mat-tab>
                 <ng-template mat-tab-label>
                     <div class="quick-card-button" (click)="inject('pesawat')">

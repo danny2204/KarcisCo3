@@ -47,6 +47,11 @@ import { BlogDetailComponent } from './Components/Customer/blog-page/blog-detail
 import { HiburanDetailComponent } from './Components/Customer/child-component/hiburan/hiburan-detail/hiburan-detail.component';
 import { HiburanSearchComponent } from './Components/Customer/child-component/hiburan/hiburan-search/hiburan-search.component';
 import { UserPageComponent } from './Components/Customer/child-component/user-page/user-page.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { ChatDetailComponent } from './Components/Customer/chat-page/chat-detail/chat-detail.component';
+import { ChatPageComponent } from './Components/Customer/chat-page/chat-page.component';
+import { AdminLoginComponent } from './Components/Admin/admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +91,10 @@ import { UserPageComponent } from './Components/Customer/child-component/user-pa
     BlogDetailComponent,
     HiburanSearchComponent,
     HiburanDetailComponent,
-    UserPageComponent
+    UserPageComponent,
+    ChatPageComponent,
+    ChatDetailComponent,
+    AdminLoginComponent
   ],
   entryComponents: [LoginDialogComponent, RegisterDialogComponent, QuickCardPesawatComponent, QuickCardHotelComponent, PesawatWidgetComponent, QuickCardKeretaComponent, QuickCardMobilComponent, PopUpImageComponent, HistorySearchComponent],
   imports: [
@@ -103,6 +111,7 @@ import { UserPageComponent } from './Components/Customer/child-component/user-pa
     MatExpansionModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -20,6 +20,9 @@ import { BlogDetailComponent } from './Components/Customer/blog-page/blog-detail
 import { HiburanSearchComponent } from './Components/Customer/child-component/hiburan/hiburan-search/hiburan-search.component';
 import { HiburanDetailComponent } from './Components/Customer/child-component/hiburan/hiburan-detail/hiburan-detail.component';
 import { UserPageComponent } from './Components/Customer/child-component/user-page/user-page.component';
+import { ChatPageComponent } from './Components/Customer/chat-page/chat-page.component';
+import { ChatDetailComponent } from './Components/Customer/chat-page/chat-detail/chat-detail.component';
+import { AdminLoginComponent } from './Components/Admin/admin-login/admin-login.component';
 
 const routes: Routes = [{
   path: '',
@@ -188,6 +191,30 @@ const routes: Routes = [{
     path: '',
     component: UserPageComponent,
     outlet: 'mainCustomer'
+  }]
+}, {
+  path: 'chat-page',
+  component: MainHomeComponent,
+  children: [{
+    path: '',
+    component: ChatPageComponent,
+    outlet: 'mainCustomer'
+  }]
+}, {
+  path: 'chat-detail',
+  component: MainHomeComponent,
+  children: [{
+    path: '',
+    component: ChatDetailComponent,
+    outlet: 'mainCustomer'
+  }]
+}, {
+  path: 'admin-login',
+  component: MainHomeComponent,
+  children: [{
+    path: '',
+    component: AdminLoginComponent,
+    outlet: "mainCustomer"
   }]
 }];
 
