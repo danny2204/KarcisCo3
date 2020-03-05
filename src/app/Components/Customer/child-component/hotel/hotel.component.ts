@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { SharedServiceService } from 'src/app/Service/shared-service.service';
+import { WebSocketServiceService } from 'src/app/Service/web-socket-service.service';
 
 @Component({
   selector: 'app-hotel',
@@ -184,7 +185,8 @@ export class HotelComponent implements OnInit {
   constructor(
     private sharedService: SharedServiceService,
     private dialog: MatDialog,
-    private Router: Router
+    private Router: Router,
+    private webSocket: WebSocketServiceService
   ) { }
 
   public goToMap() {
@@ -193,6 +195,7 @@ export class HotelComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.addWebSocket()
     this.hotelData = [];
     this.displayedHotelData = [];
     this.config.autoFocus = false
@@ -210,6 +213,13 @@ export class HotelComponent implements OnInit {
   public selectHotel(idx: number) {
     this.sharedService.selectedHotel = this.hotelData[idx]
     this.Router.navigate(['/hotel-detail'])
+  }
+
+  addWebSocket() {
+    this.webSocket.listen("hotel").subscribe(async data => {
+      console.log("asd")
+      alert("new hotel inserted ! Refresh the page !")
+    })
   }
 
   public checkValidation(idx: number) {

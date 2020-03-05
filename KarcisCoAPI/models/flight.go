@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"github.com/danny2204/KarcisCoAPI/connection"
+	"github.com/danny2204/KarcisCoAPI/middleware"
 	"time"
 )
 
@@ -29,6 +30,7 @@ type Flight struct {
 
 func GetAllFlight()([]Flight, error) {
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -48,12 +50,12 @@ func GetAllFlight()([]Flight, error) {
 			db.Model(flightList[i].Routes[j]).Related(&flightList[i].Routes[j].AirportFrom, "RouteFromRefer").Related(&flightList[i].Routes[j].AirportTo, "RouteToRefer")
 		}
 	}
-	fmt.Println(flightList)
 	return flightList, err
 }
 
 func CreateFlight(torefer int, fromrefer int, airlinerefer int, price int, tax int, servicecharge int, /*route Route[],*/ departure time.Time, arrival time.Time, duration int) (*Flight, error){
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -76,8 +78,9 @@ func CreateFlight(torefer int, fromrefer int, airlinerefer int, price int, tax i
 	return flight, err
 }
 
-func UpdateFlight(id int, torefer uint, fromrefer uint, airlinerefer int, price int, tax int, servicecharge int, /*route Route[],*/ departure time.Time, arrival time.Time, duration uint) (*Flight, error) {
+func UpdateFlight(id int, torefer int, fromrefer int, airlinerefer int, price int, tax int, servicecharge int, /*route Route[],*/ departure time.Time, arrival time.Time, duration int) (*Flight, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -93,6 +96,7 @@ func UpdateFlight(id int, torefer uint, fromrefer uint, airlinerefer int, price 
 
 func RemoveFlight(id int) (*Flight, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -104,21 +108,33 @@ func RemoveFlight(id int) (*Flight, error) {
 	return &flight, db.Delete(flight).Error
 }
 
-func GetFlightById(id int)(*Flight, error) {
+func GetFlightById(id int)([]Flight, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
 
-	flight := Flight{ID: id}
-	db.Where("id = ?", id).Find(&flight)
-	return &flight, err
+	var flightList []Flight
+	db.Where("id = ?", id).Find(&flightList)
+	for i,_ := range flightList {
+		db.Model(flightList[i]).Related(&flightList[i].Airline, "AirlineRefer")
+		db.Model(flightList[i]).Related(&flightList[i].Facilities , "FlightId")
+		db.Model(flightList[i]).Related(&flightList[i].Routes, "FlightRouteId")
+		db.Model(flightList[i]).Related(&flightList[i].To, "ToRefer")
+		db.Model(flightList[i]).Related(&flightList[i].From, "FromRefer")
+		for j,_ := range flightList[i].Routes {
+			db.Model(flightList[i].Routes[j]).Related(&flightList[i].Routes[j].AirportFrom, "RouteFromRefer").Related(&flightList[i].Routes[j].AirportTo, "RouteToRefer")
+		}
+	}
+	return flightList, err
 }
 
 func GetFlightByToAndFrom(to string, from string)([]Flight, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -128,7 +144,6 @@ func GetFlightByToAndFrom(to string, from string)([]Flight, error) {
 	var flight []Flight
 	db.Where("to_refer in (?) AND from_refer in(?)", db.Table("airports").Select("id").Where("city = ?", to).SubQuery(), db.Table("airports").Select("id").Where("city = ?", from).SubQuery()).Find(&flight)
 	for i,_ := range flight {
-		//db.Model(flight[i]).Related(&flight[i].To, "ToRefer").Related(&flight[i].From, "FromRefer").Related(&flight[i].Airline, "AirlineRefer")
 		db.Model(flight[i]).Related(&flight[i].Airline, "AirlineRefer")
 		db.Model(flight[i]).Related(&flight[i].Facilities , "FlightId")
 		db.Model(flight[i]).Related(&flight[i].Routes, "FlightRouteId")

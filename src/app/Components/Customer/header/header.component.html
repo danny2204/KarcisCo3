@@ -19,11 +19,16 @@
         <div style="background-image: url('../../../assets/logo.png'); background-size: contain; background-repeat: no-repeat; background-position: center;" id="logo-img" (click)="toHome()">
         </div>
         <div class="navigation">
-            <label href="" (click)="getFlight()">Pesawat</label>
-            <label href="">Hotel</label>
-            <label href="">Kereta Api</label>
-            <label href="">Sewa Mobil</label>
-            <label href="">Hiburan</label>
+            <label *ngIf="mainLanguage == 'ID'" href="" (click)="getFlight()">Pesawat</label>
+            <label *ngIf="mainLanguage == 'ID'" href="">Hotel</label>
+            <label *ngIf="mainLanguage == 'ID'" href="">Kereta Api</label>
+            <label *ngIf="mainLanguage == 'ID'" href="">Sewa Mobil</label>
+            <label *ngIf="mainLanguage == 'ID'" href="">Hiburan</label>
+            <label *ngIf="mainLanguage == 'EN'" href="" (click)="getFlight()">Flight</label>
+            <label *ngIf="mainLanguage == 'EN'" href="">Hotel</label>
+            <label *ngIf="mainLanguage == 'EN'" href="">Trip</label>
+            <label *ngIf="mainLanguage == 'EN'" href="">Rent Car</label>
+            <label *ngIf="mainLanguage == 'EN'" href="">Entertainment</label>
         </div>
     </div>
 

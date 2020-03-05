@@ -3,6 +3,7 @@ package models
 import (
 	_ "fmt"
 	"github.com/danny2204/KarcisCoAPI/connection"
+	"github.com/danny2204/KarcisCoAPI/middleware"
 	"time"
 )
 
@@ -21,6 +22,7 @@ type Airport struct {
 
 func GetAllAirport()([]Airport, error) {
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -35,6 +37,7 @@ func GetAllAirport()([]Airport, error) {
 
 func InsertAirport(code string, name string, city string, citycode string, province string, country string) (*Airport, error){
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -56,6 +59,7 @@ func InsertAirport(code string, name string, city string, citycode string, provi
 
 func UpdateAirport(id int, name string, code string, city string, citycode string, province string, country string) (*Airport, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -70,6 +74,7 @@ func UpdateAirport(id int, name string, code string, city string, citycode strin
 
 func RemoveAirport(id int) (*Airport, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -83,6 +88,7 @@ func RemoveAirport(id int) (*Airport, error) {
 
 func GetAirportbyId(id int) (*Airport, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err

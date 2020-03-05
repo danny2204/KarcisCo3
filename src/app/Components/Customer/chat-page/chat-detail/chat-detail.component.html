@@ -1,24 +1,40 @@
-<div (click)="backToChatPage()">
-    Back to Chat List
-</div>
 
-<div>
-    <div *ngFor="let i of chatList; let idx=index">
-        <div style="display: flex; width: 100%; justify-content: flex-start;" *ngIf="checkIsUser(idx) == false">
-            <div *ngIf="checkIsImage(idx) == ''">
-                {{ i.content }}
-            </div>
-            <img src="../../../../../assets/{{ checkIsImage(idx) }}" alt="" *ngIf="checkIsImage(idx) != ''">
-        </div>
-        <div style="display: flex; width: 100%; justify-content: flex-end;" *ngIf="checkIsUser(idx) == true">
-            <div *ngIf="checkIsImage(idx) == ''">
-                {{ i.content }}
-            </div>
-            <img src="../../../../../assets/{{ checkIsImage(idx) }}" alt="" *ngIf="checkIsImage(idx) != ''">
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 5vh 0;">
+    <div (click)="backToChatPage()" id="backBtn">
+        Back to Chat List
+    </div>
+    <div id="modalImage">
+        <img src="{{imageModal}}" alt="" style="width: 100%; height: 100%;">
+        <div style="position: relative; border: 1px lightgray solid; border-radius: 50px; font-size: 24px; cursor: pointer;" (click)="closeModal()">
+            X
         </div>
     </div>
-    <div style="display: flex;">
-        <input type="text" id="inputChat" [(ngModel)]="chatContent">
-        <button id="sendBtn" (click)="sendMsg()">SEND</button>
+    <div style="width: 40vw; background-color: #fff; border: 1px white solid; border-radius: 5px; padding: 2vw;">
+        <div *ngFor="let i of chatList; let idx=index">
+            <div style="display: flex; width: 100%; justify-content: flex-start;" *ngIf="checkIsUser(idx) == false">
+                <div class="notUserBubble" *ngIf="checkIsImage(idx) == ''">
+                    {{ i.content }}
+                </div>
+                <div class="notUserBubble" style="display: flex; flex-direction: column;" *ngIf="checkIsImage(idx) != ''">
+                    <img (click)="openModal(checkIsImage(idx))" class="notUserBubble" src="{{checkIsImage(idx)}}" alt="">
+                    <a href="{{checkIsImage(idx)}}" download="">Download</a>
+                </div>
+            </div>
+            <div style="display: flex; width: 100%; justify-content: flex-end;" *ngIf="checkIsUser(idx) == true">
+                <div class="userBubble" *ngIf="checkIsImage(idx) == ''">
+                    {{ i.content }}
+                </div>
+                <div class="userBubble" style="display: flex; flex-direction: column;" *ngIf="checkIsImage(idx) != ''">
+                    <img (click)="openModal(checkIsImage(idx))" class="userBubble" src="{{checkIsImage(idx)}}" alt="">
+                    <a href="{{checkIsImage(idx)}}" download="">Download</a>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <input matInput type="text" id="inputChat" [(ngModel)]="chatContent" (input)="checkIsEmpty()">
+            <button id="sendBtn" (click)="sendMsg()" *ngIf="isHidden == false">SEND</button>
+            <input type="file" #fileInput style="display: none;" (change)="onFileChange($event)">
+            <button id="sendBtn" (click)="fileInput.click()">IMAGE</button>
+        </div>
     </div>
 </div>

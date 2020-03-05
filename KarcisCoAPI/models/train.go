@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/danny2204/KarcisCoAPI/connection"
+	"github.com/danny2204/KarcisCoAPI/middleware"
 )
 
 type Train struct {
@@ -15,6 +16,7 @@ type Train struct {
 
 func GetAllTrain()([]Train, error) {
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -31,6 +33,7 @@ func GetAllTrain()([]Train, error) {
 
 func CreateTrain(name string, class string, subclass string, code string) (*Train, error){
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -50,6 +53,7 @@ func CreateTrain(name string, class string, subclass string, code string) (*Trai
 
 func UpdateTrain(id int, name string, class string, subclass string, code string) (*Train, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -65,6 +69,7 @@ func UpdateTrain(id int, name string, class string, subclass string, code string
 
 func RemoveTrain(id int) (*Train, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err

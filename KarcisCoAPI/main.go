@@ -5,7 +5,6 @@ import (
 	"github.com/danny2204/KarcisCoAPI/gql/mutation"
 	"github.com/danny2204/KarcisCoAPI/gql/queries"
 	"github.com/danny2204/KarcisCoAPI/middleware"
-	"github.com/gorilla/mux"
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
 	"log"
@@ -24,16 +23,14 @@ func main() {
 
 	h := handler.New(&handler.Config{
 		Schema:           &schema,
-		Pretty:           true,
+		Pretty:           false,
 		GraphiQL:         true,
 		Playground:       true,
 	})
 
-	wrapped := middleware.CorsMiddleware(h)
-
-	r := mux.NewRouter()
-	r.Use(middleware.LogMiddleware)
-	r.Handle("/api", wrapped)
+	m := middleware.Cors(h)
+	r := connection.NewRoutes()
+	r.Handle("/api/{key}", m)
 
 	log.Fatal(http.ListenAndServe(":" + connection.ApiPort, r))
 

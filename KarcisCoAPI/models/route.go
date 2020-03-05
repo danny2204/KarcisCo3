@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"github.com/danny2204/KarcisCoAPI/connection"
+	"github.com/danny2204/KarcisCoAPI/middleware"
 	"time"
 )
 
@@ -21,6 +22,7 @@ type Route struct {
 
 func GetAllRoute()([]Route, error) {
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -38,6 +40,7 @@ func GetAllRoute()([]Route, error) {
 
 func CreateRoute(toRefer int, fromRefer int, duration int, flightId int) (*Route, error){
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -57,6 +60,7 @@ func CreateRoute(toRefer int, fromRefer int, duration int, flightId int) (*Route
 
 func UpdateRoute(id int, toRefer int, fromRefer int, duration int, flightId int) (*Route, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -72,6 +76,7 @@ func UpdateRoute(id int, toRefer int, fromRefer int, duration int, flightId int)
 
 func RemoveRoute(id int) (*Route, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -85,6 +90,7 @@ func RemoveRoute(id int) (*Route, error) {
 
 func GetRouteById(id int)(*Route, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err

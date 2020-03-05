@@ -3,6 +3,7 @@ import { Subscription, Subscribable } from 'rxjs';
 import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 import { SharedServiceService } from 'src/app/Service/shared-service.service';
 import { Router } from '@angular/router';
+import { WebSocketServiceService } from 'src/app/Service/web-socket-service.service';
 
 @Component({
   selector: 'app-hiburan',
@@ -24,7 +25,8 @@ export class HiburanComponent implements OnInit {
   constructor(
     private graphqlService: GraphqlServiceService,
     private sharedService: SharedServiceService,
-    private router: Router
+    private router: Router,
+    private webSocket: WebSocketServiceService
   ) { }
 
   loadTrendAttractions() {
@@ -40,7 +42,14 @@ export class HiburanComponent implements OnInit {
     })
   }
 
+  addWebSocket() {
+    this.webSocket.listen("event").subscribe(async data => {
+      alert("new event inserted ! Refresh the page !")
+    })
+  }
+
   ngOnInit() {
+    this.addWebSocket()
     this.typeValue = ''
     this.subscriber1 = this.graphqlService.getEntertainmentByTrending("Activities").subscribe(async query => {
       this.trendingActivities = query.data.getEntertainmentByTrending

@@ -1439,7 +1439,7 @@ export class GraphqlServiceService {
         }
       `, variables: {
         "id": userId
-      }
+      }, fetchPolicy: "no-cache"
     })
   }
 

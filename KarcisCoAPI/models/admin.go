@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/danny2204/KarcisCoAPI/connection"
+	"github.com/danny2204/KarcisCoAPI/middleware"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -21,6 +22,7 @@ var err error
 
 func GetAllAdmin()([]Admin, error) {
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -35,6 +37,7 @@ func GetAllAdmin()([]Admin, error) {
 
 func CreateAdmin(name string, email string, password string) (*Admin, error){
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -53,6 +56,7 @@ func CreateAdmin(name string, email string, password string) (*Admin, error){
 
 func UpdateAdmin(id int, name string, email string, password string) (*Admin, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -68,6 +72,7 @@ func UpdateAdmin(id int, name string, email string, password string) (*Admin, er
 
 func RemoveAdmin(id int) (*Admin, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -81,6 +86,7 @@ func RemoveAdmin(id int) (*Admin, error) {
 
 func GetAdminById(id int) (*Admin, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -90,4 +96,18 @@ func GetAdminById(id int) (*Admin, error) {
 	admin := Admin{ID: id}
 	db.Where("id = ?", id).Find(&admin)
 	return &admin, err
+}
+
+func GetAdminByEmail(email string)([]Admin, error) {
+	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
+
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	var admin []Admin
+	db.Where("email = ?", email).Find(&admin)
+	return admin, err
 }

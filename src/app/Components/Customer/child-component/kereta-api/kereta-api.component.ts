@@ -7,6 +7,7 @@ import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 import { CalendarEventTimesChangedEvent, CalendarEvent, CalendarView } from 'angular-calendar';
 import { isSameMonth, isSameDay, startOfDay, endOfDay } from 'date-fns';
 import { Subject } from 'rxjs';
+import { WebSocketServiceService } from 'src/app/Service/web-socket-service.service';
 
 @Component({
   selector: 'app-kereta-api',
@@ -101,8 +102,15 @@ export class KeretaApiComponent implements OnInit {
     private sharedService: SharedServiceService,
     private dialog: MatDialog,
     private graphqlService: GraphqlServiceService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private webSocket: WebSocketServiceService
   ) { }
+
+  addWebSocket() {
+    this.webSocket.listen("train").subscribe(async data => {
+      alert("new train inserted ! Refresh the page !")
+    })
+  }
 
   public filterTrain() {
     var trainNameList: string[] = [];
@@ -121,6 +129,7 @@ export class KeretaApiComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.addWebSocket()
     this.displayedTrainData = []
     this.config.autoFocus = false
     this.config.restoreFocus = true

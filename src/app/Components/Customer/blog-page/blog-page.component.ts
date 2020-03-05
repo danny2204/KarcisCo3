@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GraphqlServiceService } from 'src/app/Service/graphql-service.service';
 import { Router } from '@angular/router';
+import { WebSocketServiceService } from 'src/app/Service/web-socket-service.service';
 
 @Component({
   selector: 'app-blog-page',
@@ -16,7 +17,8 @@ export class BlogPageComponent implements OnInit {
 
   constructor(
     private graphqlService: GraphqlServiceService,
-    private router: Router
+    private router: Router,
+    private webSocket: WebSocketServiceService
   ) { }
 
   addInfiniteScroll() {
@@ -29,6 +31,7 @@ export class BlogPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.addWebSocket()
     this.graphqlService.getAllBlog().subscribe(async query => {
       this.blogList = query.data.getAllBlog
       await this.loadData()
@@ -46,6 +49,12 @@ export class BlogPageComponent implements OnInit {
         this.displayedBlog.push(this.blogList[index])
       }
     }
+  }
+
+  addWebSocket() {
+    this.webSocket.listen("blog").subscribe(async data => {
+      alert("new blog inserted ! Refresh the page !")
+    })
   }
 
   scroll = (event): void => {

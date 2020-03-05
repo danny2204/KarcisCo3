@@ -1,7 +1,10 @@
 package connection
 
 import (
+	"errors"
 	"fmt"
+	"github.com/danny2204/KarcisCoAPI/middleware"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
@@ -42,4 +45,15 @@ func init() {
 
 func ConnectDatabase()(*gorm.DB, error) {
 	return gorm.Open(dbType, connectionString)
+}
+
+func ReturnError(s string) error {
+	return errors.New(s)
+}
+
+func NewRoutes() *mux.Router {
+	r := mux.NewRouter()
+	r.Use(middleware.LogMiddleware)
+
+	return r
 }

@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/danny2204/KarcisCoAPI/connection"
+	"github.com/danny2204/KarcisCoAPI/middleware"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type Airline struct {
 
 func GetAllAirline()([]Airline, error) {
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -29,6 +31,7 @@ func GetAllAirline()([]Airline, error) {
 
 func InsertAirline(name string) (*Airline, error){
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -45,6 +48,7 @@ func InsertAirline(name string) (*Airline, error){
 
 func UpdateAirline(id int, name string) (*Airline, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -59,6 +63,7 @@ func UpdateAirline(id int, name string) (*Airline, error) {
 
 func RemoveAirline(id int) (*Airline, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -72,6 +77,7 @@ func RemoveAirline(id int) (*Airline, error) {
 
 func GetAirlineById(id int) (*Airline, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err

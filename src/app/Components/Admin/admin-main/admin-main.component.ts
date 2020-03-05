@@ -6,6 +6,7 @@ import { Time, DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
+import { WebSocketServiceService } from 'src/app/Service/web-socket-service.service';
 
 @Component({
   selector: 'app-admin-main',
@@ -155,7 +156,8 @@ export class AdminMainComponent implements OnInit {
     private graphqlService: GraphqlServiceService,
     private changedetectorRef: ChangeDetectorRef,
     private datePipe: DatePipe,
-    private router: Router
+    private router: Router,
+    private webSocket: WebSocketServiceService
   ) { }
 
   format(cmd){
@@ -205,6 +207,7 @@ export class AdminMainComponent implements OnInit {
       alert("blog detail cannot be empty !")
     } else {
       this.graphqlService.createBlog("admin", this.blogCategory, "../../../../assets/blog-image-1.jpg", this.blogTitle, this.blogDetails, 0).subscribe(async query => {
+        this.webSocket.emit("blog", "")
         console.log(query.data.createBlog.Id)
       })
     }
@@ -319,6 +322,7 @@ export class AdminMainComponent implements OnInit {
       var eventDesc = document.getElementById("eventDetail").innerHTML
       this.graphqlService.createEntertainment(this.eventName, this.eventKotaValue, this.eventType, startDate, endDate, eventDesc).subscribe(async query => {
         if(query.data.createEntertainment) {
+          this.webSocket.emit("event", "")
           console.log("success insert !")
         }
       })
@@ -442,6 +446,7 @@ export class AdminMainComponent implements OnInit {
       this.graphqlService.createHotel(this.hotelName, this.hotelType, 0, 0, this.hotelAddress, this.hotelRating, this.hotelCity).subscribe(async query => {
         if(query.data.createHotel != "") {
           console.log("success insert")
+          this.webSocket.emit('hotel', "")
           window.location.reload()
         }
       })
@@ -504,10 +509,35 @@ export class AdminMainComponent implements OnInit {
     } else if(this.tripPrice == 0) {
       alert("trip price cannot be 0 !")
     } else {
-      var berangkat = this.tripBerangkatValue.getFullYear() + "-" + this.tripBerangkatValue.getMonth()+1 + "-" + this.tripBerangkatValue.getDate() + "T00:00:00Z"
-      var sampai = this.tripSampaiValue.getFullYear() + "-" + this.tripSampaiValue.getMonth()+1 + "-" + this.tripSampaiValue.getDate() + "T00:00:00Z"
+      var berangkat = this.tripBerangkatValue.getFullYear() + "-"
+      var sampai = this.tripSampaiValue.getFullYear() + "-"
+      if(this.tripBerangkatValue.getMonth() < 10) {
+        berangkat += '0' + (this.tripBerangkatValue.getMonth()+1) + '-'
+      } else {
+        berangkat += (this.tripBerangkatValue.getMonth() + 1) + '-'
+      }
+      if(this.tripBerangkatValue.getDate() < 10) {
+        berangkat += '0' + this.tripBerangkatValue.getDate()
+      } else {
+        berangkat += this.tripBerangkatValue.getDate()
+      }
+      berangkat += "T00:00:00Z"
+
+      if(this.tripSampaiValue.getMonth() < 10) {
+        sampai += '0' + (this.tripSampaiValue.getMonth() + 1) + '-'
+      } else {
+        sampai += (this.tripSampaiValue.getMonth() + 1) + '-'
+      }
+      if(this.tripSampaiValue.getDate() < 10) {
+        sampai += '0' + this.tripSampaiValue.getDate()
+      } else {
+        sampai += this.tripSampaiValue.getDate()
+      }
+      sampai += "T00:00:00Z"
+
       this.tripDuration = 1
       this.graphqlService.createTrip(this.tripToValue, sampai, this.tripDuration, this.tripTax, this.tripService, this.selectedTrain, this.tripFromValue, berangkat, this.tripPrice).subscribe(async query => {
+        this.webSocket.emit("train", "")
         console.log(query.data.createTrip.Id)
       })
     }
@@ -604,6 +634,7 @@ export class AdminMainComponent implements OnInit {
   }
 
   loadHotelData() {
+    this.hotelPageCount = []
     this.graphqlService.getAllHotel().subscribe(async query => {
       this.hotelList = query.data.getAllHotel
       for (let i = 1; i <= Math.round(this.hotelList.length/this.hotelPage); i++) {

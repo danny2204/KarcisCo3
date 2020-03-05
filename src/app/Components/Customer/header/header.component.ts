@@ -36,10 +36,15 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['promo-page'])
   }
 
+  mainLanguage = "EN"
+
   ngOnInit() {
     this.config.autoFocus = false;
     this.config.restoreFocus = true;
     this.user = JSON.parse(sessionStorage.getItem("user"))
+    if(this.user != null) {
+      this.mainLanguage = this.user[0].MainLanguage
+    }
   }
 
   public toHome() {

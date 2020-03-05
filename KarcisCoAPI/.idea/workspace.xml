@@ -34,8 +34,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\danny\go\src\github.com\danny2204\KarcisCoAPI\models\data" />
       <recent name="C:\Users\danny\go\src\github.com\danny2204\KarcisCoAPI\models" />
+      <recent name="C:\Users\danny\go\src\github.com\danny2204\KarcisCoAPI\models\data" />
     </key>
   </component>
   <component name="RunManager">
@@ -82,22 +82,26 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="402" y="29" key="#go_build_github.com/danny2204/KarcisCoAPI/0.0.1366.768@0.0.1366.768" timestamp="1579150421712" />
-    <state width="1323" height="98" key="GridCell.Tab.0.bottom" timestamp="1580979884853">
+    <state width="1323" height="98" key="GridCell.Tab.0.bottom" timestamp="1583371483886">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1323" height="98" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1580979884853" />
-    <state width="1323" height="98" key="GridCell.Tab.0.center" timestamp="1580979884853">
+    <state width="1323" height="91" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583128934955" />
+    <state width="1323" height="98" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1583371483886" />
+    <state width="1323" height="98" key="GridCell.Tab.0.center" timestamp="1583371483886">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1323" height="98" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1580979884853" />
-    <state width="1323" height="98" key="GridCell.Tab.0.left" timestamp="1580979884853">
+    <state width="1323" height="91" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583128934955" />
+    <state width="1323" height="98" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1583371483886" />
+    <state width="1323" height="98" key="GridCell.Tab.0.left" timestamp="1583371483885">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1323" height="98" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1580979884853" />
-    <state width="1323" height="98" key="GridCell.Tab.0.right" timestamp="1580979884853">
+    <state width="1323" height="91" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583128934954" />
+    <state width="1323" height="98" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1583371483885" />
+    <state width="1323" height="98" key="GridCell.Tab.0.right" timestamp="1583371483886">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1323" height="98" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1580979884853" />
+    <state width="1323" height="91" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583128934955" />
+    <state width="1323" height="98" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1583371483886" />
     <state x="184" y="27" key="SettingsEditor" timestamp="1577698834501">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -106,9 +110,13 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="461" y="104" key="com.goide.refactor.move.GoMoveDeclarationDialog/0.0.1366.768@0.0.1366.768" timestamp="1580964818991" />
-    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1580967239055">
+    <state x="0" y="0" width="747" height="768" key="find.popup" timestamp="1583243892444">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup/0.0.1366.768@0.0.1366.768" timestamp="1580967239055" />
+    <state x="0" y="0" width="747" height="768" key="find.popup/0.0.1366.768@0.0.1366.768" timestamp="1583243892444" />
+    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1582616119222">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup/0.0.1366.768@0.0.1366.768" timestamp="1582616119222" />
   </component>
 </project>

@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/danny2204/KarcisCoAPI/connection"
+	"github.com/danny2204/KarcisCoAPI/middleware"
 	"time"
 )
 
@@ -20,6 +21,7 @@ type Location struct{
 
 func GetAllLocation()([]Location, error) {
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -36,6 +38,7 @@ func GetAllLocation()([]Location, error) {
 
 func CreateLocation(longitude float64, latitude float64, city string, province string, country string, zindex int) (*Location, error){
 	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 	if err != nil {
 		panic(err)
 	}
@@ -57,6 +60,7 @@ func CreateLocation(longitude float64, latitude float64, city string, province s
 
 func UpdateLocation(id int, longitude float64, latitude float64, city string, province string, country string, zindex int) (*Location, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -72,6 +76,7 @@ func UpdateLocation(id int, longitude float64, latitude float64, city string, pr
 
 func RemoveLocation(id int) (*Location, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
@@ -83,8 +88,24 @@ func RemoveLocation(id int) (*Location, error) {
 	return &location, db.Delete(location).Error
 }
 
+func GetLimitedLocation() ([]Location, error) {
+	db, err = connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
+	if err != nil {
+		panic(err)
+	}
+
+	defer db.Close()
+
+	var locationList []Location
+	db.Limit(20).Find(&locationList)
+	return locationList, err
+
+}
+
 func GetLocationById(id int)(*Location, error) {
 	db, err := connection.ConnectDatabase()
+	_, err = GetApiKeyDetail(middleware.ApiKey)
 
 	if err != nil {
 		return nil, err
